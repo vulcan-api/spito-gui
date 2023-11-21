@@ -7,7 +7,7 @@ function App(): JSX.Element | null {
     {
       path: '/',
       element: <h1>Home</h1>
-    },
+    }
   ])
 
   const location = useLocation()
