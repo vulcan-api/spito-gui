@@ -9,10 +9,10 @@ dependencies:
     specifier: ^2.0.0
     version: 2.0.0(electron@25.9.5)
   '@electron-toolkit/utils':
-    specifier: ^2.0.0
+    specifier: ^2.0.1
     version: 2.0.1(electron@25.9.5)
   electron-updater:
-    specifier: ^6.1.1
+    specifier: ^6.1.4
     version: 6.1.4
   framer-motion:
     specifier: ^10.16.5
@@ -36,33 +36,33 @@ devDependencies:
     version: 1.0.0(eslint@8.54.0)(typescript@5.3.2)
   '@electron-toolkit/tsconfig':
     specifier: ^1.0.1
-    version: 1.0.1(@types/node@18.18.10)
+    version: 1.0.1(@types/node@18.18.11)
   '@types/node':
-    specifier: ^18.17.5
-    version: 18.18.10
+    specifier: ^18.18.11
+    version: 18.18.11
   '@types/react':
-    specifier: ^18.2.20
-    version: 18.2.37
+    specifier: ^18.2.38
+    version: 18.2.38
   '@types/react-dom':
-    specifier: ^18.2.7
-    version: 18.2.15
+    specifier: ^18.2.16
+    version: 18.2.16
   '@vitejs/plugin-react':
-    specifier: ^4.0.4
+    specifier: ^4.2.0
     version: 4.2.0(vite@4.5.0)
   autoprefixer:
     specifier: ^10.4.16
     version: 10.4.16(postcss@8.4.31)
   electron:
-    specifier: ^25.6.0
+    specifier: ^25.9.5
     version: 25.9.5
   electron-builder:
-    specifier: ^24.6.3
+    specifier: ^24.6.4
     version: 24.6.4
   electron-vite:
-    specifier: ^1.0.27
+    specifier: ^1.0.29
     version: 1.0.29(vite@4.5.0)
   eslint:
-    specifier: ^8.47.0
+    specifier: ^8.54.0
     version: 8.54.0
   eslint-plugin-react:
     specifier: ^7.33.2
@@ -71,7 +71,7 @@ devDependencies:
     specifier: ^8.4.31
     version: 8.4.31
   prettier:
-    specifier: ^3.0.2
+    specifier: ^3.1.0
     version: 3.1.0
   react:
     specifier: ^18.2.0
@@ -83,11 +83,11 @@ devDependencies:
     specifier: ^3.3.5
     version: 3.3.5
   typescript:
-    specifier: ^5.1.6
+    specifier: ^5.3.2
     version: 5.3.2
   vite:
-    specifier: ^4.4.9
-    version: 4.5.0(@types/node@18.18.10)
+    specifier: ^4.5.0
+    version: 4.5.0(@types/node@18.18.11)
 
 packages:
 
@@ -386,12 +386,12 @@ packages:
       electron: 25.9.5
     dev: false
 
-  /@electron-toolkit/tsconfig@1.0.1(@types/node@18.18.10):
+  /@electron-toolkit/tsconfig@1.0.1(@types/node@18.18.11):
     resolution: {integrity: sha512-M0Mol3odspvtCuheyujLNAW7bXq7KFNYVMRtpjFa4ZfES4MuklXBC7Nli/omvc+PRKlrklgAGx3l4VakjNo8jg==}
     peerDependencies:
       '@types/node': '*'
     dependencies:
-      '@types/node': 18.18.10
+      '@types/node': 18.18.11
     dev: true
 
   /@electron-toolkit/utils@2.0.1(electron@25.9.5):
@@ -840,8 +840,8 @@ packages:
     engines: {node: '>= 10'}
     dev: true
 
-  /@types/babel__core@7.20.4:
-    resolution: {integrity: sha512-mLnSC22IC4vcWiuObSRjrLd9XcBTGf59vUSoq2jkQDJ/QQ8PMI9rSuzE+aEV8karUMbskw07bKYoUJCKTUaygg==}
+  /@types/babel__core@7.20.5:
+    resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
     dependencies:
       '@babel/parser': 7.23.4
       '@babel/types': 7.23.4
@@ -874,7 +874,7 @@ packages:
     dependencies:
       '@types/http-cache-semantics': 4.0.4
       '@types/keyv': 3.1.4
-      '@types/node': 18.18.10
+      '@types/node': 18.18.11
       '@types/responselike': 1.0.3
 
   /@types/debug@4.1.12:
@@ -886,7 +886,7 @@ packages:
   /@types/fs-extra@9.0.13:
     resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
     dependencies:
-      '@types/node': 18.18.10
+      '@types/node': 18.18.11
     dev: true
 
   /@types/http-cache-semantics@4.0.4:
@@ -899,14 +899,14 @@ packages:
   /@types/keyv@3.1.4:
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
     dependencies:
-      '@types/node': 18.18.10
+      '@types/node': 18.18.11
 
   /@types/ms@0.7.34:
     resolution: {integrity: sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==}
     dev: true
 
-  /@types/node@18.18.10:
-    resolution: {integrity: sha512-luANqZxPmjTll8bduz4ACs/lNTCLuWssCyjqTY9yLdsv1xnViQp3ISKwsEWOIecO13JWUqjVdig/Vjjc09o8uA==}
+  /@types/node@18.18.11:
+    resolution: {integrity: sha512-c1vku6qnTeujJneYH94/4aq73XrVcsJe35UPyAsSok1ijiKrkRzK+AxQPSpNMUnC03roWBBwJx/9I8V7lQoxmA==}
     dependencies:
       undici-types: 5.26.5
 
@@ -914,40 +914,40 @@ packages:
     resolution: {integrity: sha512-E6OCaRmAe4WDmWNsL/9RMqdkkzDCY1etutkflWk4c+AcjDU07Pcz1fQwTX0TQz+Pxqn9i4L1TU3UFpjnrcDgxA==}
     requiresBuild: true
     dependencies:
-      '@types/node': 18.18.10
+      '@types/node': 18.18.11
       xmlbuilder: 15.1.1
     dev: true
     optional: true
 
-  /@types/prop-types@15.7.10:
-    resolution: {integrity: sha512-mxSnDQxPqsZxmeShFH+uwQ4kO4gcJcGahjjMFeLbKE95IAZiiZyiEepGZjtXJ7hN/yfu0bu9xN2ajcU0JcxX6A==}
+  /@types/prop-types@15.7.11:
+    resolution: {integrity: sha512-ga8y9v9uyeiLdpKddhxYQkxNDrfvuPrlFb0N1qnZZByvcElJaXthF1UhvCh9TLWJBEHeNtdnbysW7Y6Uq8CVng==}
     dev: true
 
-  /@types/react-dom@18.2.15:
-    resolution: {integrity: sha512-HWMdW+7r7MR5+PZqJF6YFNSCtjz1T0dsvo/f1BV6HkV+6erD/nA7wd9NM00KVG83zf2nJ7uATPO9ttdIPvi3gg==}
+  /@types/react-dom@18.2.16:
+    resolution: {integrity: sha512-766c37araZ9vxtYs25gvY2wNdFWsT2ZiUvOd0zMhTaoGj6B911N8CKQWgXXJoPMLF3J82thpRqQA7Rf3rBwyJw==}
     dependencies:
-      '@types/react': 18.2.37
+      '@types/react': 18.2.38
     dev: true
 
-  /@types/react@18.2.37:
-    resolution: {integrity: sha512-RGAYMi2bhRgEXT3f4B92WTohopH6bIXw05FuGlmJEnv/omEn190+QYEIYxIAuIBdKgboYYdVved2p1AxZVQnaw==}
+  /@types/react@18.2.38:
+    resolution: {integrity: sha512-cBBXHzuPtQK6wNthuVMV6IjHAFkdl/FOPFIlkd81/Cd1+IqkHu/A+w4g43kaQQoYHik/ruaQBDL72HyCy1vuMw==}
     dependencies:
-      '@types/prop-types': 15.7.10
-      '@types/scheduler': 0.16.6
+      '@types/prop-types': 15.7.11
+      '@types/scheduler': 0.16.7
       csstype: 3.1.2
     dev: true
 
   /@types/responselike@1.0.3:
     resolution: {integrity: sha512-H/+L+UkTV33uf49PH5pCAUBVPNj2nDBXTN+qS1dOwyyg24l3CcicicCA7ca+HMvJBZcFgl5r8e+RR6elsb4Lyw==}
     dependencies:
-      '@types/node': 18.18.10
+      '@types/node': 18.18.11
 
-  /@types/scheduler@0.16.6:
-    resolution: {integrity: sha512-Vlktnchmkylvc9SnwwwozTv04L/e1NykF5vgoQ0XTmI8DD+wxfjQuHuvHS3p0r2jz2x2ghPs2h1FVeDirIteWA==}
+  /@types/scheduler@0.16.7:
+    resolution: {integrity: sha512-8g25Nl3AuB1KulTlSUsUhUo/oBgBU6XIXQ+XURpeioEbEJvkO7qI4vDfREv3vJYHHzqXjcAHvoJy4pTtSQNZtA==}
     dev: true
 
-  /@types/semver@7.5.5:
-    resolution: {integrity: sha512-+d+WYC1BxJ6yVOgUgzK8gWvp5qF8ssV5r4nsDcZWKRWcDQLQ619tvWAxJQYGgBrO1MnLJC7a5GtiYsAoQ47dJg==}
+  /@types/semver@7.5.6:
+    resolution: {integrity: sha512-dn1l8LaMea/IjDoHNd9J52uBbInB796CDffS6VdIxvqYCPSG0V0DzHp76GpaWnlhg88uYyPbXCDIowa86ybd5A==}
     dev: true
 
   /@types/verror@1.10.9:
@@ -960,7 +960,7 @@ packages:
     resolution: {integrity: sha512-oJoftv0LSuaDZE3Le4DbKX+KS9G36NzOeSap90UIK0yMA/NhKJhqlSGtNDORNRaIbQfzjXDrQa0ytJ6mNRGz/Q==}
     requiresBuild: true
     dependencies:
-      '@types/node': 18.18.10
+      '@types/node': 18.18.11
     optional: true
 
   /@typescript-eslint/eslint-plugin@6.12.0(@typescript-eslint/parser@6.12.0)(eslint@8.54.0)(typescript@5.3.2):
@@ -1075,7 +1075,7 @@ packages:
     dependencies:
       '@eslint-community/eslint-utils': 4.4.0(eslint@8.54.0)
       '@types/json-schema': 7.0.15
-      '@types/semver': 7.5.5
+      '@types/semver': 7.5.6
       '@typescript-eslint/scope-manager': 6.12.0
       '@typescript-eslint/types': 6.12.0
       '@typescript-eslint/typescript-estree': 6.12.0(typescript@5.3.2)
@@ -1107,9 +1107,9 @@ packages:
       '@babel/core': 7.23.3
       '@babel/plugin-transform-react-jsx-self': 7.23.3(@babel/core@7.23.3)
       '@babel/plugin-transform-react-jsx-source': 7.23.3(@babel/core@7.23.3)
-      '@types/babel__core': 7.20.4
+      '@types/babel__core': 7.20.5
       react-refresh: 0.14.0
-      vite: 4.5.0(@types/node@18.18.10)
+      vite: 4.5.0(@types/node@18.18.11)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -1428,7 +1428,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001563
-      electron-to-chromium: 1.4.588
+      electron-to-chromium: 1.4.589
       node-releases: 2.0.13
       update-browserslist-db: 1.0.13(browserslist@4.22.1)
     dev: true
@@ -1890,8 +1890,8 @@ packages:
       - supports-color
     dev: true
 
-  /electron-to-chromium@1.4.588:
-    resolution: {integrity: sha512-soytjxwbgcCu7nh5Pf4S2/4wa6UIu+A3p03U2yVr53qGxi1/VTR3ENI+p50v+UxqqZAfl48j3z55ud7VHIOr9w==}
+  /electron-to-chromium@1.4.589:
+    resolution: {integrity: sha512-zF6y5v/YfoFIgwf2dDfAqVlPPsyQeWNpEWXbAlDUS8Ax4Z2VoiiZpAPC0Jm9hXEkJm2vIZpwB6rc4KnLTQffbQ==}
     dev: true
 
   /electron-updater@6.1.4:
@@ -1926,7 +1926,7 @@ packages:
       esbuild: 0.18.20
       magic-string: 0.30.5
       picocolors: 1.0.0
-      vite: 4.5.0(@types/node@18.18.10)
+      vite: 4.5.0(@types/node@18.18.11)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -1938,7 +1938,7 @@ packages:
     requiresBuild: true
     dependencies:
       '@electron/get': 2.0.3
-      '@types/node': 18.18.10
+      '@types/node': 18.18.11
       extract-zip: 2.0.1
     transitivePeerDependencies:
       - supports-color
@@ -4381,7 +4381,7 @@ packages:
     dev: true
     optional: true
 
-  /vite@4.5.0(@types/node@18.18.10):
+  /vite@4.5.0(@types/node@18.18.11):
     resolution: {integrity: sha512-ulr8rNLA6rkyFAlVWw2q5YJ91v098AFQ2R0PRFwPzREXOUJQPtFUG0t+/ZikhaOCDqFoDhN6/v8Sq0o4araFAw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -4409,7 +4409,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 18.18.10
+      '@types/node': 18.18.11
       esbuild: 0.18.20
       postcss: 8.4.31
       rollup: 3.29.4

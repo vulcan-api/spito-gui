@@ -11,7 +11,7 @@ export default function AuthModal({
 }): JSX.Element {
   const [isUserRegistering, setIsUserRegistering] = useState<boolean>(false)
 
-  function changeAuthMethodHandler() {
+  function changeAuthMethodHandler(): void {
     setIsUserRegistering((prev: boolean) => !prev)
   }
 
