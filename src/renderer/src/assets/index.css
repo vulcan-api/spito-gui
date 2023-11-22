@@ -16,11 +16,29 @@ body {
     'Cantarell',
     'Open Sans',
     sans-serif;
-  background-color: #2f3241;
+  background-color: #242424;
+}
+
+@font-face {
+  font-family: 'Roboto Slab';
+  src: url('../../lib/fonts/RobotoSlab-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Quantico';
+  src: url('../../lib/fonts/Quantico-Regular.ttf');
 }
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-boxz;
+}
+
+.roboto {
+  font-family: 'Roboto Slab';
+}
+
+.quantico {
+  font-family: 'Quantico';
 }
