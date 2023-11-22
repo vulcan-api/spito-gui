@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ButtonProps } from "src/renderer/lib/Interfaces";
+import { ButtonProps } from "../lib/interfaces";
 
 export default function Button({
   onClick,

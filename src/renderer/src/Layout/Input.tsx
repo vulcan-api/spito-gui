@@ -1,5 +1,5 @@
 import { forwardRef, useState } from "react";
-import { InputProps } from "../lib/Interfaces";
+import { InputProps } from "../lib/interfaces";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 
 export default forwardRef(function Input(

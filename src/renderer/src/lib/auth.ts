@@ -1,4 +1,4 @@
-import { UserInfo } from "./Interfaces";
+import { UserInfo } from "./interfaces";
 import { backendRequest } from "./request";
 
 export const getUserInfo = (): UserInfo | null => {

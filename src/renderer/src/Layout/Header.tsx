@@ -8,7 +8,7 @@ import { AnimatePresence } from "framer-motion";
 export default function Header(): JSX.Element {
   const [isUserLoggingIn, setIsUserLoggingIn] = useState<boolean>(false);
 
-  const menuLinkClass = (isActive: boolean) => {
+  const menuLinkClass = (isActive: boolean): string => {
     return `text-2xl roboto uppercase transition-all ${
       isActive ? "text-gray-100" : "text-gray-500"
     }`;
