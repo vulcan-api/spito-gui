@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 export default function AuthModal({
   closeModal
 }: {
-  closeModal: React.MouseEventHandler<SVGElement>;
+  closeModal: any;
 }): JSX.Element {
   const emailRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
   const usernameRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
@@ -29,15 +29,21 @@ export default function AuthModal({
       toast.error("Passwords do not match");
       return;
     }
+    const toastId = toast.loading("Registering...");
     const status = await register(
       usernameRef.current?.value,
       emailRef.current?.value,
       passwordRef.current?.value
     );
     if (status === 201) {
-      toast.success("Successfully registered");
+      toast.success("Successfully registered", {
+        id: toastId
+      });
+      setIsUserRegistering(false);
     } else {
-      toast.error("Failed to register");
+      toast.error("Failed to register", {
+        id: toastId
+      });
     }
   };
 
@@ -45,11 +51,17 @@ export default function AuthModal({
     if (!emailRef.current?.value || !passwordRef.current?.value) {
       return;
     }
+    const toastId = toast.loading("Logging in...");
     const status = await login(emailRef.current?.value, passwordRef.current?.value);
     if (status === 200) {
-      toast.success("Successfully logged in");
+      toast.success("Successfully logged in", {
+        id: toastId
+      });
+      closeModal();
     } else {
-      toast.error("Failed to log in");
+      toast.error("Failed to log in", {
+        id: toastId
+      });
     }
   };
   return (
