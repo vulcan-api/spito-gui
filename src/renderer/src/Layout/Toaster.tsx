@@ -1,4 +1,4 @@
-import { Toaster } from 'react-hot-toast'
+import { Toaster } from "react-hot-toast";
 
 export default function ToasterComponent(): JSX.Element {
   return (
@@ -9,25 +9,25 @@ export default function ToasterComponent(): JSX.Element {
       containerClassName=""
       containerStyle={{}}
       toastOptions={{
-        className: '',
+        className: "",
         duration: 3000,
         style: {
-          background: '#363636',
-          color: '#ffffffdd',
-          fontSize: '1.2rem'
+          background: "#363636",
+          color: "#ffffffdd",
+          fontSize: "1.2rem"
         },
         success: {
           duration: 3000,
           style: {
-            background: '#a7f3d0',
-            color: '#242424'
+            background: "#a7f3d0",
+            color: "#242424"
           }
         },
         error: {
           duration: 3000,
           style: {
-            background: '#fda4af',
-            color: '#242424'
+            background: "#fda4af",
+            color: "#242424"
           }
         },
         loading: {
@@ -35,5 +35,5 @@ export default function ToasterComponent(): JSX.Element {
         }
       }}
     />
-  )
+  );
 }

@@ -1,6 +1,6 @@
-import { forwardRef, useState } from 'react'
-import { InputProps } from '../../lib/Interfaces'
-import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs'
+import { forwardRef, useState } from "react";
+import { InputProps } from "../lib/Interfaces";
+import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 
 export default forwardRef(function Input(
   {
@@ -27,9 +27,9 @@ export default forwardRef(function Input(
   return (
     <div className={`relative ${containerClassName}`}>
       <input
-        type={!isPasswordHidden ? 'text' : type || 'text'}
+        type={!isPasswordHidden ? "text" : type || "text"}
         className={`${className} roboto block pl-2.5 pb-2.5 pt-4 pr-12 w-full text-lg text-white bg-transparent rounded-lg border-2  appearance-none focus:outline-none focus:ring-0 peer transition-colors placeholder-shown:border-gray-500 focus:border-teal-500 border-teal-500`}
-        defaultValue={value || ''}
+        defaultValue={value || ""}
         onChange={onChange}
         readOnly={readonly}
         name={name}
@@ -45,7 +45,7 @@ export default forwardRef(function Input(
       >
         {placeholder}
       </label>
-      {type === 'password' &&
+      {type === "password" &&
         (isPasswordHidden ? (
           <BsEyeSlashFill
             className="text-2xl cursor-pointer absolute right-2 top-4"
@@ -58,5 +58,5 @@ export default forwardRef(function Input(
           />
         ))}
     </div>
-  )
-})
+  );
+});

@@ -1,18 +1,18 @@
-import { Link, NavLink, Outlet } from 'react-router-dom'
-import Button from './Button'
-import Searchbar from '@renderer/Compontents/Searchbar'
-import { useState } from 'react'
-import AuthModal from './AuthModal'
-import { AnimatePresence } from 'framer-motion'
+import { Link, NavLink, Outlet } from "react-router-dom";
+import Button from "./Button";
+import Searchbar from "@renderer/Compontents/Searchbar";
+import { useState } from "react";
+import AuthModal from "./AuthModal";
+import { AnimatePresence } from "framer-motion";
 
 export default function Header(): JSX.Element {
-  const [isUserLoggingIn, setIsUserLoggingIn] = useState<boolean>(false)
+  const [isUserLoggingIn, setIsUserLoggingIn] = useState<boolean>(false);
 
   const menuLinkClass = (isActive: boolean) => {
     return `text-2xl roboto uppercase transition-all ${
-      isActive ? 'text-gray-100' : 'text-gray-500'
-    }`
-  }
+      isActive ? "text-gray-100" : "text-gray-500"
+    }`;
+  };
 
   function handleLoginModalOpen(): void {
     setIsUserLoggingIn(true);
@@ -43,5 +43,5 @@ export default function Header(): JSX.Element {
       </header>
       <Outlet />
     </>
-  )
+  );
 }

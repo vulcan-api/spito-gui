@@ -1,20 +1,57 @@
-import { motion } from 'framer-motion'
-import { BsX } from 'react-icons/bs'
-import Input from './Input'
-import Button from './Button'
-import { useState } from 'react'
+import { useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { BsX } from "react-icons/bs";
+import Input from "./Input";
+import Button from "./Button";
+import { login, register } from "../lib/auth";
+import toast from "react-hot-toast";
 
 export default function AuthModal({
   closeModal
 }: {
-  closeModal: React.MouseEventHandler<SVGElement>
+  closeModal: React.MouseEventHandler<SVGElement>;
 }): JSX.Element {
-  const [isUserRegistering, setIsUserRegistering] = useState<boolean>(false)
+  const emailRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+  const usernameRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+  const passwordRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+  const repeatPasswordRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+
+  const [isUserRegistering, setIsUserRegistering] = useState<boolean>(false);
 
   function changeAuthMethodHandler(): void {
-    setIsUserRegistering((prev: boolean) => !prev)
+    setIsUserRegistering((prev: boolean) => !prev);
   }
+  const handleRegister = async (): Promise<void> => {
+    if (!usernameRef.current?.value || !emailRef.current?.value || !passwordRef.current?.value) {
+      return;
+    }
+    if (passwordRef.current?.value !== repeatPasswordRef.current?.value) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    const status = await register(
+      usernameRef.current?.value,
+      emailRef.current?.value,
+      passwordRef.current?.value
+    );
+    if (status === 201) {
+      toast.success("Successfully registered");
+    } else {
+      toast.error("Failed to register");
+    }
+  };
 
+  const handleLogin = async (): Promise<void> => {
+    if (!emailRef.current?.value || !passwordRef.current?.value) {
+      return;
+    }
+    const status = await login(emailRef.current?.value, passwordRef.current?.value);
+    if (status === 200) {
+      toast.success("Successfully logged in");
+    } else {
+      toast.error("Failed to log in");
+    }
+  };
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -27,7 +64,7 @@ export default function AuthModal({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         className={`w-1/4 h-1/2 bg-bgColor border-2 rounded-xl border-teal-500 text-gray-100 relative p-8 py-16 ${
-          isUserRegistering ? 'h-2/3' : 'h-1/2'
+          isUserRegistering ? "h-2/3" : "h-1/2"
         }`}
       >
         <BsX
@@ -44,15 +81,15 @@ export default function AuthModal({
             className="w-full h-full flex flex-col gap-4 justify-between"
           >
             <h2 className="text-center text-4xl roboto mb-4">Register</h2>
-            <Input placeholder="Username" />
-            <Input placeholder="E-Mail" type="email" />
-            <Input placeholder="Password" type="password" />
-            <Input placeholder="Repeat password" type="password" />
+            <Input placeholder="Username" ref={usernameRef} />
+            <Input placeholder="Email" type="email" ref={emailRef} />
+            <Input placeholder="Password" type="password" ref={passwordRef} />
+            <Input placeholder="Repeat password" type="password" ref={repeatPasswordRef} />
             <div className="flex items-center gap-2">
               <Button theme="alt" className="!w-full" onClick={changeAuthMethodHandler}>
                 Back to Login
               </Button>
-              <Button theme="default" className="!w-full">
+              <Button theme="default" className="!w-full" onClick={handleRegister}>
                 Register
               </Button>
             </div>
@@ -71,14 +108,14 @@ export default function AuthModal({
               onClick={closeModal}
             />
             <h2 className="text-center text-4xl roboto mb-8">Login</h2>
-            <Input placeholder="Username / Email" />
-            <Input placeholder="Password" type="password" />
+            <Input placeholder="Email" type="email" ref={emailRef} />
+            <Input placeholder="Password" type="password" ref={passwordRef} />
             <p className="text-center cursor-pointer">Forgot password?</p>
             <div className="flex items-center gap-2">
               <Button theme="alt" className="!w-full" onClick={changeAuthMethodHandler}>
                 New? Register
               </Button>
-              <Button theme="default" className="!w-full">
+              <Button theme="default" className="!w-full" onClick={handleLogin}>
                 Login
               </Button>
             </div>
@@ -86,5 +123,5 @@ export default function AuthModal({
         )}
       </motion.div>
     </motion.div>
-  )
+  );
 }
