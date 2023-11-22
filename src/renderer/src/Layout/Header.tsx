@@ -29,7 +29,7 @@ export default function Header(): JSX.Element {
       </AnimatePresence>
       <header className="w-full py-4 px-8 flex items-center justify-between">
         <Link to="/" className="text-5xl uppercase text-teal-500 tracking-widest roboto">
-          Spito Gui
+          SPITO
         </Link>
         <Searchbar />
         <nav className="flex gap-16 items-center">
