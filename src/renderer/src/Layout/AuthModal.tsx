@@ -53,7 +53,14 @@ export default function AuthModal({ closeModal }: { closeModal: any }): JSX.Elem
       toast.success("Successfully logged in", {
         id: toastId
       });
+      setTimeout(() => {
+        window.location.reload();
+      }, 750);
       closeModal();
+    } else if (status === 403) {
+      toast.error("Wrong email or password!", {
+        id: toastId
+      });
     } else {
       toast.error("Failed to log in", {
         id: toastId
@@ -65,14 +72,14 @@ export default function AuthModal({ closeModal }: { closeModal: any }): JSX.Elem
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="flex items-center justify-center absolute left-0 top-0 w-screen h-screen bg-[#00000080] z-10"
+      className="flex items-center justify-center absolute left-0 top-0 w-screen h-screen bg-[#00000080] z-20"
     >
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className={`w-1/4 h-1/2 bg-bgColor border-2 rounded-xl border-teal-500 text-gray-100 relative p-8 py-16 ${
-          isUserRegistering ? "h-2/3" : "h-1/2"
+        className={`2xl:w-1/4 xl:w-1/3 md:w-1/2 w-full bg-bgColor md:border-2 md:rounded-xl md:border-emerald-500 text-gray-100 relative md:p-8 md:py-16 p-24 h-full ${
+          isUserRegistering ? "md:h-2/3 min-h-[700px]" : "md:h-1/2 min-h-[500px]"
         }`}
       >
         <BsX
@@ -86,15 +93,15 @@ export default function AuthModal({ closeModal }: { closeModal: any }): JSX.Elem
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="w-full h-full flex flex-col gap-4 justify-between"
+            className="w-full h-full flex flex-col gap-8 md:justify-between justify-center"
           >
-            <h2 className="text-center text-4xl roboto mb-4">Register</h2>
+            <h2 className="text-center text-6xl roboto mb-4">Register</h2>
             <Input placeholder="Username" ref={usernameRef} />
             <Input placeholder="Email" type="email" ref={emailRef} />
             <Input placeholder="Password" type="password" ref={passwordRef} />
             <Input placeholder="Repeat password" type="password" ref={repeatPasswordRef} />
             <div className="flex items-center gap-2">
-              <Button theme="alt" className="!w-full" onClick={changeAuthMethodHandler}>
+              <Button theme="alt" className="!w-full text-xl" onClick={changeAuthMethodHandler}>
                 Back to Login
               </Button>
               <Button theme="default" className="!w-full" onClick={handleRegister}>
@@ -109,18 +116,14 @@ export default function AuthModal({ closeModal }: { closeModal: any }): JSX.Elem
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="w-full h-full flex flex-col gap-4 justify-between"
+            className="w-full h-full flex flex-col gap-4 md:justify-between justify-center"
           >
-            <BsX
-              className="absolute text-3xl right-4 top-4 cursor-pointer hover:text-emerald-500 transition-colors"
-              onClick={closeModal}
-            />
-            <h2 className="text-center text-4xl roboto mb-8">Login</h2>
+            <h2 className="text-center text-6xl roboto mb-8">Login</h2>
             <Input placeholder="Email" type="email" ref={emailRef} />
             <Input placeholder="Password" type="password" ref={passwordRef} />
             <p className="text-center cursor-pointer">Forgot password?</p>
             <div className="flex items-center gap-2">
-              <Button theme="alt" className="!w-full" onClick={changeAuthMethodHandler}>
+              <Button theme="alt" className="!w-full text-xl" onClick={changeAuthMethodHandler}>
                 New? Register
               </Button>
               <Button theme="default" className="!w-full" onClick={handleLogin}>
