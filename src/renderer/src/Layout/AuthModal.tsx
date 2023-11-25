@@ -9,10 +9,10 @@ import { UserInfo } from "@renderer/lib/interfaces";
 
 export default function AuthModal({
   closeModal,
-  setUser
+  updateUser
 }: {
   closeModal: () => void;
-  setUser: (user: UserInfo) => void;
+  updateUser: (user: UserInfo) => void;
 }): JSX.Element {
   const emailRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
   const usernameRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
@@ -59,7 +59,7 @@ export default function AuthModal({
       toast.success("Successfully logged in", {
         id: toastId
       });
-      setUser(JSON.parse(localStorage.getItem("userInfo") || "{}"));
+      updateUser(JSON.parse(localStorage.getItem("userInfo") || "{}"));
       closeModal();
     } else if (status === 403) {
       toast.error("Wrong email or password!", {
