@@ -8,6 +8,9 @@ import { useAtom } from "jotai";
 import { userAtom } from "@renderer/lib/atoms";
 import { BsDoorOpenFill } from "react-icons/bs";
 import { UserInfo } from "@renderer/lib/interfaces";
+import { logout } from "@renderer/lib/auth";
+import toast from "react-hot-toast";
+
 
 export default function Header(): JSX.Element {
   const [isUserLoggingIn, setIsUserLoggingIn] = useState<boolean>(false);
@@ -34,9 +37,10 @@ export default function Header(): JSX.Element {
   }
 
   function logoutHandler(): void {
-    localStorage.removeItem("userInfo");
-    localStorage.removeItem("token");
+    logout();
+    toast.success("Successfully logged out");
     setUser(null);
+    setIsMenuOpen(false);
   }
 
   function updateUser(user: UserInfo): void {

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { BsX } from "react-icons/bs";
 import Input from "./Input";
 import Button from "./Button";
-import { login, register } from "../lib/auth";
+import { getUserInfo, login, register } from "../lib/auth";
 import toast from "react-hot-toast";
 import { UserInfo } from "@renderer/lib/interfaces";
 
@@ -59,7 +59,8 @@ export default function AuthModal({
       toast.success("Successfully logged in", {
         id: toastId
       });
-      updateUser(JSON.parse(localStorage.getItem("userInfo") || "{}"));
+      const info: UserInfo | null = getUserInfo();
+      if (info) updateUser(info);
       closeModal();
     } else if (status === 403) {
       toast.error("Wrong email or password!", {
