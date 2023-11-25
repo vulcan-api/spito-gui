@@ -4,17 +4,18 @@ import Searchbar from "@renderer/Compontents/Searchbar";
 import { useState } from "react";
 import AuthModal from "./AuthModal";
 import { AnimatePresence, motion } from "framer-motion";
-import { useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import { userAtom } from "@renderer/lib/atoms";
+import { BsDoorOpenFill } from "react-icons/bs";
 
 export default function Header(): JSX.Element {
   const [isUserLoggingIn, setIsUserLoggingIn] = useState<boolean>(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const user = useAtomValue(userAtom);
+  const [user, setUser] = useAtom(userAtom);
 
   const menuLinkClass = (isActive: boolean): string => {
     return `text-2xl roboto uppercase transition-all ${
-      isActive ? "text-emerald-200" : "text-gray-500"
+      isActive ? "text-emerald-500" : "text-gray-500"
     }`;
   };
 
@@ -31,10 +32,16 @@ export default function Header(): JSX.Element {
     setIsMenuOpen((prev: boolean) => !prev);
   }
 
+  function logoutHandler(): void {
+    localStorage.removeItem("userInfo");
+    localStorage.removeItem("token");
+    setUser(null);
+  }
+
   return (
     <>
       <AnimatePresence>
-        {isUserLoggingIn && <AuthModal closeModal={handleLoginModalClose} />}
+        {isUserLoggingIn && <AuthModal closeModal={handleLoginModalClose} setUser={setUser} />}
       </AnimatePresence>
       <header className="w-screen overflow-hidden py-4 px-8 flex items-center justify-between md:gap-16 gap-8">
         <Link to="/" className="text-5xl uppercase text-emerald-500 tracking-widest roboto">
@@ -46,9 +53,16 @@ export default function Header(): JSX.Element {
             <NavLink to="/configs" className={({ isActive }) => menuLinkClass(isActive)}>
               Configs
             </NavLink>
-            <Button theme="alt" onClick={handleLoginModalOpen}>
-              Login
-            </Button>
+            {user?.id ? (
+              <span className="flex items-center gap-2 text-2xl text-gray-500 roboto uppercase cursor-pointer hover:text-emerald-500 transition-all">
+                <p>Logout</p>
+                <BsDoorOpenFill onClick={logoutHandler} />
+              </span>
+            ) : (
+              <Button theme="alt" onClick={handleLoginModalOpen}>
+                Login
+              </Button>
+            )}
           </nav>
           <div
             className="relative xl:hidden block h-6 w-6 cursor-pointer"
@@ -83,8 +97,13 @@ export default function Header(): JSX.Element {
               <NavLink to="/configs" className={({ isActive }) => menuLinkClass(isActive)}>
                 Configs
               </NavLink>
-              {!user?.id && (
-                <Button theme="alt" onClick={handleLoginModalOpen}>
+              {user?.id ? (
+                <span className="flex items-center gap-2 text-2xl text-gray-500 roboto uppercase cursor-pointer hover:text-emerald-500 transition-all">
+                  <p>Logout</p>
+                  <BsDoorOpenFill onClick={logoutHandler} />
+                </span>
+              ) : (
+                <Button theme="default" onClick={handleLoginModalOpen}>
                   Login
                 </Button>
               )}

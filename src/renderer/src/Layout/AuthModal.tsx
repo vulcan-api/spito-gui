@@ -6,12 +6,11 @@ import Button from "./Button";
 import { login, register } from "../lib/auth";
 import toast from "react-hot-toast";
 
-export default function AuthModal({ closeModal }: { closeModal: any }): JSX.Element {
+export default function AuthModal({ closeModal, setUser }: { closeModal: any; setUser: any }): JSX.Element {
   const emailRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
   const usernameRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
   const passwordRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
   const repeatPasswordRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
-
   const [isUserRegistering, setIsUserRegistering] = useState<boolean>(false);
 
   function changeAuthMethodHandler(): void {
@@ -53,9 +52,7 @@ export default function AuthModal({ closeModal }: { closeModal: any }): JSX.Elem
       toast.success("Successfully logged in", {
         id: toastId
       });
-      setTimeout(() => {
-        window.location.reload();
-      }, 750);
+      setUser(JSON.parse(localStorage.getItem("userInfo") || "{}"));
       closeModal();
     } else if (status === 403) {
       toast.error("Wrong email or password!", {
