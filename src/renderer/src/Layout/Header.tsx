@@ -46,7 +46,9 @@ export default function Header(): JSX.Element {
   return (
     <>
       <AnimatePresence>
-        {isUserLoggingIn && <AuthModal closeModal={handleLoginModalClose} updateUser={updateUser} />}
+        {isUserLoggingIn && (
+          <AuthModal closeModal={handleLoginModalClose} updateUser={updateUser} />
+        )}
       </AnimatePresence>
       <header className="w-screen overflow-hidden py-4 px-8 flex items-center justify-between md:gap-16 gap-8">
         <Link to="/" className="text-5xl uppercase text-emerald-500 tracking-widest roboto">
