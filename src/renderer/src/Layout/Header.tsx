@@ -54,9 +54,12 @@ export default function Header(): JSX.Element {
               Configs
             </NavLink>
             {user?.id ? (
-              <span className="flex items-center gap-2 text-2xl text-gray-500 roboto uppercase cursor-pointer hover:text-emerald-500 transition-all">
+              <span
+                className="flex items-center gap-2 text-2xl text-gray-500 roboto uppercase cursor-pointer hover:text-emerald-500 transition-all"
+                onClick={logoutHandler}
+              >
                 <p>Logout</p>
-                <BsDoorOpenFill onClick={logoutHandler} />
+                <BsDoorOpenFill />
               </span>
             ) : (
               <Button theme="alt" onClick={handleLoginModalOpen}>
@@ -98,9 +101,12 @@ export default function Header(): JSX.Element {
                 Configs
               </NavLink>
               {user?.id ? (
-                <span className="flex items-center gap-2 text-2xl text-gray-500 roboto uppercase cursor-pointer hover:text-emerald-500 transition-all">
+                <span
+                  className="flex items-center gap-2 text-2xl text-gray-500 roboto uppercase cursor-pointer hover:text-emerald-500 transition-all"
+                  onClick={logoutHandler}
+                >
                   <p>Logout</p>
-                  <BsDoorOpenFill onClick={logoutHandler} />
+                  <BsDoorOpenFill />
                 </span>
               ) : (
                 <Button theme="default" onClick={handleLoginModalOpen}>
