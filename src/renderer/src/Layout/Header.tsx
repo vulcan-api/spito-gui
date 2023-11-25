@@ -11,7 +11,6 @@ import { UserInfo } from "@renderer/lib/interfaces";
 import { logout } from "@renderer/lib/auth";
 import toast from "react-hot-toast";
 
-
 export default function Header(): JSX.Element {
   const [isUserLoggingIn, setIsUserLoggingIn] = useState<boolean>(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
