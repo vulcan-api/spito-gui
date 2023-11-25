@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useAtom } from "jotai";
 import { userAtom } from "@renderer/lib/atoms";
 import { BsDoorOpenFill } from "react-icons/bs";
+import { UserInfo } from "@renderer/lib/interfaces";
 
 export default function Header(): JSX.Element {
   const [isUserLoggingIn, setIsUserLoggingIn] = useState<boolean>(false);
@@ -38,10 +39,14 @@ export default function Header(): JSX.Element {
     setUser(null);
   }
 
+  function updateUser(user: UserInfo): void {
+    setUser(user);
+  }
+
   return (
     <>
       <AnimatePresence>
-        {isUserLoggingIn && <AuthModal closeModal={handleLoginModalClose} setUser={setUser} />}
+        {isUserLoggingIn && <AuthModal closeModal={handleLoginModalClose} updateUser={updateUser} />}
       </AnimatePresence>
       <header className="w-screen overflow-hidden py-4 px-8 flex items-center justify-between md:gap-16 gap-8">
         <Link to="/" className="text-5xl uppercase text-emerald-500 tracking-widest roboto">

@@ -5,13 +5,14 @@ import Input from "./Input";
 import Button from "./Button";
 import { login, register } from "../lib/auth";
 import toast from "react-hot-toast";
+import { UserInfo } from "@renderer/lib/interfaces";
 
 export default function AuthModal({
   closeModal,
   setUser
 }: {
-  closeModal: any;
-  setUser: any;
+  closeModal: () => void;
+  setUser: (user: UserInfo) => void;
 }): JSX.Element {
   const emailRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
   const usernameRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
