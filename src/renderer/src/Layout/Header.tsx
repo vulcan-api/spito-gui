@@ -10,6 +10,7 @@ import { BsDoorOpenFill } from "react-icons/bs";
 import { UserInfo } from "@renderer/lib/interfaces";
 import { logout } from "@renderer/lib/auth";
 import toast from "react-hot-toast";
+import AvatarComponent from "@renderer/Compontents/AvatarComponent";
 
 export default function Header(): JSX.Element {
   const [isUserLoggingIn, setIsUserLoggingIn] = useState<boolean>(false);
@@ -17,7 +18,7 @@ export default function Header(): JSX.Element {
   const [user, setUser] = useAtom(userAtom);
 
   const menuLinkClass = (isActive: boolean): string => {
-    return `text-2xl roboto uppercase transition-all ${
+    return `text-2xl roboto uppercase transition-all cursor-pointer text-center ${
       isActive ? "text-emerald-500" : "text-gray-500"
     }`;
   };
@@ -59,18 +60,32 @@ export default function Header(): JSX.Element {
         </Link>
         <div className="w-full flex items-center justify-between gap-8">
           <Searchbar />
-          <nav className="lg:flex hidden gap-16 items-center">
-            <NavLink to="/configs" className={({ isActive }) => menuLinkClass(isActive)}>
-              Configs
+          <nav className="xl:flex hidden gap-16 items-center">
+            <NavLink to="/marketplace" className={({ isActive }) => menuLinkClass(isActive)}>
+              Marketplace
+            </NavLink>
+            <NavLink to="/myconfigs" className={({ isActive }) => menuLinkClass(isActive)}>
+              My configs
             </NavLink>
             {user?.id ? (
-              <span
-                className="flex items-center gap-2 text-2xl text-gray-500 roboto uppercase cursor-pointer hover:text-emerald-500 transition-all"
-                onClick={logoutHandler}
-              >
-                <p>Logout</p>
-                <BsDoorOpenFill />
-              </span>
+              <>
+                <NavLink
+                  to={`/profile/${user.id}`}
+                  className={({ isActive }) => {
+                    return menuLinkClass(isActive) + " flex items-center gap-2 normal-case";
+                  }}
+                >
+                  <AvatarComponent size="small" userId={user.id} username={user.username} />
+                  <p>{user.username}</p>
+                </NavLink>
+                <span
+                  className="flex items-center gap-2 text-2xl text-gray-500 roboto uppercase cursor-pointer hover:text-emerald-500 transition-all"
+                  onClick={logoutHandler}
+                >
+                  <p>Logout</p>
+                  <BsDoorOpenFill />
+                </span>
+              </>
             ) : (
               <Button theme="alt" onClick={handleLoginModalOpen}>
                 Login
@@ -78,7 +93,7 @@ export default function Header(): JSX.Element {
             )}
           </nav>
           <div
-            className="relative lg:hidden block h-6 w-6 cursor-pointer"
+            className="relative xl:hidden block h-6 w-6 cursor-pointer"
             onClick={handleMenuStateChange}
           >
             <motion.div
@@ -107,17 +122,31 @@ export default function Header(): JSX.Element {
               <NavLink to="/" className={({ isActive }) => menuLinkClass(isActive)}>
                 Main page
               </NavLink>
-              <NavLink to="/configs" className={({ isActive }) => menuLinkClass(isActive)}>
-                Configs
+              <NavLink to="/marketplace" className={({ isActive }) => menuLinkClass(isActive)}>
+                Marketplace
+              </NavLink>
+              <NavLink to="/myconfigs" className={({ isActive }) => menuLinkClass(isActive)}>
+                My configs
               </NavLink>
               {user?.id ? (
-                <span
-                  className="flex items-center gap-2 text-2xl text-gray-500 roboto uppercase cursor-pointer hover:text-emerald-500 transition-all"
-                  onClick={logoutHandler}
-                >
-                  <p>Logout</p>
-                  <BsDoorOpenFill />
-                </span>
+                <>
+                  <NavLink
+                    to={`/profile/${user.id}`}
+                    className={({ isActive }) => {
+                      return menuLinkClass(isActive) + " flex items-center gap-2 normal-case";
+                    }}
+                  >
+                    <AvatarComponent size="small" userId={user.id} username={user.username} />
+                    <p>{user.username}</p>
+                  </NavLink>
+                  <span
+                    className="flex items-center gap-2 text-2xl text-gray-500 roboto uppercase cursor-pointer hover:text-emerald-500 transition-all"
+                    onClick={logoutHandler}
+                  >
+                    <p>Logout</p>
+                    <BsDoorOpenFill />
+                  </span>
+                </>
               ) : (
                 <Button theme="default" onClick={handleLoginModalOpen}>
                   Login

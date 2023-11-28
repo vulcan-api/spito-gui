@@ -27,8 +27,10 @@
     "electron-updater": "^6.1.4",
     "framer-motion": "^10.16.5",
     "jotai": "^2.5.1",
+    "react-avatar": "^5.0.3",
     "react-hot-toast": "^2.4.1",
     "react-icons": "^4.12.0",
+    "react-loader-spinner": "^5.4.5",
     "react-router-dom": "^6.19.0"
   },
   "devDependencies": {

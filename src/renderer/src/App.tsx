@@ -3,6 +3,7 @@ import { AnimatePresence } from "framer-motion";
 import { cloneElement } from "react";
 import Header from "./Layout/Header";
 import Toaster from "./Layout/Toaster";
+import Profile from "./Pages/Profile";
 
 function App(): JSX.Element | null {
   const element = useRoutes([
@@ -15,8 +16,16 @@ function App(): JSX.Element | null {
           element: <h1>Landing page</h1>
         },
         {
-          path: "/configs",
-          element: <h1>Configs</h1>
+          path: "/marketplace",
+          element: <h1>Marketplace</h1>
+        },
+        {
+          path: "/myconfigs",
+          element: <h1>My configs</h1>
+        },
+        {
+          path: "/profile/:id",
+          element: <Profile />
         }
       ]
     }
