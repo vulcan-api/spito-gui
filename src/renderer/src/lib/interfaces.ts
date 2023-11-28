@@ -29,4 +29,14 @@ interface UserInfo {
   username: string;
 }
 
-export type { InputProps, ButtonProps, UserInfo };
+interface Settings {
+  username: string;
+  email: string;
+}
+
+interface Profile {
+  id: number;
+  username: string;
+}
+
+export type { InputProps, ButtonProps, Profile, UserInfo, Settings };

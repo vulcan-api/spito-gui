@@ -1,4 +1,5 @@
 import { BACKEND_ORIGIN } from "@renderer/lib/constants";
+import { getUserAvatar } from "@renderer/lib/user";
 import { useState, useCallback, useEffect } from "react";
 import Avatar from "react-avatar";
 import { ColorRing } from "react-loader-spinner";
@@ -14,19 +15,10 @@ export default function AvatarComponent(props: {
   const [avatarSize, setAvatarSize] = useState<number>(64);
 
   const getAvatarUrl = useCallback(async (): Promise<void> => {
-    fetch(`${BACKEND_ORIGIN}/user/settings/avatar/${props.userId}`, {
-      credentials: "include",
-      method: "GET"
-    })
-      .then((res: Response) => {
-        if (!res.ok || res.status === 204) throw new Error();
-        return res.blob();
-      })
-      .then((blob) => setAvatarUrl(URL.createObjectURL(blob)))
-      .catch(() => setAvatarUrl(""))
-      .finally(() => {
-        setIsLoading(false);
-      });
+    const avatar = await getUserAvatar(props.userId);
+    const url = URL.createObjectURL(avatar);
+    setAvatarUrl(url);
+    setIsLoading(false);
   }, [props.userId]);
 
   function calculateAvatarSize(): void {
