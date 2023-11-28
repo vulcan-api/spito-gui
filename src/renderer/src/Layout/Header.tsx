@@ -59,7 +59,7 @@ export default function Header(): JSX.Element {
         </Link>
         <div className="w-full flex items-center justify-between gap-8">
           <Searchbar />
-          <nav className="xl:flex hidden gap-16 items-center">
+          <nav className="lg:flex hidden gap-16 items-center">
             <NavLink to="/configs" className={({ isActive }) => menuLinkClass(isActive)}>
               Configs
             </NavLink>
@@ -78,7 +78,7 @@ export default function Header(): JSX.Element {
             )}
           </nav>
           <div
-            className="relative xl:hidden block h-6 w-6 cursor-pointer"
+            className="relative lg:hidden block h-6 w-6 cursor-pointer"
             onClick={handleMenuStateChange}
           >
             <motion.div
@@ -98,9 +98,9 @@ export default function Header(): JSX.Element {
             />
           </div>
           <div
-            className={`xl:hidden flex flex-col items-center gap-8 px-8 py-16 w-1/2 h-full fixed bg-bgColor ${
+            className={`xl:hidden flex flex-col items-center gap-8 px-8 py-16 md:w-1/2 w-full h-full fixed bg-bgColor ${
               isMenuOpen ? "right-0 " : "-right-full"
-            } transition-all duration-500 top-0 border-l-2 border-emerald-500`}
+            } transition-all duration-500 top-0 border-l-2 md:border-emerald-500 border-transparent`}
           >
             <h2 className="text-4xl text-gray-100 roboto">Menu</h2>
             <nav className="flex flex-col gap-8 items-center">
