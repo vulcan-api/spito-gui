@@ -1,4 +1,4 @@
-import { Profile, Settings } from "./interfaces";
+import { ProfileInterface, Settings } from "./interfaces";
 import { backendRequest } from "./request";
 
 export const getUserAvatar = async (userId: number): Promise<Blob> => {
@@ -32,7 +32,7 @@ export const updateSettings = async (
   };
 };
 
-export const getUserProfile = async (userId: number): Promise<Profile> => {
+export const getUserProfile = async (userId: number): Promise<ProfileInterface> => {
   const response = await backendRequest(`user/${userId}`, "GET");
   if (response.status === 200) {
     return await response.json();
