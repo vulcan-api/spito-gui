@@ -24,7 +24,19 @@ function App(): JSX.Element | null {
           element: <h1>My configs</h1>
         },
         {
-          path: "/profile/:id",
+          path: "/profile/:userId",
+          element: <Profile />
+        },
+        {
+          path: "/profile/:userId/rules",
+          element: <Profile />
+        },
+        {
+          path: "/profile/:userId/rulesets",
+          element: <Profile />
+        },
+        {
+          path: "/profile/:userId/configs",
           element: <Profile />
         }
       ]
@@ -37,8 +49,8 @@ function App(): JSX.Element | null {
 
   return (
     <>
-      <Toaster />
       <AnimatePresence mode="wait" initial={false}>
+        <Toaster />
         {cloneElement(element, { key: location.pathname })}
       </AnimatePresence>
     </>

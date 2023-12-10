@@ -1,4 +1,3 @@
-import { BACKEND_ORIGIN } from "@renderer/lib/constants";
 import { getUserAvatar } from "@renderer/lib/user";
 import { useState, useCallback, useEffect } from "react";
 import Avatar from "react-avatar";
@@ -16,8 +15,10 @@ export default function AvatarComponent(props: {
 
   const getAvatarUrl = useCallback(async (): Promise<void> => {
     const avatar = await getUserAvatar(props.userId);
-    const url = URL.createObjectURL(avatar);
-    setAvatarUrl(url);
+    if (avatar) {
+      const url = URL.createObjectURL(avatar);
+      setAvatarUrl(url);
+    }
     setIsLoading(false);
   }, [props.userId]);
 
@@ -25,7 +26,7 @@ export default function AvatarComponent(props: {
     if (props.size === "small") {
       setAvatarSize(32);
     } else {
-      setAvatarSize(192);
+      setAvatarSize(288);
     }
   }
 
@@ -43,7 +44,7 @@ export default function AvatarComponent(props: {
           height={avatarSize}
           ariaLabel="blocks-loading"
           wrapperStyle={{}}
-          wrapperClass="blocks-wrapper"
+          wrapperClass="rounded-full"
           colors={["#a7f3d0", "#2dd4bf", "#ADB5BD", "#F8F9FA", "#10b981"]}
         />
       ) : avatarUrl ? (

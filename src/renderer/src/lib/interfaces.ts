@@ -31,12 +31,13 @@ interface UserInfo {
 
 interface Settings {
   username: string;
-  email: string;
+  description?: string;
 }
 
-interface Profile {
+interface ProfileInterface {
   id: number;
   username: string;
+  description?: string;
 }
 
-export type { InputProps, ButtonProps, Profile, UserInfo, Settings };
+export type { InputProps, ButtonProps, ProfileInterface, UserInfo, Settings };

@@ -3,8 +3,6 @@
 @tailwind utilities;
 
 body {
-  display: flex;
-  flex-direction: column;
   font-family:
     Roboto,
     -apple-system,
@@ -17,6 +15,13 @@ body {
     "Open Sans",
     sans-serif;
   background-color: #242424;
+  min-height: 100vh;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 @font-face {
@@ -41,4 +46,13 @@ body {
 
 .quantico {
   font-family: "Quantico";
+}
+
+.privacy-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, #10b981 0%, #86efac 100%);
 }
