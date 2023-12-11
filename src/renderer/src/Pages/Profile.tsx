@@ -51,8 +51,8 @@ export default function Profile(): JSX.Element {
       }
       if (description === userData?.description && username === userData?.username) return;
       const toastId = toast.loading("Updating...");
-      const res = await updateSettings({ username, description });
-      if (res.status === 204) {
+      const status = await updateSettings({ username, description });
+      if (status) {
         toast.success("Settings saved!", {
           id: toastId
         });
@@ -67,7 +67,7 @@ export default function Profile(): JSX.Element {
 
   useEffect(() => {
     fetchData();
-    let site: string = window.location.pathname.split("/").pop() || "";
+    const site: string = window.location.pathname.split("/").pop() || "";
     if (isNaN(+site)) {
       setSite(site as "main" | "rules" | "rulesets" | "configs");
     } else {

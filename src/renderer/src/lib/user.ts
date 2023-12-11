@@ -21,15 +21,9 @@ export const getSettings = async (): Promise<Settings | null> => {
   return null;
 };
 
-export const updateSettings = async (
-  data: Settings
-): Promise<{ status: number; data: Settings }> => {
-  const response = await backendRequest("user/settings", "PUT", data);
-  const responseData = await response.json();
-  return {
-    status: response.status,
-    data: responseData
-  };
+export const updateSettings = async (data: Settings): Promise<boolean> => {
+  const response = await backendRequest("user/settings", "PATCH", data);
+  return response.ok;
 };
 
 export const getUserProfile = async (userId: number): Promise<ProfileInterface> => {
