@@ -51,11 +51,15 @@ export default function Profile(): JSX.Element {
       }
       if (description === userData?.description && username === userData?.username) return;
       const toastId = toast.loading("Updating...");
-      const status = await updateSettings({ username, description });
+      const status = await updateSettings({
+        username,
+        description
+      });
       if (status) {
         toast.success("Settings saved!", {
           id: toastId
         });
+        fetchData();
         setIsUserChangingSettings(false);
       } else {
         toast.error("Failed to save settings!", {

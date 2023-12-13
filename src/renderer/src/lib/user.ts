@@ -22,7 +22,7 @@ export const getSettings = async (): Promise<Settings | null> => {
 };
 
 export const updateSettings = async (data: Settings): Promise<boolean> => {
-  const response = await backendRequest("user/settings", "PATCH", data);
+  const response = await backendRequest("user/settings", "PUT", data);
   return response.ok;
 };
 
