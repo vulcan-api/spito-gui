@@ -1,9 +1,9 @@
 import { ProfileInterface, Settings } from "./interfaces";
 import { backendRequest } from "./request";
 
-export const getUserAvatar = async (userId: number): Promise<Blob> => {
+export const getUserAvatar = async (userId: number): Promise<Blob | null> => {
   const res = await backendRequest(`user/settings/avatar/${userId}`, "GET");
-  if (!res.ok || res.status === 204) throw new Error();
+  if (!res.ok || res.status === 204) return null;
   return await res.blob();
 };
 

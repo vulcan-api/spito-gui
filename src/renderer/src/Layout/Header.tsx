@@ -18,8 +18,8 @@ export default function Header(): JSX.Element {
   const [user, setUser] = useAtom(userAtom);
 
   const menuLinkClass = (isActive: boolean): string => {
-    return `text-2xl roboto uppercase transition-all cursor-pointer text-center ${
-      isActive ? "text-emerald-500" : "text-gray-500"
+    return `text-2xl font-roboto uppercase transition-all cursor-pointer text-center ${
+      isActive ? "text-sky-400" : "text-gray-500"
     }`;
   };
 
@@ -55,8 +55,9 @@ export default function Header(): JSX.Element {
         )}
       </AnimatePresence>
       <header className="w-screen overflow-hidden py-4 px-8 flex items-center justify-between md:gap-16 gap-8">
-        <Link to="/" className="text-5xl uppercase text-emerald-500 tracking-widest roboto">
-          SPITO
+        <Link to="/" className="text-4xl uppercase tracking-widest font-roboto">
+          <span className="text-sky-500 mr-3">Spito</span>
+          <span className="text-sky-400">GUI</span>
         </Link>
         <div className="w-full flex items-center justify-between gap-8">
           <Searchbar />
@@ -79,7 +80,7 @@ export default function Header(): JSX.Element {
                   <p>{user.username}</p>
                 </NavLink>
                 <span
-                  className="flex items-center gap-2 text-2xl text-gray-500 roboto uppercase cursor-pointer hover:text-emerald-500 transition-all"
+                  className="flex items-center gap-2 text-2xl text-gray-500 font-roboto uppercase cursor-pointer hover:text-sky-500 transition-all"
                   onClick={logoutHandler}
                 >
                   <p>Logout</p>
@@ -93,31 +94,31 @@ export default function Header(): JSX.Element {
             )}
           </nav>
           <div
-            className="relative xl:hidden block h-6 w-6 cursor-pointer"
+            className="relative xl:hidden block h-6 w-6 cursor-pointer z-30"
             onClick={handleMenuStateChange}
           >
             <motion.div
               animate={isMenuOpen ? { rotate: -45, top: 8 } : { rotate: 0, top: 0 }}
               transition={{ duration: 0.3 }}
-              className={`w-6 h-1 bg-emerald-400 top-0 absolute rounded-lg z-10`}
+              className={`w-6 h-1 bg-sky-400 top-0 absolute rounded-lg z-10`}
             />
             <motion.div
               animate={isMenuOpen ? { opacity: 0 } : { opacity: 1 }}
               transition={{ duration: 0.3 }}
-              className={`w-6 h-1 bg-emerald-400 top-2 absolute rounded-lg z-10`}
+              className={`w-6 h-1 bg-sky-400 top-2 absolute rounded-lg z-10`}
             />
             <motion.div
               animate={isMenuOpen ? { rotate: 45, top: 8 } : { rotate: 0, top: 16 }}
               transition={{ duration: 0.3 }}
-              className={`w-6 h-1 bg-emerald-400 top-4 absolute rounded-lg z-10`}
+              className={`w-6 h-1 bg-sky-400 top-4 absolute rounded-lg z-10`}
             />
           </div>
           <div
-            className={`xl:hidden flex flex-col items-center gap-8 px-8 py-16 md:w-1/2 w-full h-full fixed bg-bgColor ${
+            className={`xl:hidden flex flex-col items-center gap-8 px-8 py-16 md:w-1/2 w-full h-full fixed bg-bgColor z-20 ${
               isMenuOpen ? "right-0 " : "-right-full"
-            } transition-all duration-500 top-0 border-l-2 md:border-emerald-500 border-transparent`}
+            } transition-all duration-500 top-0 border-l-2 md:border-sky-500 border-transparent`}
           >
-            <h2 className="text-4xl text-gray-100 roboto">Menu</h2>
+            <h2 className="text-4xl text-gray-100 font-roboto">Menu</h2>
             <nav className="flex flex-col gap-8 items-center">
               <NavLink to="/" className={({ isActive }) => menuLinkClass(isActive)}>
                 Main page
@@ -140,7 +141,7 @@ export default function Header(): JSX.Element {
                     <p>{user.username}</p>
                   </NavLink>
                   <span
-                    className="flex items-center gap-2 text-2xl text-gray-500 roboto uppercase cursor-pointer hover:text-emerald-500 transition-all"
+                    className="flex items-center gap-2 text-2xl text-gray-500 font-roboto uppercase cursor-pointer hover:text-sky-500 transition-all"
                     onClick={logoutHandler}
                   >
                     <p>Logout</p>

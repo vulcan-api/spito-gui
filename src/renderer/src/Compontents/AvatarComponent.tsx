@@ -11,7 +11,7 @@ export default function AvatarComponent(props: {
 }): JSX.Element {
   const [avatarUrl, setAvatarUrl] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [avatarSize, setAvatarSize] = useState<number>(64);
+  const avatarSize = props.size === "small" ? 32 : 288;
 
   const getAvatarUrl = useCallback(async (): Promise<void> => {
     const avatar = await getUserAvatar(props.userId);
@@ -22,18 +22,9 @@ export default function AvatarComponent(props: {
     setIsLoading(false);
   }, [props.userId]);
 
-  function calculateAvatarSize(): void {
-    if (props.size === "small") {
-      setAvatarSize(32);
-    } else {
-      setAvatarSize(288);
-    }
-  }
-
   useEffect(() => {
     getAvatarUrl();
-    calculateAvatarSize();
-  }, [getAvatarUrl, calculateAvatarSize]);
+  }, [getAvatarUrl]);
 
   return (
     <>

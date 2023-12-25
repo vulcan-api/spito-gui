@@ -3,17 +3,19 @@ import { ProfileInterface } from "@renderer/lib/interfaces";
 import { getUserProfile, updateSettings } from "@renderer/lib/user";
 import { motion, useIsPresent } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { TbSettingsFilled } from "react-icons/tb/";
 import Input from "@renderer/Layout/Input";
 import Button from "@renderer/Layout/Button";
 import toast from "react-hot-toast";
 
+type site = "main" | "rules" | "rulesets" | "configs";
+
 export default function Profile(): JSX.Element {
   const { userId } = useParams<{ userId: string }>();
   const isPresent = useIsPresent();
   const [userData, setUserData] = useState<ProfileInterface>();
-  const [site, setSite] = useState<"main" | "rules" | "rulesets" | "configs">("main");
+  const [site, setSite] = useState<site>("main");
   const [isUserChangingSettings, setIsUserChangingSettings] = useState<boolean>(false);
   const usernameRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
@@ -25,18 +27,23 @@ export default function Profile(): JSX.Element {
     }
   }
 
-  const menuLinkClass = (isActive: boolean): string => {
-    return `roboto transition-all text-center px-8 py-2 uppercase w-full hover:bg-bgLight ${
-      isActive ? "bg-bgLight text-gray-200" : "bg-bgClr text-gray-400"
-    }`;
-  };
-
   function handleReactingWithSettings(): void {
     if (!isUserChangingSettings) {
-      setIsUserChangingSettings(!isUserChangingSettings);
+      setIsUserChangingSettings(true);
     } else {
-      if (confirm("Do you want to close settings? Unsaved changes will be lost.")) {
-        setIsUserChangingSettings(false);
+      if (usernameRef.current && descriptionRef.current) {
+        if (
+          usernameRef.current.value === userData?.username &&
+          descriptionRef.current.value === userData?.description
+        ) {
+          setIsUserChangingSettings(false);
+        } else if (
+          confirm(
+            "You have unsaved changes! Do you want to close settings? Unsaved changes will be lost."
+          )
+        ) {
+          setIsUserChangingSettings(false);
+        }
       }
     }
   }
@@ -49,7 +56,10 @@ export default function Profile(): JSX.Element {
         toast.error("Username can't be empty!");
         return;
       }
-      if (description === userData?.description && username === userData?.username) return;
+      if (description === userData?.description && username === userData?.username) {
+        setIsUserChangingSettings(false);
+        return;
+      }
       const toastId = toast.loading("Updating...");
       const status = await updateSettings({
         username,
@@ -82,10 +92,10 @@ export default function Profile(): JSX.Element {
   return (
     <div className="flex-1 w-4/5 mx-auto flex flex-col px-16 overflow-y-auto my-4">
       <div className="w-full pb-8 flex gap-8 py-8">
-        <div className="h-fit w-fit flex flex-col gap-4 bg-bgLightTransparent border-2 border-bgLight rounded-xl shadow-main px-8 py-8 duration-300 relative">
+        <div className="h-fit w-1/4 flex flex-col gap-4 border-2 border-bgLight drop-shadow-main rounded-xl px-8 py-8 duration-300 relative bg-bgColor">
           <TbSettingsFilled
             onClick={handleReactingWithSettings}
-            className="absolute right-4 top-4 text-2xl text-gray-400 transition-all hover:text-emerald-500 hover:rotate-45 cursor-pointer"
+            className="absolute right-4 top-4 text-2xl text-gray-400 transition-all hover:text-sky-500 hover:rotate-45 cursor-pointer duration-300"
           />
           <AvatarComponent username={userData?.username || ""} size="big" userId={Number(userId)} />
           <div className="flex flex-col gap-4 w-full">
@@ -95,7 +105,7 @@ export default function Profile(): JSX.Element {
                 <textarea
                   placeholder="Description"
                   defaultValue={userData?.description}
-                  className="roboto max-h-72 block p-2 w-full text-lg text-white bg-transparent rounded-lg border-2  appearance-none focus:outline-none focus:ring-0 peer transition-colors placeholder-shown:border-gray-500 focus:border-emerald-500 border-emerald-500"
+                  className="font-roboto max-h-72 block p-2 w-full text-lg text-white bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-gray-500"
                   ref={descriptionRef}
                 />
                 <Button theme="default" className="!w-full" onClick={handleSaveSettings}>
@@ -104,41 +114,48 @@ export default function Profile(): JSX.Element {
               </>
             ) : (
               <>
-                <h1 className="text-gray-100 text-4xl roboto">{userData?.username}</h1>
-                <p className="text-gray-400 text-lg roboto line-clamp-4">
+                <h1 className="text-gray-100 text-4xl font-roboto">{userData?.username}</h1>
+                <p className="text-gray-400 text-lg font-roboto line-clamp-4">
                   {userData?.description || "This user has no description yet!"}
                 </p>
               </>
             )}
           </div>
         </div>
-        <div className="flex-1 gap-8 h-fit bg-bgLightTransparent rounded-xl shadow-main border-2 border-bgLight duration-300 text-2xl text-gray-100 roboto capitalize">
+        <div className="flex-1 gap-8 h-fit rounded-xl drop-shadow-main border-2 border-bgLight duration-300 text-2xl text-gray-100 font-roboto capitalize bg-bgColor">
           <div className="flex items-center border-b-2 justify-between border-bgLight">
-            <NavLink
-              to={`/profile/${userId}`}
-              end
-              className={({ isActive }) => menuLinkClass(isActive)}
+            <p
+              onClick={() => setSite("main")}
+              className={`font-roboto transition-all text-center px-8 py-2 uppercase w-full hover:bg-bgLight ${
+                site === "main" ? "text-gray-300 bg-bgLight" : "text-gray-400 cursor-pointer"
+              }`}
             >
               {userData?.username}
-            </NavLink>
-            <NavLink
-              to={`/profile/${userId}/rules`}
-              className={({ isActive }) => menuLinkClass(isActive)}
+            </p>
+            <p
+              onClick={() => setSite("rules")}
+              className={`font-roboto transition-all text-center px-8 py-2 uppercase w-full hover:bg-bgLight ${
+                site === "rules" ? "text-gray-300 bg-bgLight" : "text-gray-400 cursor-pointer"
+              }`}
             >
               Rules
-            </NavLink>
-            <NavLink
-              to={`/profile/${userId}/rulesets`}
-              className={({ isActive }) => menuLinkClass(isActive)}
+            </p>
+            <p
+              onClick={() => setSite("rulesets")}
+              className={`font-roboto transition-all text-center px-8 py-2 uppercase w-full hover:bg-bgLight ${
+                site === "rulesets" ? "text-gray-300 bg-bgLight" : "text-gray-400 cursor-pointer"
+              }`}
             >
               Rulesets
-            </NavLink>
-            <NavLink
-              to={`/profile/${userId}/configs`}
-              className={({ isActive }) => menuLinkClass(isActive)}
+            </p>
+            <p
+              onClick={() => setSite("configs")}
+              className={`font-roboto transition-all text-center px-8 py-2 uppercase w-full hover:bg-bgLight ${
+                site === "configs" ? "text-gray-300 bg-bgLight" : "text-gray-400 cursor-pointer"
+              }`}
             >
               Configs
-            </NavLink>
+            </p>
           </div>
           <div className="flex flex-col gap-8 p-4 text-gray-400">
             <p>{site}</p>
