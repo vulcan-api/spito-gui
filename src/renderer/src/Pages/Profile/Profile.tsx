@@ -50,7 +50,8 @@ export default function Profile(): JSX.Element {
       if (usernameRef.current && descriptionRef.current) {
         if (
           usernameRef.current.value === userData?.username &&
-          descriptionRef.current.value === userData?.description && !avatarBlob
+          descriptionRef.current.value === userData?.description &&
+          !avatarBlob
         ) {
           setIsUserChangingSettings(false);
         } else if (
@@ -73,7 +74,7 @@ export default function Profile(): JSX.Element {
         toast.error("Username can't be empty!");
         return;
       }
-      if (description === userData?.description && username === userData?.username) {
+      if (description === userData?.description && username === userData?.username && !avatarBlob) {
         setIsUserChangingSettings(false);
         return;
       }
@@ -82,10 +83,10 @@ export default function Profile(): JSX.Element {
         username,
         description
       });
-      let tempFormData = new FormData();
-      tempFormData.append("avatar", avatarBlob || "");
-      const isAvatarStatusOk = avatarBlob ? await updateAvatar(tempFormData) : true;
-      if (isSettingsStatusOk && isAvatarStatusOk) {
+      if (avatarBlob) {
+        handleAvatarChange();
+      }
+      if (isSettingsStatusOk) {
         toast.success("Settings saved!", {
           id: toastId
         });
@@ -96,6 +97,21 @@ export default function Profile(): JSX.Element {
           id: toastId
         });
       }
+    }
+  }
+
+  async function handleAvatarChange(): Promise<void> {
+    if (!avatarBlob) return;
+    const avatarFile = new File([avatarBlob], "avatar.png", {
+      type: "image/png"
+    });
+    const avatarFormData = new FormData();
+    avatarFormData.append("avatar", avatarFile);
+    const avatarStatusOk = await updateAvatar(avatarFormData);
+    if (avatarStatusOk) {
+      toast.success("Avatar updated succesfully");
+    } else {
+      toast.error("Failed to save avatar");
     }
   }
 
@@ -182,12 +198,16 @@ export default function Profile(): JSX.Element {
             />
           )}
           <div className="relative">
-            {avatarBlob ? <img src={URL.createObjectURL(avatarBlob)} className="rounded-full peer w-72 h-72"/> : <AvatarComponent
-              username={userData?.username || ""}
-              size="big"
-              className="peer"
-              userId={Number(userId)}
-            />}
+            {avatarBlob ? (
+              <img src={URL.createObjectURL(avatarBlob)} className="rounded-full peer w-72 h-72" />
+            ) : (
+              <AvatarComponent
+                username={userData?.username || ""}
+                size="big"
+                className="peer"
+                userId={Number(userId)}
+              />
+            )}
             <input
               type="file"
               name="avatarImage"

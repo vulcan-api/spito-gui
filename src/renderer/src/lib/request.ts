@@ -18,11 +18,10 @@ export const backendRequest = (path: string, method: string, body?: unknown): Pr
 export const backendRequestWithFiles = (
   path: string,
   method: string,
-  body?: FormData
+  body: FormData
 ): Promise<Response> => {
   const token = localStorage.getItem("token");
   const headers = new Headers();
-  headers.append("Content-Type", "application/json");
   if (token) {
     headers.append("Authorization", `Bearer ${token}`);
   }
@@ -30,6 +29,6 @@ export const backendRequestWithFiles = (
     method: method,
     headers: headers,
     redirect: "follow",
-    body: JSON.stringify(body)
+    body: body
   });
 };

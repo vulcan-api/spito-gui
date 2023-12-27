@@ -1,5 +1,5 @@
 import { ProfileInterface, Settings } from "./interfaces";
-import { backendRequest } from "./request";
+import { backendRequest, backendRequestWithFiles } from "./request";
 
 export const getUserAvatar = async (userId: number): Promise<Blob | null> => {
   const res = await backendRequest(`user/settings/avatar/${userId}`, "GET");
@@ -21,9 +21,9 @@ export const updateSettings = async (data: Settings): Promise<boolean> => {
 };
 
 export const updateAvatar = async (data: FormData): Promise<boolean> => {
-  const response = await backendRequest("user/settings/avatar", "PUT", data);
+  const response = await backendRequestWithFiles("user/settings/avatar", "PUT", data);
   return response.ok;
-}
+};
 
 export const getUserProfile = async (userId: number): Promise<ProfileInterface> => {
   const response = await backendRequest(`user/${userId}`, "GET");

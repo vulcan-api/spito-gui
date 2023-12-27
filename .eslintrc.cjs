@@ -1,4 +1,7 @@
 module.exports = {
+  rules: {
+    "no-console": ["error", { "allow": ["warn", "error"] }]
+  },
   extends: [
     "eslint:recommended",
     "plugin:react/recommended",
