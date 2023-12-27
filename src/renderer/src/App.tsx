@@ -3,7 +3,7 @@ import { AnimatePresence } from "framer-motion";
 import { cloneElement } from "react";
 import Header from "./Layout/Header";
 import Toaster from "./Layout/Toaster";
-import Profile from "./Pages/Profile";
+import Profile from "./Pages/Profile/Profile";
 
 function App(): JSX.Element | null {
   const element = useRoutes([
@@ -27,18 +27,6 @@ function App(): JSX.Element | null {
           path: "/profile/:userId",
           element: <Profile />
         },
-        {
-          path: "/profile/:userId/rules",
-          element: <Profile />
-        },
-        {
-          path: "/profile/:userId/rulesets",
-          element: <Profile />
-        },
-        {
-          path: "/profile/:userId/configs",
-          element: <Profile />
-        }
       ]
     }
   ]);

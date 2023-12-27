@@ -29,6 +29,11 @@ body {
   src: url("../../lib/fonts/RobotoSlab-Regular.ttf");
 }
 
+@font-face {
+  font-family: "Poppins";
+  src: url("../../lib/fonts/Poppins-Regular.ttf");
+}
+
 * {
   padding: 0;
   margin: 0;

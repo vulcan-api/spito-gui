@@ -27,10 +27,10 @@ export default function Searchbar(): JSX.Element {
 
   return (
     <div
-      className={`flex items-center justify-between relative xl:w-1/4 lg:w-1/3 md:w-1/2 w-full text-gray-100 border-b-2 after:absolute after:content-[''] after:w-full after:h-[2px] after:bottom-0 after:left-0 ${
+      className={`flex items-center justify-between relative xl:w-1/4 lg:w-1/3 w-full border-b-[1px] after:absolute after:content-[''] after:w-full after:h-[1px] after:bottom-0 after:left-0 ${
         isUserSearching
           ? "after:scale-x-100 border-transparent"
-          : "after:scale-x-0 border-[#4d4d4d]"
+          : "after:scale-x-0 border-borderGray"
       } transition-all duration-500 after:duration-500 after:transition-all after:bg-sky-400 after:origin-left`}
       ref={wrapperRef}
     >
@@ -38,13 +38,17 @@ export default function Searchbar(): JSX.Element {
         type="text"
         placeholder="Search"
         ref={searchInputRef}
-        className="text-xl p-2 appearance-none bg-transparent w-full font-roboto active:outline-none focus:outline-none text-sky-100"
+        className={`text-xl p-2 appearance-none bg-transparent w-full font-poppins active:outline-none focus:outline-none transition-colors duration-300 placeholder:transition-colors placeholder:duration-300 ${
+          isUserSearching
+            ? "text-sky-200 placeholder:text-sky-200"
+            : "text-borderGray placeholder:text-borderGray"
+        }`}
         onFocus={() => setIsUserSearching(true)}
         onChange={fetchResults}
       />
       <BsSearch
         className={`text-2xl ${
-          isUserSearching ? "text-sky-400" : "text-[#4d4d4d]"
+          isUserSearching ? "text-sky-400" : "text-borderGray"
         } transition-all duration-300 cursor-pointer`}
       />
     </div>

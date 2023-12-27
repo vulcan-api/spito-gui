@@ -39,7 +39,10 @@ export default function Header(): JSX.Element {
   function logoutHandler(): void {
     logout();
     toast.success("Successfully logged out");
-    setUser(null);
+    setUser({
+      id: 0,
+      username: ""
+    });
     setIsMenuOpen(false);
   }
 
@@ -54,10 +57,10 @@ export default function Header(): JSX.Element {
           <AuthModal closeModal={handleLoginModalClose} updateUser={updateUser} />
         )}
       </AnimatePresence>
-      <header className="w-screen overflow-hidden py-4 px-8 flex items-center justify-between md:gap-16 gap-8">
-        <Link to="/" className="text-4xl uppercase tracking-widest font-roboto">
-          <span className="text-sky-500 mr-3">Spito</span>
-          <span className="text-sky-400">GUI</span>
+      <header className="w-screen overflow-hidden py-4 px-8 flex items-center justify-between lg:gap-16 gap-8">
+        <Link to="/" className="text-4xl uppercase tracking-widest font-roboto text-sky-400">
+          <span className="mr-3">Spito</span>
+          <span>GUI</span>
         </Link>
         <div className="w-full flex items-center justify-between gap-8">
           <Searchbar />
@@ -113,6 +116,17 @@ export default function Header(): JSX.Element {
               className={`w-6 h-1 bg-sky-400 top-4 absolute rounded-lg z-10`}
             />
           </div>
+          <AnimatePresence>
+            {isMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="absolute top-0 left-0 w-full h-full z-10 backdrop-blur-sm supports-backdrop-blur:bg-black/60"
+                onClick={handleMenuStateChange}
+              />
+            )}
+          </AnimatePresence>
           <div
             className={`xl:hidden flex flex-col items-center gap-8 px-8 py-16 md:w-1/2 w-full h-full fixed bg-bgColor z-20 ${
               isMenuOpen ? "right-0 " : "-right-full"

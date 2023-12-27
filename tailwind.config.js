@@ -5,13 +5,15 @@ module.exports = {
     extend: {
       colors: {
         bgColor: "#242424",
-        bgLight: "#383838",
+        bgLight: "#292929",
+        borderGray: "#4d4d4d"
       },
       dropShadow: {
         main: "0 2px 0 #39393980"
       },
       fontFamily: {
-        roboto: ["Roboto Slab", "sans-serif"]
+        roboto: ["Roboto Slab", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"]
       }
     }
   },

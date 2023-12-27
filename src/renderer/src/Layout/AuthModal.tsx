@@ -73,13 +73,16 @@ export default function AuthModal({
     }
   };
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <div
       className="flex items-center justify-center absolute left-0 top-0 w-screen h-screen z-40"
     >
-      <div className="absolute w-screen h-screen bg-black opacity-50" onClick={closeModal} />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="absolute w-screen h-screen backdrop-blur-sm supports-backdrop-blur:bg-black/60"
+        onClick={closeModal}
+      />
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -139,6 +142,6 @@ export default function AuthModal({
           </motion.div>
         )}
       </motion.div>
-    </motion.div>
+    </div>
   );
 }

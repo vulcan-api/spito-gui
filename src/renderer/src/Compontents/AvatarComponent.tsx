@@ -50,7 +50,7 @@ export default function AvatarComponent(props: {
           alt="User's avatar"
         />
       ) : (
-        <Avatar name={props.username} size={String(avatarSize)} round={true} />
+        <Avatar name={props.username} size={String(avatarSize)} round={true} className={props.className}/>
       )}
     </>
   );
