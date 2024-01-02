@@ -15,6 +15,7 @@ import Rules from "./Pages/Rules";
 import Rulesets from "./Pages/Rulesets";
 import Configs from "./Pages/Configs";
 import AvatarEditModal from "./Components/Modals/AvatarEditModal";
+import AddContentModal from "./Components/Modals/AddContentModal";
 
 type site = "Main" | "Rules" | "Rulesets" | "Configs";
 
@@ -26,15 +27,21 @@ export default function Profile(): JSX.Element {
   const [isUserChangingAvatar, setIsUserChangingAvatar] = useState<boolean>(false);
   const [avatarUrl, setAvatarUrl] = useState<string>("");
   const [avatarBlob, setAvatarBlob] = useState<Blob>();
+  const loggedUserData = useAtomValue(userAtom);
 
   const { userId } = useParams<{ userId: string }>();
   const isPresent = useIsPresent();
-  const loggedUserData = useAtomValue(userAtom);
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const newAvatarRef = useRef<any>(null);
   const avatarInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!loggedUserData.id) {
+      setIsUserChangingSettings(false);
+    }
+  }, [loggedUserData]);
 
   async function fetchData(): Promise<void> {
     const data = await getUserProfile(Number(userId));
@@ -181,6 +188,7 @@ export default function Profile(): JSX.Element {
 
   return (
     <div className="flex-1 w-4/5 mx-auto flex flex-col px-16 overflow-y-auto my-4">
+      {isUserAddingContent && <AddContentModal closeModal={handleAddingContent} />}
       {isUserChangingAvatar && (
         <AvatarEditModal
           closeModal={handleUserChaningAvatar}
@@ -229,11 +237,16 @@ export default function Profile(): JSX.Element {
           <div className="flex flex-col gap-4 w-full">
             {isUserChangingSettings ? (
               <>
-                <Input placeholder="Username" value={userData?.username} ref={usernameRef} />
+                <Input
+                  placeholder="Username"
+                  value={userData?.username}
+                  ref={usernameRef}
+                  max={16}
+                />
                 <textarea
                   placeholder="Description"
                   defaultValue={userData?.description}
-                  className="font-poppins max-h-72 block p-2 w-full text-lg text-white bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-gray-500"
+                  className="font-poppins max-h-72 block p-2 w-full text-lg duration-300 text-white bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-gray-500"
                   ref={descriptionRef}
                 />
                 <Button theme="default" className="!w-full" onClick={handleSaveSettings}>
@@ -251,7 +264,7 @@ export default function Profile(): JSX.Element {
           </div>
         </div>
         <div className="h-full w-[2px] bg-bgLight rounded-full" />
-        <div className="flex-1 gap-8 h-fit duration-300 text-2xl text-gray-100 font-roboto bg-bgColor">
+        <div className="flex-1 gap-8 h-fit duration-300 text-xl text-gray-100 font-roboto bg-bgColor">
           <div className="flex items-center justify-between relative">
             <p onClick={() => setSite("Main")} className={tabClasses("Main")}>
               {userData?.username}
@@ -265,12 +278,14 @@ export default function Profile(): JSX.Element {
             <p onClick={() => setSite("Configs")} className={tabClasses("Configs")}>
               CONFIGS
             </p>
-            <p
-              onClick={handleAddingContent}
-              className="absolute w-8 h-8 transition-colors duration-300 text-white bg-sky-500 hover:bg-sky-700 -right-10 rounded-full flex items-center justify-center cursor-pointer"
-            >
-              <TbPlus />
-            </p>
+            {loggedUserData?.id === +(userId || 0) && (
+              <p
+                onClick={handleAddingContent}
+                className="absolute w-8 h-8 transition-colors duration-300 text-white bg-sky-500 hover:bg-sky-700 -right-10 rounded-full flex items-center justify-center cursor-pointer"
+              >
+                <TbPlus />
+              </p>
+            )}
           </div>
           <div className="flex flex-col gap-8 p-4 text-gray-400">{displayCorrectSite()}</div>
         </div>
@@ -287,14 +302,6 @@ export default function Profile(): JSX.Element {
 }
 
 /*
-  Rulesets
----------------------
-  Nazwa
-  Opis
-  Adres kaj to jest
-  Tagi
----------------------
-
   Enviroment
 ---------------------
   Nazwa

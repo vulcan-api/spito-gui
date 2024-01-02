@@ -9,7 +9,8 @@ export default function Button({
   isLink,
   to,
   disabled,
-  width
+  width,
+  type,
 }: ButtonProps): JSX.Element {
   const link = (
     <Link
@@ -28,12 +29,12 @@ export default function Button({
     <button
       onClick={onClick}
       disabled={disabled}
+      type={type || "button"}
       className={`${
         theme === "alt" ? "border-sky-500 text-sky-500" : "bg-sky-600 text-gray-200 border-sky-700"
       } flex gap-2 items-center active:scale-90 border-2 font-roboto text-2xl rounded-lg p-2 transition-all justify-center box-border ${className}  ${
         width || "sm:w-48 w-32"
       } ${disabled && "!bg-gray-500 !border-gray-500"}`}
-      type={"button"}
     >
       {children}
     </button>

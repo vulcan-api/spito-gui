@@ -51,9 +51,12 @@ export default function AvatarEditModal({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="2xl:w-1/4 xl:w-1/3 md:w-1/2 w-full bg-bgColor md:border-2 md:rounded-xl md:border-sky-500 text-gray-100 relative p-8 pt-20 flex flex-col items-center gap-8"
+        className="2xl:w-1/4 xl:w-1/3 md:w-1/2 w-full bg-bgColor md:border-2 md:rounded-xl md:border-borderGray text-gray-100 relative p-8 pt-20 flex flex-col items-center gap-8"
       >
-        <TbX onClick={closeModal} className="absolute left-4 top-4 text-3xl" />
+        <TbX
+          onClick={closeModal}
+          className="absolute left-4 top-4 text-3xl hover:text-sky-500 transition-colors cursor-pointer"
+        />
         <AvatarEditor
           image={avatarUrl}
           width={288}

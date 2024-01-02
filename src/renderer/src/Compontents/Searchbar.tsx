@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 
 export default function Searchbar(): JSX.Element {
@@ -7,10 +7,10 @@ export default function Searchbar(): JSX.Element {
   const wrapperRef = useRef<HTMLDivElement>(null);
   detectOnAbortingSearch(wrapperRef);
 
-  function detectOnAbortingSearch(ref: any) {
+  function detectOnAbortingSearch(ref: RefObject<HTMLDivElement>) {
     useEffect(() => {
       function handleClickOutside(event: Event) {
-        if (ref.current && !ref.current.contains(event.target)) {
+        if (ref.current && !ref.current.contains(event.target as Node)) {
           setIsUserSearching(false);
         }
       }
