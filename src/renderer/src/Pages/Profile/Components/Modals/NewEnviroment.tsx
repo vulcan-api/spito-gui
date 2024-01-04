@@ -1,52 +1,22 @@
 import Button from "@renderer/Layout/Button";
-import Input from "@renderer/Layout/Input";
-import { useState } from "react";
-import TagInput from "../TagInput";
-import { tagInterface } from "@renderer/lib/interfaces";
 import { AnimatePresence, motion } from "framer-motion";
-import toast from "react-hot-toast";
-import { createRuleset } from "@renderer/lib/user";
+import { useRef, useState } from "react";
+import TagInput from "../TagInput";
+import Input from "@renderer/Layout/Input";
+import { tagInterface } from "@renderer/lib/interfaces";
+import Checkbox from "@renderer/Layout/Checkbox";
 import { TbArrowLeft, TbArrowRight, TbDeviceFloppy } from "react-icons/tb";
 
-export default function NewRuleset({ closeModal }: { closeModal: () => void }): JSX.Element {
+export default function NewEnviroment(): JSX.Element {
   const [stage, setStage] = useState<number>(1);
+  const [enviromentName, setEnviromentName] = useState<string>("");
   const [tags, setTags] = useState<Array<tagInterface>>([]);
-  const [address, setAddress] = useState<string>("");
-  const [branch, setBranch] = useState<string>("main");
-  const [description, setDescription] = useState<string>();
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const [isPrivate, setIsPrivate] = useState<boolean>(false);
 
-  async function formSubmitHandler(): Promise<void> {
-    const urlRegex =
-      /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/;
-    if (!address || !urlRegex.test(address)) {
-      toast.error("Invalid repository address");
-      setStage(1);
-      return;
-    }
-    const tagNames: string[] = [];
-    tags.forEach((t: tagInterface): void => {
-      tagNames.push(t.name);
-    });
-    const toastId = toast.loading("Creating ruleset...");
-    const res = await createRuleset({
-      url: address,
-      branch,
-      description: description,
-      tags: tagNames
-    });
-    if (res) {
-      toast.success("Ruleset created successfully", { id: toastId });
-    } else {
-      toast.error("An error occured while creating ruleset", { id: toastId });
-    }
-    closeModal();
+  function formSubmitHandler() {
+    //TODO: Make submitting function when backend is ready
   }
-
-  // async function getBranches(): Promise<void> {
-  //   window.electron.ipcRenderer.invoke("getBranches", address).then((res) => {
-  //     console.log(res);
-  //   });
-  // }
 
   return (
     <>
@@ -87,22 +57,19 @@ export default function NewRuleset({ closeModal }: { closeModal: () => void }): 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className={`w-full h-48 flex flex-col p-4`}
+              className={`w-full h-48 flex flex-col justify-end gap-8 p-4`}
             >
               <Input
-                placeholder="Ruleset github repository address"
-                name="address"
-                onChange={(e) => setAddress(e.target.value)}
-                value={address}
+                placeholder="Enviroment name"
+                name="name"
+                onChange={(e) => setEnviromentName(e.target.value)}
+                value={enviromentName}
               />
-              <span className="my-4 text-center font-poppins text-borderGray">
-                Eg. https://github.com/avorty/spito-ruleset
-              </span>
-              <Input
-                placeholder="Branch"
-                name="branch"
-                onChange={(e) => setBranch(e.target.value)}
-                value={branch}
+              <Checkbox
+                id="publicity"
+                label="Make my enviroment private"
+                checked={isPrivate}
+                onChange={() => setIsPrivate((prev) => !prev)}
               />
             </motion.div>
           )}
@@ -118,8 +85,7 @@ export default function NewRuleset({ closeModal }: { closeModal: () => void }): 
                 placeholder="Description (optional)"
                 className={`font-poppins h-44 resize-none block p-2 w-full text-lg text-white bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-gray-500 placeholder:text-gray-500 duration-300`}
                 name="description"
-                defaultValue={description}
-                onChange={(e) => setDescription(e.currentTarget.value)}
+                ref={descriptionRef}
               />
             </motion.div>
           )}

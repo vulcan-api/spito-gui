@@ -13,11 +13,11 @@ import { userAtom } from "@renderer/lib/atoms";
 import Main from "./Pages/Main";
 import Rules from "./Pages/Rules";
 import Rulesets from "./Pages/Rulesets";
-import Configs from "./Pages/Configs";
+import Enviroments from "./Pages/Enviroments";
 import AvatarEditModal from "./Components/Modals/AvatarEditModal";
 import AddContentModal from "./Components/Modals/AddContentModal";
 
-type site = "Main" | "Rules" | "Rulesets" | "Configs";
+type site = "Main" | "Rules" | "Rulesets" | "Enviroments";
 
 export default function Profile(): JSX.Element {
   const [userData, setUserData] = useState<ProfileInterface>();
@@ -157,8 +157,8 @@ export default function Profile(): JSX.Element {
         return <Rules />;
       case "Rulesets":
         return <Rulesets />;
-      case "Configs":
-        return <Configs />;
+      case "Enviroments":
+        return <Enviroments />;
     }
   }
 
@@ -275,8 +275,8 @@ export default function Profile(): JSX.Element {
             <p onClick={() => setSite("Rulesets")} className={tabClasses("Rulesets")}>
               RULESETS
             </p>
-            <p onClick={() => setSite("Configs")} className={tabClasses("Configs")}>
-              CONFIGS
+            <p onClick={() => setSite("Enviroments")} className={tabClasses("Enviroments")}>
+              ENVIROMENTS
             </p>
             {loggedUserData?.id === +(userId || 0) && (
               <p
@@ -300,15 +300,3 @@ export default function Profile(): JSX.Element {
     </div>
   );
 }
-
-/*
-  Enviroment
----------------------
-  Nazwa
-  Opis
-  Lista zasad
-  Prywatność
-  Zdjęcie
-  Tagi
----------------------
-*/
