@@ -4,18 +4,26 @@ import { getUserProfile, updateAvatar, updateSettings } from "@renderer/lib/user
 import { motion, useIsPresent } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { TbEdit, TbPlus, TbSettingsFilled } from "react-icons/tb/";
+import {
+  TbBook,
+  TbBriefcase,
+  TbEdit,
+  TbFile,
+  TbFolder,
+  TbPlus,
+  TbSettingsFilled
+} from "react-icons/tb/";
 import Input from "@renderer/Layout/Input";
 import Button from "@renderer/Layout/Button";
 import toast from "react-hot-toast";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@renderer/lib/atoms";
-import Main from "./Pages/Main";
+import Overview from "./Pages/Overview";
 import Rules from "./Pages/Rules";
 import Rulesets from "./Pages/Rulesets";
 import Enviroments from "./Pages/Enviroments";
 import AvatarEditModal from "./Components/Modals/AvatarEditModal";
-import AddContentModal from "./Components/Modals/AddContentModal";
+import ManageContentModal from "./Components/Modals/ManageContentModal";
 
 type site = "Main" | "Rules" | "Rulesets" | "Enviroments";
 
@@ -29,7 +37,7 @@ export default function Profile(): JSX.Element {
   const [avatarBlob, setAvatarBlob] = useState<Blob>();
   const loggedUserData = useAtomValue(userAtom);
 
-  const { userId } = useParams<{ userId: string }>();
+  const { userId = 0 } = useParams<{ userId: string }>();
   const isPresent = useIsPresent();
 
   const usernameRef = useRef<HTMLInputElement>(null);
@@ -44,7 +52,7 @@ export default function Profile(): JSX.Element {
   }, [loggedUserData]);
 
   async function fetchData(): Promise<void> {
-    const data = await getUserProfile(Number(userId));
+    const data = await getUserProfile(+userId);
     if (data.username) {
       setUserData(data);
     }
@@ -142,7 +150,7 @@ export default function Profile(): JSX.Element {
   }
 
   function tabClasses(tab: site): string {
-    return `font-roboto transition-all text-center px-8 py-2 w-full border-b-2 ${
+    return `font-roboto transition-all px-8 py-2 w-full border-b-2 flex items-center gap-2 justify-center ${
       site === tab
         ? "text-gray-300 border-sky-400"
         : "text-gray-400 cursor-pointer hover:border-sky-700 border-bgLight hover:bg-bgLight"
@@ -152,7 +160,7 @@ export default function Profile(): JSX.Element {
   function displayCorrectSite(): JSX.Element {
     switch (site) {
       case "Main":
-        return <Main />;
+        return <Overview />;
       case "Rules":
         return <Rules />;
       case "Rulesets":
@@ -188,7 +196,7 @@ export default function Profile(): JSX.Element {
 
   return (
     <div className="flex-1 w-4/5 mx-auto flex flex-col px-16 overflow-y-auto my-4">
-      {isUserAddingContent && <AddContentModal closeModal={handleAddingContent} />}
+      {isUserAddingContent && <ManageContentModal closeModal={handleAddingContent} />}
       {isUserChangingAvatar && (
         <AvatarEditModal
           closeModal={handleUserChaningAvatar}
@@ -199,7 +207,7 @@ export default function Profile(): JSX.Element {
       )}
       <div className="w-full pb-8 flex gap-8 py-8">
         <div className="h-fit w-1/4 flex flex-col gap-4 px-8 py-8 duration-300 relative bg-bgColor">
-          {loggedUserData?.id === +(userId || 0) && (
+          {loggedUserData?.id === +userId && (
             <TbSettingsFilled
               onClick={handleReactingWithSettings}
               className="absolute right-4 top-4 text-2xl text-gray-400 transition-all hover:text-sky-500 hover:rotate-45 cursor-pointer duration-300"
@@ -213,7 +221,7 @@ export default function Profile(): JSX.Element {
                 username={userData?.username || ""}
                 size="big"
                 className="peer"
-                userId={Number(userId)}
+                userId={+userId}
               />
             )}
             <input
@@ -267,18 +275,22 @@ export default function Profile(): JSX.Element {
         <div className="flex-1 gap-8 h-fit duration-300 text-xl text-gray-100 font-roboto bg-bgColor">
           <div className="flex items-center justify-between relative">
             <p onClick={() => setSite("Main")} className={tabClasses("Main")}>
-              {userData?.username}
+              <TbBook />
+              Overview
             </p>
             <p onClick={() => setSite("Rules")} className={tabClasses("Rules")}>
+              <TbFile />
               RULES
             </p>
             <p onClick={() => setSite("Rulesets")} className={tabClasses("Rulesets")}>
+              <TbFolder />
               RULESETS
             </p>
             <p onClick={() => setSite("Enviroments")} className={tabClasses("Enviroments")}>
+              <TbBriefcase />
               ENVIROMENTS
             </p>
-            {loggedUserData?.id === +(userId || 0) && (
+            {loggedUserData?.id === +userId && (
               <p
                 onClick={handleAddingContent}
                 className="absolute w-8 h-8 transition-colors duration-300 text-white bg-sky-500 hover:bg-sky-700 -right-10 rounded-full flex items-center justify-center cursor-pointer"

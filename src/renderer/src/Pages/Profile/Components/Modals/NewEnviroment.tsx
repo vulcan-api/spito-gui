@@ -21,7 +21,10 @@ export default function NewEnviroment(): JSX.Element {
   return (
     <>
       <div className="flex items-center">
-        <div className="w-8 h-8 rounded-full bg-sky-600 flex items-center justify-center font-poppins">
+        <div
+          className="w-8 h-8 rounded-full bg-sky-600 flex items-center justify-center font-poppins cursor-pointer"
+          onClick={() => setStage(1)}
+        >
           1
         </div>
         <div
@@ -30,9 +33,10 @@ export default function NewEnviroment(): JSX.Element {
           } transition-colors duration-300 h-1`}
         />
         <div
-          className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 font-poppins ${
+          className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 font-poppins cursor-pointer ${
             stage >= 2 ? "bg-sky-600" : "bg-borderGray"
           }`}
+          onClick={() => setStage(2)}
         >
           2
         </div>
@@ -42,9 +46,10 @@ export default function NewEnviroment(): JSX.Element {
           } transition-colors duration-300 h-1`}
         />
         <div
-          className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 font-poppins ${
+          className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 font-poppins cursor-pointer ${
             stage === 3 ? "bg-sky-600" : "bg-borderGray"
           }`}
+          onClick={() => setStage(3)}
         >
           3
         </div>

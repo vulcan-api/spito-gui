@@ -3,8 +3,17 @@ import { useState } from "react";
 import { TbX } from "react-icons/tb";
 import NewRuleset from "./NewRuleset";
 import NewEnviroment from "./NewEnviroment";
+import EditRulesetModal from "./EditRulesetModal";
 
-export default function AddContentModal({ closeModal }: { closeModal: () => void }): JSX.Element {
+export default function ManageContentModal({
+  closeModal,
+  isUserEditing,
+  rulesetId = 0
+}: {
+  closeModal: () => void;
+  isUserEditing?: boolean;
+  rulesetId?: number;
+}): JSX.Element {
   const [isUserAddingRuleset, setIsUserAddingRuleset] = useState<boolean>(true);
 
   function closeModalHandler(): void {
@@ -41,18 +50,30 @@ export default function AddContentModal({ closeModal }: { closeModal: () => void
             onClick={closeModalHandler}
             className="absolute right-4 top-4 text-3xl cursor-pointer hover:text-sky-500 transition-colors"
           />
-          <div className="flex items-center relative w-full">
-            <p onClick={() => setIsUserAddingRuleset(true)} className={tabClasses(true)}>
-              Ruleset
-            </p>
-            <p onClick={() => setIsUserAddingRuleset(false)} className={tabClasses(false)}>
-              Enviroment
-            </p>
-          </div>
-          <p className="text-2xl font-roboto">
-            {isUserAddingRuleset ? "New Ruleset" : "New Enviroment"}
-          </p>
-          {isUserAddingRuleset ? <NewRuleset closeModal={closeModal} /> : <NewEnviroment />}
+          {isUserEditing ? (
+            <p className="text-2xl font-roboto">Edit Ruleset</p>
+          ) : (
+            <>
+              <div className="flex items-center relative w-full">
+                <p onClick={() => setIsUserAddingRuleset(true)} className={tabClasses(true)}>
+                  Ruleset
+                </p>
+                <p onClick={() => setIsUserAddingRuleset(false)} className={tabClasses(false)}>
+                  Enviroment
+                </p>
+              </div>
+              <p className="text-2xl font-roboto">
+                {isUserAddingRuleset ? "New Ruleset" : "New Enviroment"}
+              </p>
+            </>
+          )}
+          {isUserEditing ? (
+            <EditRulesetModal closeModal={closeModal} rulesetId={rulesetId} />
+          ) : isUserAddingRuleset ? (
+            <NewRuleset closeModal={closeModal} />
+          ) : (
+            <NewEnviroment />
+          )}
         </motion.div>
       </div>
     </AnimatePresence>

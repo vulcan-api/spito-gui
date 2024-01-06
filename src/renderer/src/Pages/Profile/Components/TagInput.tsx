@@ -1,14 +1,7 @@
+import Tag from "@renderer/Layout/Tag";
 import { TagInputProps, tagInterface } from "@renderer/lib/interfaces";
 import { getTagHints } from "@renderer/lib/user";
 import { RefObject, useEffect, useRef, useState } from "react";
-import { TbCircleX } from "react-icons/tb";
-
-const Tag = ({ tag, onDelete }: { tag: tagInterface; onDelete: () => void }): JSX.Element => (
-  <p className="text-lg rounded-full flex items-center gap-2 px-2 bg-sky-500 hover:bg-sky-600 transition-colors text-white selection:bg-transparent">
-    <span>{tag.name}</span>
-    <TbCircleX className="text-xl cursor-pointer" onClick={onDelete} />
-  </p>
-);
 
 export default function TagInput({
   id,

@@ -1,4 +1,4 @@
-import { ProfileInterface, Settings, tagInterface, newRuleset } from "./interfaces";
+import { ProfileInterface, Settings, tagInterface, newRuleset, ruleset } from "./interfaces";
 import { backendRequest, backendRequestWithFiles } from "./request";
 
 export const getUserAvatar = async (userId: number): Promise<Blob | null> => {
@@ -33,15 +33,36 @@ export const getUserProfile = async (userId: number): Promise<ProfileInterface> 
   throw new Error();
 };
 
-export const getTagHints = async (query: string): Promise<{tags: Array<tagInterface>}> => {
+export const getTagHints = async (query: string): Promise<{ tags: Array<tagInterface> }> => {
   const response = await backendRequest(`tag?search=${query}`, "GET");
+  if (response.status === 200) {
+    return await response.json();
+  }
+  throw new Error();
+};
+
+export const createRuleset = async (data: newRuleset): Promise<boolean> => {
+  const response = await backendRequest("ruleset", "POST", data);
+  return response.ok;
+};
+
+export const getRulesetById = async (rulesetId: number): Promise<ruleset> => {
+  const response = await backendRequest(`ruleset/${rulesetId}`, "GET");
   if (response.status === 200) {
     return await response.json();
   }
   throw new Error();
 }
 
-export const createRuleset = async (data: newRuleset): Promise<boolean> => {
-  const response = await backendRequest("ruleset", "POST", data);
+export const updateRuleset = async (data: newRuleset, rulesetId: number): Promise<boolean> => {
+  const response = await backendRequest(`ruleset/${rulesetId}`, "PUT", data);
   return response.ok;
-}
+};
+
+export const fetchUserRulests = async (userId: number): Promise<Array<ruleset>> => {
+  const response = await backendRequest(`ruleset/user/${userId}`, "GET");
+  if (response.status === 200) {
+    return await response.json();
+  }
+  throw new Error();
+};

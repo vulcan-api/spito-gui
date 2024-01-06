@@ -65,6 +65,17 @@ interface TagInputProps {
   setTags: React.Dispatch<React.SetStateAction<tagInterface[]>>;
 }
 
+interface ruleset {
+  id: number;
+  name: string;
+  branch: string;
+  description?: string;
+  url: string;
+  createdAt: Date;
+  updatedAt: Date;
+  tags: Array<tagInterface>;
+}
+
 export type {
   InputProps,
   ButtonProps,
@@ -73,5 +84,6 @@ export type {
   Settings,
   tagInterface,
   TagInputProps,
-  newRuleset
+  newRuleset,
+  ruleset
 };
