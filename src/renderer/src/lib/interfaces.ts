@@ -74,6 +74,17 @@ interface ruleset {
   createdAt: Date;
   updatedAt: Date;
   tags: Array<tagInterface>;
+  rules: Array<rule>;
+}
+
+interface rule {
+  id: number;
+  name: string;
+  path: string;
+  rulesetId: number;
+  createdAt: Date;
+  updatedAt: Date;
+  likes: number;
 }
 
 export type {
@@ -85,5 +96,6 @@ export type {
   tagInterface,
   TagInputProps,
   newRuleset,
-  ruleset
+  ruleset,
+  rule
 };

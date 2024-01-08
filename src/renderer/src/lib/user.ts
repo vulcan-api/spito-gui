@@ -1,4 +1,4 @@
-import { ProfileInterface, Settings, tagInterface, newRuleset, ruleset } from "./interfaces";
+import { ProfileInterface, Settings, tagInterface, newRuleset, ruleset, rule } from "./interfaces";
 import { backendRequest, backendRequestWithFiles } from "./request";
 
 export const getUserAvatar = async (userId: number): Promise<Blob | null> => {
@@ -61,6 +61,14 @@ export const updateRuleset = async (data: newRuleset, rulesetId: number): Promis
 
 export const fetchUserRulests = async (userId: number): Promise<Array<ruleset>> => {
   const response = await backendRequest(`ruleset/user/${userId}`, "GET");
+  if (response.status === 200) {
+    return await response.json();
+  }
+  throw new Error();
+};
+
+export const fetchUserRules = async (userId: number, skip: number, take: number): Promise<Array<rule>> => {
+  const response = await backendRequest(`rule/user/${userId}?skip=${skip}&take=${take}`, "GET");
   if (response.status === 200) {
     return await response.json();
   }

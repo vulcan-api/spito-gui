@@ -220,7 +220,7 @@ export default function Profile(): JSX.Element {
               <AvatarComponent
                 username={userData?.username || ""}
                 size="big"
-                className="peer"
+                className="peer shadow-darkMain"
                 userId={+userId}
               />
             )}
@@ -274,7 +274,7 @@ export default function Profile(): JSX.Element {
         <div className="h-full w-[2px] bg-bgLight rounded-full" />
         <div className="flex-1 gap-8 h-fit duration-300 text-xl text-gray-100 font-roboto bg-bgColor">
           <div className="flex items-center justify-between relative">
-            <p onClick={() => setSite("Main")} className={tabClasses("Main")}>
+            <p onClick={() => setSite("Main")} className={tabClasses("Main") + " rounded-tl-lg"}>
               <TbBook />
               Overview
             </p>
@@ -286,7 +286,10 @@ export default function Profile(): JSX.Element {
               <TbFolder />
               RULESETS
             </p>
-            <p onClick={() => setSite("Enviroments")} className={tabClasses("Enviroments")}>
+            <p
+              onClick={() => setSite("Enviroments")}
+              className={tabClasses("Enviroments") + " rounded-tr-lg"}
+            >
               <TbBriefcase />
               ENVIROMENTS
             </p>
