@@ -74,3 +74,8 @@ export const fetchUserRules = async (userId: number, skip: number, take: number)
   }
   throw new Error();
 };
+
+export const likeOrDislikeRule = async (ruleId: number): Promise<boolean> => {
+  const response = await backendRequest(`rule/like/${ruleId}`, "GET");
+  return response.ok;
+}

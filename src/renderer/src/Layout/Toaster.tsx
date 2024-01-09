@@ -3,7 +3,7 @@ import { Toaster } from "react-hot-toast";
 export default function ToasterComponent(): JSX.Element {
   return (
     <Toaster
-      position="top-center"
+      position="top-left"
       reverseOrder={false}
       gutter={8}
       containerClassName=""
@@ -32,7 +32,7 @@ export default function ToasterComponent(): JSX.Element {
         },
         loading: {
           style: {
-            border: "2px solid #ffffffaa",
+            border: "2px solid #ffffffaa"
           },
           duration: Infinity
         }

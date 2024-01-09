@@ -11,7 +11,7 @@ module.exports = {
       },
       dropShadow: {
         main: "0 2px 0 #39393980",
-        light: "0 0 6px #ffffff30",
+        light: "0 0 6px #ffffff30"
       },
       boxShadow: {
         main: "0 0 2px 2px #393939",
@@ -21,6 +21,9 @@ module.exports = {
       fontFamily: {
         roboto: ["Roboto Slab", "sans-serif"],
         poppins: ["Poppins", "sans-serif"]
+      },
+      animation: {
+        "ping-once": "ping .5s cubic-bezier(0, 0, 0.2, 1) forwards"
       }
     }
   },

@@ -3,11 +3,11 @@ import Tag from "@renderer/Layout/Tag";
 import { userAtom } from "@renderer/lib/atoms";
 import { ruleset } from "@renderer/lib/interfaces";
 import { formatDistanceToNow } from "date-fns";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useAtomValue } from "jotai";
-import { useState } from "react";
-import { TbEdit } from "react-icons/tb";
+import { TbEdit, TbLayoutBottombarExpand } from "react-icons/tb";
 import { useParams } from "react-router-dom";
+import Rule from "./Rule";
 
 export default function Ruleset({
   ruleset,
@@ -20,8 +20,6 @@ export default function Ruleset({
   setIsUserEditingRuleset: React.Dispatch<React.SetStateAction<boolean>>;
   index: number;
 }): JSX.Element {
-  const [isRulesetExpanded, setIsRulesetExpanded] = useState<boolean>(false);
-
   const loggedUserData = useAtomValue(userAtom);
   const { userId = 0 } = useParams<{ userId: string }>();
 
@@ -47,6 +45,17 @@ export default function Ruleset({
               ruleset.tags.slice(0, 5).map((tag, i) => {
                 return <Tag key={tag.id} tag={tag} animation={true} i={i} />;
               })}
+            {ruleset.tags.length > 5 && (
+              <span
+                className="text-gray-500 hover:text-gray-400 cursor-pointer"
+                title={ruleset.tags
+                  .slice(5)
+                  .map((tag) => tag.name)
+                  .join(", ")}
+              >
+                +{ruleset.tags.length - 5} more
+              </span>
+            )}
           </div>
         </div>
         <div className="flex flex-col items-end font-poppins text-gray-500">
@@ -71,7 +80,22 @@ export default function Ruleset({
               className="cursor-pointer text-borderGray hover:text-gray-500 transition-all"
             />
           )}
-          <DrawerComponent />
+          <DrawerComponent
+            openDrawer={
+              <TbLayoutBottombarExpand
+                title="Show rules"
+                className="text-borderGray hover:text-gray-500  transition-all cursor-pointer"
+              />
+            }
+            children={
+              <div className="w-2/3 mx-auto h-full grid grid-cols-3 gap-8 mt-8 text-gray-400">
+                <AnimatePresence>
+                  {ruleset.rules.length > 0 &&
+                    ruleset.rules.map((rule, i) => <Rule rule={rule} i={i} key={rule.id} />)}
+                </AnimatePresence>
+              </div>
+            }
+          />
         </p>
       </span>
     </motion.div>

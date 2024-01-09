@@ -85,6 +85,7 @@ interface rule {
   createdAt: Date;
   updatedAt: Date;
   likes: number;
+  isLiked?: boolean;
 }
 
 export type {

@@ -85,7 +85,7 @@ export default function AuthModal({
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 0 }}
-        className={`2xl:w-1/4 xl:w-1/3 md:w-1/2 w-full bg-bgColor md:border-2 md:rounded-xl md:border-bgLight shadow-darkMain text-gray-100 relative md:p-8 md:py-16 p-24 h-full ${
+        className={`2xl:w-1/4 xl:w-1/3 md:w-1/2 w-full bg-bgColor md:border-2 md:rounded-xl md:border-bgLight shadow-darkMain text-gray-100 relative md:p-8 md:py-16 md:pb-8 p-24 h-full ${
           isUserRegistering ? "md:h-2/3 min-h-[700px]" : "md:h-1/2 min-h-[500px]"
         }`}
       >
