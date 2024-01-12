@@ -4,6 +4,7 @@ import { cloneElement } from "react";
 import Header from "./Layout/Header";
 import Toaster from "./Layout/Toaster";
 import Profile from "./Pages/Profile/Profile";
+import RulesetPage from "./Pages/Ruleset/RulesetPage";
 
 function App(): JSX.Element | null {
   const element = useRoutes([
@@ -27,6 +28,10 @@ function App(): JSX.Element | null {
           path: "/profile/:userId",
           element: <Profile />
         },
+        {
+          path: "/ruleset/:rulesetId",
+          element: <RulesetPage />
+        }
       ]
     }
   ]);

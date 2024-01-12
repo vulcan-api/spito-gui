@@ -13,12 +13,14 @@ export default function Ruleset({
   ruleset,
   setEditedRulesetId,
   setIsUserEditingRuleset,
-  index
+  index,
+  drawer = true
 }: {
   ruleset: ruleset;
   setEditedRulesetId: React.Dispatch<React.SetStateAction<number>>;
   setIsUserEditingRuleset: React.Dispatch<React.SetStateAction<boolean>>;
   index: number;
+  drawer?: boolean;
 }): JSX.Element {
   const loggedUserData = useAtomValue(userAtom);
   const { userId = 0 } = useParams<{ userId: string }>();
@@ -35,7 +37,7 @@ export default function Ruleset({
           <a
             href={ruleset.url}
             target="_blank"
-            className="hover:underline text-2xl"
+            className="hover:underline text-2xl text-gray-400 font-roboto"
             title={ruleset.url}
           >
             {ruleset.name[0].toUpperCase() + ruleset.name.slice(1)}
@@ -80,22 +82,24 @@ export default function Ruleset({
               className="cursor-pointer text-borderGray hover:text-gray-500 transition-all"
             />
           )}
-          <DrawerComponent
-            openDrawer={
-              <TbLayoutBottombarExpand
-                title="Show rules"
-                className="text-borderGray hover:text-gray-500  transition-all cursor-pointer"
-              />
-            }
-            children={
-              <div className="w-2/3 mx-auto h-full grid grid-cols-3 gap-8 mt-8 text-gray-400">
-                <AnimatePresence>
-                  {ruleset.rules.length > 0 &&
-                    ruleset.rules.map((rule, i) => <Rule rule={rule} i={i} key={rule.id} />)}
-                </AnimatePresence>
-              </div>
-            }
-          />
+          {drawer && (
+            <DrawerComponent
+              openDrawer={
+                <TbLayoutBottombarExpand
+                  title="Show rules"
+                  className="text-borderGray hover:text-gray-500  transition-all cursor-pointer"
+                />
+              }
+              children={
+                <div className="w-2/3 mx-auto h-full grid grid-cols-3 gap-8 mt-8 text-gray-400">
+                  <AnimatePresence>
+                    {ruleset.rules.length > 0 &&
+                      ruleset.rules.map((rule, i) => <Rule rule={rule} i={i} key={rule.id} />)}
+                  </AnimatePresence>
+                </div>
+              }
+            />
+          )}
         </p>
       </span>
     </motion.div>

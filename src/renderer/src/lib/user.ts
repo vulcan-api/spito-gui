@@ -79,3 +79,11 @@ export const likeOrDislikeRule = async (ruleId: number): Promise<boolean> => {
   const response = await backendRequest(`rule/like/${ruleId}`, "GET");
   return response.ok;
 }
+
+export const fetchRuleset = async (rulesetId: number): Promise<ruleset> => {
+  const response = await backendRequest(`ruleset/${rulesetId}`, "GET");
+  if (response.status === 200) {
+    return await response.json();
+  }
+  throw new Error();
+};
