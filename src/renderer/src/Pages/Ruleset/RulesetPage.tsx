@@ -71,7 +71,7 @@ export default function RulesetPage(): JSX.Element {
               />
               <Input
                 placeholder="Search rules..."
-                className="w-1/3 my-10 shadow-darkMain"
+                className="!w-1/3 my-10 shadow-darkMain"
                 onChange={(e) => setSearchedQuery(e.target.value)}
               />
               {filteredRules.length > 0 ? (
