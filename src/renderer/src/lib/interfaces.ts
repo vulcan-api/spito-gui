@@ -44,7 +44,7 @@ interface ProfileInterface {
 interface tagInterface {
   id: number;
   name: string;
-  usageCount? : number;
+  usageCount?: number;
 }
 
 interface newRuleset {

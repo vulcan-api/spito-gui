@@ -10,7 +10,7 @@ export default function Button({
   to,
   disabled,
   width,
-  type,
+  type
 }: ButtonProps): JSX.Element {
   const link = (
     <Link

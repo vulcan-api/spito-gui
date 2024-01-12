@@ -52,7 +52,7 @@ export const getRulesetById = async (rulesetId: number): Promise<ruleset> => {
     return await response.json();
   }
   throw new Error();
-}
+};
 
 export const updateRuleset = async (data: newRuleset, rulesetId: number): Promise<boolean> => {
   const response = await backendRequest(`ruleset/${rulesetId}`, "PUT", data);
@@ -67,7 +67,11 @@ export const fetchUserRulests = async (userId: number): Promise<Array<ruleset>> 
   throw new Error();
 };
 
-export const fetchUserRules = async (userId: number, skip: number, take: number): Promise<Array<rule>> => {
+export const fetchUserRules = async (
+  userId: number,
+  skip: number,
+  take: number
+): Promise<Array<rule>> => {
   const response = await backendRequest(`rule/user/${userId}?skip=${skip}&take=${take}`, "GET");
   if (response.status === 200) {
     return await response.json();
@@ -78,7 +82,7 @@ export const fetchUserRules = async (userId: number, skip: number, take: number)
 export const likeOrDislikeRule = async (ruleId: number): Promise<boolean> => {
   const response = await backendRequest(`rule/like/${ruleId}`, "GET");
   return response.ok;
-}
+};
 
 export const fetchRuleset = async (rulesetId: number): Promise<ruleset> => {
   const response = await backendRequest(`ruleset/${rulesetId}`, "GET");

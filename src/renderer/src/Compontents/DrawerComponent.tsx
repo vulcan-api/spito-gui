@@ -1,7 +1,13 @@
 import { ReactElement } from "react";
 import { Drawer } from "vaul";
 
-export default function DrawerComponent({openDrawer, children}: {openDrawer: ReactElement, children: ReactElement}): JSX.Element {
+export default function DrawerComponent({
+  openDrawer,
+  children
+}: {
+  openDrawer: ReactElement;
+  children: ReactElement;
+}): JSX.Element {
   return (
     <Drawer.Root>
       <Drawer.Trigger asChild>{openDrawer}</Drawer.Trigger>

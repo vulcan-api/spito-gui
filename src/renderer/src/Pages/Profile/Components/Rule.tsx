@@ -35,7 +35,12 @@ export default function Rule({ rule, i }: { rule: rule; i: number }): JSX.Elemen
       className="text-xl font-poppins shadow-darkMain border-2 border-bgLight rounded-lg p-4 flex flex-col gap-4 text-gray-400"
     >
       <span className="flex items-center justify-between">
-        <a href={rule.path} target="_blank" className="hover:underline text-2xl font-roboto" title={rule.path}>
+        <a
+          href={rule.path}
+          target="_blank"
+          className="hover:underline text-2xl font-roboto"
+          title={rule.path}
+        >
           {rule.name}
         </a>
         <span className="flex items-center gap-2 cursor-pointer" onClick={changeRuleLikeStatus}>
