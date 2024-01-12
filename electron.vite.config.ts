@@ -4,6 +4,11 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   main: {
+    build: {
+      rollupOptions: {
+        external: ["core-js-pure/stable/object/assign.js"]
+      }
+    },
     plugins: [externalizeDepsPlugin()]
   },
   preload: {

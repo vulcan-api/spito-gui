@@ -73,22 +73,24 @@ export default function AuthModal({
     }
   };
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="flex items-center justify-center absolute left-0 top-0 w-screen h-screen bg-[#00000080] z-20"
-    >
+    <div className="flex items-center justify-center absolute left-0 top-0 w-screen h-screen z-40">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className={`2xl:w-1/4 xl:w-1/3 md:w-1/2 w-full bg-bgColor md:border-2 md:rounded-xl md:border-emerald-500 text-gray-100 relative md:p-8 md:py-16 p-24 h-full ${
+        className="absolute w-screen h-screen backdrop-blur-sm supports-backdrop-blur:bg-black/60"
+        onClick={closeModal}
+      />
+      <motion.div
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 0 }}
+        className={`2xl:w-1/4 xl:w-1/3 md:w-1/2 w-full bg-bgColor md:border-2 md:rounded-xl md:border-bgLight shadow-darkMain text-gray-100 relative md:p-8 md:py-16 md:pb-8 p-24 h-full ${
           isUserRegistering ? "md:h-2/3 min-h-[700px]" : "md:h-1/2 min-h-[500px]"
         }`}
       >
         <BsX
-          className="absolute text-3xl right-4 top-4 cursor-pointer hover:text-emerald-500 transition-colors"
+          className="absolute text-3xl right-4 top-4 cursor-pointer hover:text-sky-500 transition-colors"
           onClick={closeModal}
         />
         {isUserRegistering ? (
@@ -100,13 +102,13 @@ export default function AuthModal({
             transition={{ duration: 0.5 }}
             className="w-full h-full flex flex-col gap-8 md:justify-between justify-center"
           >
-            <h2 className="text-center text-6xl roboto mb-4">Register</h2>
+            <h2 className="text-center text-6xl font-roboto mb-4">Register</h2>
             <Input placeholder="Username" ref={usernameRef} />
             <Input placeholder="Email" type="email" ref={emailRef} />
             <Input placeholder="Password" type="password" ref={passwordRef} />
             <Input placeholder="Repeat password" type="password" ref={repeatPasswordRef} />
             <div className="flex items-center gap-2">
-              <Button theme="alt" className="!w-full text-xl" onClick={changeAuthMethodHandler}>
+              <Button theme="alt" className="!w-full" onClick={changeAuthMethodHandler}>
                 Back to Login
               </Button>
               <Button theme="default" className="!w-full" onClick={handleRegister}>
@@ -123,12 +125,12 @@ export default function AuthModal({
             transition={{ duration: 0.5 }}
             className="w-full h-full flex flex-col gap-4 md:justify-between justify-center"
           >
-            <h2 className="text-center text-6xl roboto mb-8">Login</h2>
+            <h2 className="text-center text-6xl font-roboto mb-8">Login</h2>
             <Input placeholder="Email" type="email" ref={emailRef} />
             <Input placeholder="Password" type="password" ref={passwordRef} />
             <p className="text-center cursor-pointer">Forgot password?</p>
             <div className="flex items-center gap-2">
-              <Button theme="alt" className="!w-full text-xl" onClick={changeAuthMethodHandler}>
+              <Button theme="alt" className="!w-full" onClick={changeAuthMethodHandler}>
                 New? Register
               </Button>
               <Button theme="default" className="!w-full" onClick={handleLogin}>
@@ -138,6 +140,6 @@ export default function AuthModal({
           </motion.div>
         )}
       </motion.div>
-    </motion.div>
+    </div>
   );
 }

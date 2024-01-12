@@ -1,10 +1,13 @@
 import { UserInfo } from "./interfaces";
 import { backendRequest } from "./request";
 
-export const getUserInfo = (): UserInfo | null => {
+export const getUserInfo = (): UserInfo => {
   const userInfo = localStorage.getItem("userInfo");
   if (userInfo === null) {
-    return null;
+    return {
+      id: 0,
+      username: ""
+    };
   }
   return JSON.parse(userInfo);
 };

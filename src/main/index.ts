@@ -1,11 +1,18 @@
-import { app, shell, BrowserWindow } from "electron";
+import { app, shell, BrowserWindow, ipcMain } from "electron";
 import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import icon from "../../resources/icon.png?asset";
+import { spawn } from "child_process";
+
+let mainWindow;
+
+ipcMain.handle("getBranches", (_e, args) => {
+  getBranches(args);
+});
 
 function createWindow(): void {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
     show: false,
@@ -16,8 +23,13 @@ function createWindow(): void {
       sandbox: false
     }
   });
+
   mainWindow.on("ready-to-show", () => {
     mainWindow.show();
+  });
+
+  mainWindow.webContents.on("did-finish-load", () => {
+    mainWindow.webContents.send("set-dirname", __dirname);
   });
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -32,6 +44,25 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, "../renderer/index.html"));
   }
+}
+
+function getBranches(address: string): Promise<any> {
+  let cmd = spawn("git", ["ls-remote", address]);
+
+  return new Promise((resolve, reject) => {
+    cmd.stdout.on("data", (data) => {
+      resolve(data);
+    });
+
+    cmd.stderr.on("data", (err) => {
+      reject(err);
+    });
+  });
+
+  cmd.on("close", (code) => {
+    console.log(`child process exited with code ${code}`);
+    mainWindow.webContents.send("chuj-result", `Child process exited with code ${code}`);
+  });
 }
 
 // This method will be called when Electron has finished

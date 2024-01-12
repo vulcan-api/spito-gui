@@ -3,6 +3,8 @@ import { AnimatePresence } from "framer-motion";
 import { cloneElement } from "react";
 import Header from "./Layout/Header";
 import Toaster from "./Layout/Toaster";
+import Profile from "./Pages/Profile/Profile";
+import RulesetPage from "./Pages/Ruleset/RulesetPage";
 
 function App(): JSX.Element | null {
   const element = useRoutes([
@@ -15,8 +17,20 @@ function App(): JSX.Element | null {
           element: <h1>Landing page</h1>
         },
         {
-          path: "/configs",
-          element: <h1>Configs</h1>
+          path: "/marketplace",
+          element: <h1>Marketplace</h1>
+        },
+        {
+          path: "/myenviroments",
+          element: <h1>My configs</h1>
+        },
+        {
+          path: "/profile/:userId",
+          element: <Profile />
+        },
+        {
+          path: "/ruleset/:rulesetId",
+          element: <RulesetPage />
         }
       ]
     }
@@ -28,8 +42,8 @@ function App(): JSX.Element | null {
 
   return (
     <>
-      <Toaster />
       <AnimatePresence mode="wait" initial={false}>
+        <Toaster />
         {cloneElement(element, { key: location.pathname })}
       </AnimatePresence>
     </>

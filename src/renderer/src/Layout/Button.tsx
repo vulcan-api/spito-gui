@@ -9,16 +9,17 @@ export default function Button({
   isLink,
   to,
   disabled,
-  width
+  width,
+  type
 }: ButtonProps): JSX.Element {
   const link = (
     <Link
       to={to || "/"}
       className={`${
         theme === "alt"
-          ? "border-emerald-500 text-emerald-500"
-          : "bg-emerald-600 text-gray-200 border-emerald-700"
-      } active:scale-90 transition-all p-2 flex items-center rounded-lg justify-center gap-2 box-border border-2 text-2xl roboto ${className} ${
+          ? "hover:border-sky-500 border-bgLight hover:text-sky-500 text-gray-200"
+          : "hover:bg-sky-600 bg-bgLight text-gray-200 hover:border-sky-700"
+      } active:scale-90 transition-all p-2 flex items-center rounded-lg justify-center shadow-darkMain gap-2 box-border border-2 text-2xl font-roboto ${className} ${
         width || "sm:w-48 w-32"
       }`}
     >
@@ -30,14 +31,14 @@ export default function Button({
     <button
       onClick={onClick}
       disabled={disabled}
+      type={type || "button"}
       className={`${
         theme === "alt"
-          ? "border-emerald-500 text-emerald-500"
-          : "bg-emerald-600 text-gray-200 border-emerald-700"
-      } flex gap-2 items-center active:scale-90 border-2 roboto text-2xl rounded-lg p-2 transition-all justify-center box-border ${className}  ${
+          ? "border-bgLight hover:border-bgLighter bg-bgLight text-gray-300 hover:text-gray-400"
+          : "border-bgLighter text-gray-400 hover:border-sky-500 hover:text-sky-400"
+      } flex gap-2 items-center active:scale-90 border-2 font-roboto text-2xl rounded-lg p-2 shadow-darkMain transition-all duration-300 justify-center box-border ${className}  ${
         width || "sm:w-48 w-32"
       } ${disabled && "!bg-gray-500 !border-gray-500"}`}
-      type={"button"}
     >
       {children}
     </button>
