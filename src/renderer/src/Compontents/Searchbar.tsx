@@ -3,9 +3,7 @@ import { searchBackend } from "@renderer/lib/search";
 import { RefObject, useEffect, useRef, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import { searchBackend as searchBackendInterface } from "@renderer/lib/interfaces";
-import UserResult from "./SearchbarComponents/UserResult";
-import RuleResult from "./SearchbarComponents/RuleResult";
-import RulesetResult from "./SearchbarComponents/RulesetResult";
+import SearchResults from "./SearchbarComponents/SearchResults";
 
 export default function Searchbar(): JSX.Element {
   const [isUserSearching, setIsUserSearching] = useState<boolean>(false);
@@ -84,53 +82,7 @@ export default function Searchbar(): JSX.Element {
           {isFetching ? (
             <Loader size="w-8 h-8" />
           ) : checkIfResultsExists() ? (
-            <>
-              {results.topResults.length > 0 &&
-                results.topResults.map((result: any) => {
-                  if (result?.type === "user") {
-                    return <UserResult key={result.id} id={result.id} username={result.username} />;
-                  } else if (result?.type === "rule") {
-                    return <RuleResult rule={result} key={result.id} />;
-                  } else {
-                    return <RulesetResult ruleset={result} key={result.id} />;
-                  }
-                })}
-              {results.users.length > 0 && (
-                <>
-                  {results.topResults.length > 0 && (
-                    <div className="w-full h-[1px] bg-borderGray rounded-full" />
-                  )}
-                  <p className="text-left w-full text-xl">Users:</p>
-                  {results.users.map((user) => (
-                    <UserResult key={user.id} id={user.id} username={user.username} />
-                  ))}
-                </>
-              )}
-              {results.rules.length > 0 && (
-                <>
-                  {(results.users.length > 0 || results.users.length > 0) && (
-                    <div className="w-full h-[1px] bg-borderGray rounded-full" />
-                  )}
-                  <p className="text-left w-full text-xl">Rules:</p>
-                  {results.rules.map((rule) => (
-                    <RuleResult rule={rule} key={rule.id} />
-                  ))}
-                </>
-              )}
-              {results.rulesets.length > 0 && (
-                <>
-                  {(results.rules.length > 0 ||
-                    results.users.length > 0 ||
-                    results.topResults.length > 0) && (
-                    <div className="w-full h-[1px] bg-borderGray rounded-full" />
-                  )}
-                  <p className="text-left w-full text-xl">Rulesets:</p>
-                  {results.rulesets.map((ruleset) => (
-                    <RulesetResult ruleset={ruleset} key={ruleset.id} />
-                  ))}
-                </>
-              )}
-            </>
+            <SearchResults results={results} />
           ) : (
             <p className="text-xl">No results found</p>
           )}

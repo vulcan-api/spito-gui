@@ -23,10 +23,7 @@ export default function NewRuleset({ closeModal }: { closeModal: () => void }): 
       setStage(1);
       return;
     }
-    const tagNames: string[] = [];
-    tags.forEach((t: tagInterface): void => {
-      tagNames.push(t.name);
-    });
+    const tagNames: string[] = tags.map((tag: tagInterface): string => tag.name);
     const toastId = toast.loading("Creating ruleset...");
     const res = await createRuleset({
       url: address,
