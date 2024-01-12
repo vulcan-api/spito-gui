@@ -276,7 +276,7 @@ export default function Profile(): JSX.Element {
           <div className="flex items-center justify-between relative">
             <p onClick={() => setSite("Main")} className={tabClasses("Main") + " rounded-tl-lg"}>
               <TbBook />
-              Overview
+              OVERVIEW
             </p>
             <p onClick={() => setSite("Rules")} className={tabClasses("Rules")}>
               <TbFile />

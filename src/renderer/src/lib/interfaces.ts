@@ -88,6 +88,13 @@ interface rule {
   isLiked?: boolean;
 }
 
+interface searchBackend {
+  rules: Array<rule>;
+  rulesets: Array<ruleset>;
+  users: Array<UserInfo>;
+  topResults: Array<unknown>;
+}
+
 export type {
   InputProps,
   ButtonProps,
@@ -98,5 +105,6 @@ export type {
   TagInputProps,
   newRuleset,
   ruleset,
-  rule
+  rule,
+  searchBackend
 };

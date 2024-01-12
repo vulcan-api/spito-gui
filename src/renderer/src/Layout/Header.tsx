@@ -61,7 +61,7 @@ export default function Header(): JSX.Element {
           <AuthModal closeModal={handleLoginModalClose} updateUser={updateUser} />
         )}
       </AnimatePresence>
-      <header className="w-screen overflow-hidden py-4 px-8 flex items-center justify-between lg:gap-16 gap-8">
+      <header className="w-screen py-4 px-8 flex items-center justify-between lg:gap-16 gap-8">
         <Link to="/" className="text-4xl uppercase tracking-widest font-roboto text-sky-400">
           <span className="mr-3">Spito</span>
           <span>GUI</span>

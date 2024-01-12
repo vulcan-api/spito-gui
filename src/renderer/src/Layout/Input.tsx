@@ -28,7 +28,7 @@ export default forwardRef(function Input(
     <div className={`relative ${containerClassName}`}>
       <input
         type={!isPasswordHidden ? "text" : type || "text"}
-        className={`${className} font-poppins block pl-2.5 pb-2.5 pt-4 pr-4 w-full text-lg text-white bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-gray-500`}
+        className={`${className} font-poppins block pl-2.5 pb-2.5 pt-4 pr-4 w-full text-lg text-gray-100 bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-gray-500`}
         defaultValue={value || ""}
         onChange={onChange}
         readOnly={readonly}

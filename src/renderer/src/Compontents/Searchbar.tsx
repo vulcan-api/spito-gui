@@ -1,8 +1,21 @@
+import Loader from "@renderer/Layout/Loader";
+import { searchBackend } from "@renderer/lib/search";
 import { RefObject, useEffect, useRef, useState } from "react";
 import { BsSearch } from "react-icons/bs";
+import { searchBackend as searchBackendInterface } from "@renderer/lib/interfaces";
+import UserResult from "./SearchbarComponents/UserResult";
+import RuleResult from "./SearchbarComponents/RuleResult";
+import RulesetResult from "./SearchbarComponents/RulesetResult";
 
 export default function Searchbar(): JSX.Element {
   const [isUserSearching, setIsUserSearching] = useState<boolean>(false);
+  const [results, setResults] = useState<searchBackendInterface>({
+    rules: [],
+    rulesets: [],
+    users: [],
+    topResults: []
+  });
+  const [isFetching, setIsFetching] = useState<boolean>(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   detectOnAbortingSearch(wrapperRef);
@@ -21,8 +34,23 @@ export default function Searchbar(): JSX.Element {
     }, [ref]);
   }
 
-  function fetchResults() {
-    console.log("Not implemented yet");
+  async function fetchResults() {
+    if (!searchInputRef.current?.value) {
+      return;
+    }
+    setIsFetching(true);
+    const res = await searchBackend(searchInputRef.current?.value as string);
+    setResults(res);
+    setIsFetching(false);
+  }
+
+  function checkIfResultsExists(): boolean {
+    for (const key in results) {
+      if (results[key].length > 0) {
+        return true;
+      }
+    }
+    return false;
   }
 
   return (
@@ -40,7 +68,7 @@ export default function Searchbar(): JSX.Element {
         ref={searchInputRef}
         className={`text-xl p-2 appearance-none bg-transparent w-full font-poppins active:outline-none focus:outline-none transition-colors duration-300 placeholder:transition-colors placeholder:duration-300 ${
           isUserSearching
-            ? "text-sky-200 placeholder:text-sky-200"
+            ? "text-gray-100 placeholder:text-gray-500"
             : "text-borderGray placeholder:text-borderGray"
         }`}
         onFocus={() => setIsUserSearching(true)}
@@ -51,6 +79,63 @@ export default function Searchbar(): JSX.Element {
           isUserSearching ? "text-sky-400" : "text-borderGray"
         } transition-all duration-300 cursor-pointer`}
       />
+      {searchInputRef.current?.value && isUserSearching && (
+        <div className="absolute left-0 top-full w-full p-2 h-fit bg-bgLight rounded-b-lg shadow-darkMain text-gray-400 flex flex-col gap-4 border-[1px] border-t-0 border-borderGray items-center z-50">
+          {isFetching ? (
+            <Loader size="w-8 h-8" />
+          ) : checkIfResultsExists() ? (
+            <>
+              {results.topResults.length > 0 &&
+                results.topResults.map((result: any) => {
+                  if (result?.type === "user") {
+                    return <UserResult key={result.id} id={result.id} username={result.username} />;
+                  } else if (result?.type === "rule") {
+                    return <RuleResult rule={result} key={result.id} />;
+                  } else {
+                    return <RulesetResult ruleset={result} key={result.id} />;
+                  }
+                })}
+              {results.users.length > 0 && (
+                <>
+                  {results.topResults.length > 0 && (
+                    <div className="w-full h-[1px] bg-borderGray rounded-full" />
+                  )}
+                  <p className="text-left w-full text-xl">Users:</p>
+                  {results.users.map((user) => (
+                    <UserResult key={user.id} id={user.id} username={user.username} />
+                  ))}
+                </>
+              )}
+              {results.rules.length > 0 && (
+                <>
+                  {(results.users.length > 0 || results.users.length > 0) && (
+                    <div className="w-full h-[1px] bg-borderGray rounded-full" />
+                  )}
+                  <p className="text-left w-full text-xl">Rules:</p>
+                  {results.rules.map((rule) => (
+                    <RuleResult rule={rule} key={rule.id} />
+                  ))}
+                </>
+              )}
+              {results.rulesets.length > 0 && (
+                <>
+                  {(results.rules.length > 0 ||
+                    results.users.length > 0 ||
+                    results.topResults.length > 0) && (
+                    <div className="w-full h-[1px] bg-borderGray rounded-full" />
+                  )}
+                  <p className="text-left w-full text-xl">Rulesets:</p>
+                  {results.rulesets.map((ruleset) => (
+                    <RulesetResult ruleset={ruleset} key={ruleset.id} />
+                  ))}
+                </>
+              )}
+            </>
+          ) : (
+            <p className="text-xl">No results found</p>
+          )}
+        </div>
+      )}
     </div>
   );
 }

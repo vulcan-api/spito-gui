@@ -3,7 +3,7 @@ import { Toaster } from "react-hot-toast";
 export default function ToasterComponent(): JSX.Element {
   return (
     <Toaster
-      position="top-left"
+      position="top-center"
       reverseOrder={false}
       gutter={8}
       containerClassName=""
