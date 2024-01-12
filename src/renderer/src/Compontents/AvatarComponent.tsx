@@ -34,9 +34,8 @@ export default function AvatarComponent(props: {
           width={avatarSize}
           height={avatarSize}
           ariaLabel="blocks-loading"
-          wrapperStyle={{}}
           wrapperClass="rounded-full"
-          colors={["#a7f3d0", "#2dd4bf", "#ADB5BD", "#F8F9FA", "#10b981"]}
+          colors={["#67e8f9", "#0ea5e9", "#1d4ed8", "#F8F9FA", "#a5b4fc"]}
         />
       ) : avatarUrl ? (
         <img
@@ -50,7 +49,12 @@ export default function AvatarComponent(props: {
           alt="User's avatar"
         />
       ) : (
-        <Avatar name={props.username} size={String(avatarSize)} round={true} className={props.className}/>
+        <Avatar
+          name={props.username}
+          size={String(avatarSize)}
+          round={true}
+          className={props.className}
+        />
       )}
     </>
   );

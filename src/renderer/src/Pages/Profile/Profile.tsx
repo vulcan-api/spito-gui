@@ -4,19 +4,28 @@ import { getUserProfile, updateAvatar, updateSettings } from "@renderer/lib/user
 import { motion, useIsPresent } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { TbEdit, TbPlus, TbSettingsFilled } from "react-icons/tb/";
+import {
+  TbBook,
+  TbBriefcase,
+  TbEdit,
+  TbFile,
+  TbFolder,
+  TbPlus,
+  TbSettingsFilled
+} from "react-icons/tb/";
 import Input from "@renderer/Layout/Input";
 import Button from "@renderer/Layout/Button";
 import toast from "react-hot-toast";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@renderer/lib/atoms";
-import Main from "./Pages/Main";
+import Overview from "./Pages/Overview";
 import Rules from "./Pages/Rules";
 import Rulesets from "./Pages/Rulesets";
-import Configs from "./Pages/Configs";
+import Enviroments from "./Pages/Enviroments";
 import AvatarEditModal from "./Components/Modals/AvatarEditModal";
+import ManageContentModal from "./Components/Modals/ManageContentModal";
 
-type site = "Main" | "Rules" | "Rulesets" | "Configs";
+type site = "Main" | "Rules" | "Rulesets" | "Enviroments";
 
 export default function Profile(): JSX.Element {
   const [userData, setUserData] = useState<ProfileInterface>();
@@ -26,18 +35,24 @@ export default function Profile(): JSX.Element {
   const [isUserChangingAvatar, setIsUserChangingAvatar] = useState<boolean>(false);
   const [avatarUrl, setAvatarUrl] = useState<string>("");
   const [avatarBlob, setAvatarBlob] = useState<Blob>();
-
-  const { userId } = useParams<{ userId: string }>();
-  const isPresent = useIsPresent();
   const loggedUserData = useAtomValue(userAtom);
+
+  const { userId = 0 } = useParams<{ userId: string }>();
+  const isPresent = useIsPresent();
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const newAvatarRef = useRef<any>(null);
   const avatarInputRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    if (!loggedUserData.id) {
+      setIsUserChangingSettings(false);
+    }
+  }, [loggedUserData]);
+
   async function fetchData(): Promise<void> {
-    const data = await getUserProfile(Number(userId));
+    const data = await getUserProfile(+userId);
     if (data.username) {
       setUserData(data);
     }
@@ -135,7 +150,7 @@ export default function Profile(): JSX.Element {
   }
 
   function tabClasses(tab: site): string {
-    return `font-roboto transition-all text-center px-8 py-2 w-full border-b-2 ${
+    return `font-roboto transition-all px-8 py-2 w-full border-b-2 flex items-center gap-2 justify-center ${
       site === tab
         ? "text-gray-300 border-sky-400"
         : "text-gray-400 cursor-pointer hover:border-sky-700 border-bgLight hover:bg-bgLight"
@@ -145,13 +160,13 @@ export default function Profile(): JSX.Element {
   function displayCorrectSite(): JSX.Element {
     switch (site) {
       case "Main":
-        return <Main />;
+        return <Overview />;
       case "Rules":
         return <Rules />;
       case "Rulesets":
         return <Rulesets />;
-      case "Configs":
-        return <Configs />;
+      case "Enviroments":
+        return <Enviroments />;
     }
   }
 
@@ -181,6 +196,7 @@ export default function Profile(): JSX.Element {
 
   return (
     <div className="flex-1 w-4/5 mx-auto flex flex-col px-16 overflow-y-auto my-4">
+      {isUserAddingContent && <ManageContentModal closeModal={handleAddingContent} />}
       {isUserChangingAvatar && (
         <AvatarEditModal
           closeModal={handleUserChaningAvatar}
@@ -191,7 +207,7 @@ export default function Profile(): JSX.Element {
       )}
       <div className="w-full pb-8 flex gap-8 py-8">
         <div className="h-fit w-1/4 flex flex-col gap-4 px-8 py-8 duration-300 relative bg-bgColor">
-          {loggedUserData?.id === +(userId || 0) && (
+          {loggedUserData?.id === +userId && (
             <TbSettingsFilled
               onClick={handleReactingWithSettings}
               className="absolute right-4 top-4 text-2xl text-gray-400 transition-all hover:text-sky-500 hover:rotate-45 cursor-pointer duration-300"
@@ -204,8 +220,8 @@ export default function Profile(): JSX.Element {
               <AvatarComponent
                 username={userData?.username || ""}
                 size="big"
-                className="peer"
-                userId={Number(userId)}
+                className="peer shadow-darkMain"
+                userId={+userId}
               />
             )}
             <input
@@ -229,11 +245,16 @@ export default function Profile(): JSX.Element {
           <div className="flex flex-col gap-4 w-full">
             {isUserChangingSettings ? (
               <>
-                <Input placeholder="Username" value={userData?.username} ref={usernameRef} />
+                <Input
+                  placeholder="Username"
+                  value={userData?.username}
+                  ref={usernameRef}
+                  max={16}
+                />
                 <textarea
                   placeholder="Description"
                   defaultValue={userData?.description}
-                  className="font-poppins max-h-72 block p-2 w-full text-lg text-white bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-gray-500"
+                  className="font-poppins max-h-72 block p-2 w-full text-lg duration-300 text-white bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-gray-500"
                   ref={descriptionRef}
                 />
                 <Button theme="default" className="!w-full" onClick={handleSaveSettings}>
@@ -251,26 +272,35 @@ export default function Profile(): JSX.Element {
           </div>
         </div>
         <div className="h-full w-[2px] bg-bgLight rounded-full" />
-        <div className="flex-1 gap-8 h-fit duration-300 text-2xl text-gray-100 font-roboto bg-bgColor">
+        <div className="flex-1 gap-8 h-fit duration-300 text-xl text-gray-100 font-roboto bg-bgColor">
           <div className="flex items-center justify-between relative">
-            <p onClick={() => setSite("Main")} className={tabClasses("Main")}>
-              {userData?.username}
+            <p onClick={() => setSite("Main")} className={tabClasses("Main") + " rounded-tl-lg"}>
+              <TbBook />
+              OVERVIEW
             </p>
             <p onClick={() => setSite("Rules")} className={tabClasses("Rules")}>
+              <TbFile />
               RULES
             </p>
             <p onClick={() => setSite("Rulesets")} className={tabClasses("Rulesets")}>
+              <TbFolder />
               RULESETS
             </p>
-            <p onClick={() => setSite("Configs")} className={tabClasses("Configs")}>
-              CONFIGS
-            </p>
             <p
-              onClick={handleAddingContent}
-              className="absolute w-8 h-8 transition-colors duration-300 text-white bg-sky-500 hover:bg-sky-700 -right-10 rounded-full flex items-center justify-center cursor-pointer"
+              onClick={() => setSite("Enviroments")}
+              className={tabClasses("Enviroments") + " rounded-tr-lg"}
             >
-              <TbPlus />
+              <TbBriefcase />
+              ENVIROMENTS
             </p>
+            {loggedUserData?.id === +userId && (
+              <p
+                onClick={handleAddingContent}
+                className="absolute w-8 h-8 transition-colors duration-300 text-white bg-sky-500 hover:bg-sky-700 -right-10 rounded-full flex items-center justify-center cursor-pointer"
+              >
+                <TbPlus />
+              </p>
+            )}
           </div>
           <div className="flex flex-col gap-8 p-4 text-gray-400">{displayCorrectSite()}</div>
         </div>
@@ -285,23 +315,3 @@ export default function Profile(): JSX.Element {
     </div>
   );
 }
-
-/*
-  Rulesets
----------------------
-  Nazwa
-  Opis
-  Adres kaj to jest
-  Tagi
----------------------
-
-  Enviroment
----------------------
-  Nazwa
-  Opis
-  Lista zasad
-  Prywatność
-  Zdjęcie
-  Tagi
----------------------
-*/

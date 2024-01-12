@@ -33,7 +33,11 @@ export default function Header(): JSX.Element {
   }
 
   function handleMenuStateChange(): void {
-    setIsMenuOpen((prev: boolean) => !prev);
+    setIsMenuOpen((prev) => !prev);
+  }
+
+  function handleMenuClose(): void {
+    setIsMenuOpen(false);
   }
 
   function logoutHandler(): void {
@@ -57,7 +61,7 @@ export default function Header(): JSX.Element {
           <AuthModal closeModal={handleLoginModalClose} updateUser={updateUser} />
         )}
       </AnimatePresence>
-      <header className="w-screen overflow-hidden py-4 px-8 flex items-center justify-between lg:gap-16 gap-8">
+      <header className="w-screen py-4 px-8 flex items-center justify-between lg:gap-16 gap-8">
         <Link to="/" className="text-4xl uppercase tracking-widest font-roboto text-sky-400">
           <span className="mr-3">Spito</span>
           <span>GUI</span>
@@ -68,8 +72,8 @@ export default function Header(): JSX.Element {
             <NavLink to="/marketplace" className={({ isActive }) => menuLinkClass(isActive)}>
               Marketplace
             </NavLink>
-            <NavLink to="/myconfigs" className={({ isActive }) => menuLinkClass(isActive)}>
-              My configs
+            <NavLink to="/myenviroments" className={({ isActive }) => menuLinkClass(isActive)}>
+              My Enviroments
             </NavLink>
             {user?.id ? (
               <>
@@ -97,23 +101,23 @@ export default function Header(): JSX.Element {
             )}
           </nav>
           <div
-            className="relative xl:hidden block h-6 w-6 cursor-pointer z-30"
+            className="relative xl:hidden block h-6 w-6 cursor-pointer z-30 group"
             onClick={handleMenuStateChange}
           >
             <motion.div
               animate={isMenuOpen ? { rotate: -45, top: 8 } : { rotate: 0, top: 0 }}
               transition={{ duration: 0.3 }}
-              className={`w-6 h-1 bg-sky-400 top-0 absolute rounded-lg z-10`}
+              className={`w-6 h-1 group-hover:bg-sky-400 bg-gray-400 top-0 absolute rounded-lg z-10 transition-colors`}
             />
             <motion.div
               animate={isMenuOpen ? { opacity: 0 } : { opacity: 1 }}
               transition={{ duration: 0.3 }}
-              className={`w-6 h-1 bg-sky-400 top-2 absolute rounded-lg z-10`}
+              className={`w-6 h-1 group-hover:bg-sky-400 bg-gray-400 top-2 absolute rounded-lg z-10 transition-colors`}
             />
             <motion.div
               animate={isMenuOpen ? { rotate: 45, top: 8 } : { rotate: 0, top: 16 }}
               transition={{ duration: 0.3 }}
-              className={`w-6 h-1 bg-sky-400 top-4 absolute rounded-lg z-10`}
+              className={`w-6 h-1 group-hover:bg-sky-400 bg-gray-400 top-4 absolute rounded-lg z-10 transition-colors`}
             />
           </div>
           <AnimatePresence>
@@ -123,7 +127,7 @@ export default function Header(): JSX.Element {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 className="absolute top-0 left-0 w-full h-full z-10 backdrop-blur-sm supports-backdrop-blur:bg-black/60"
-                onClick={handleMenuStateChange}
+                onClick={handleMenuClose}
               />
             )}
           </AnimatePresence>
@@ -140,8 +144,8 @@ export default function Header(): JSX.Element {
               <NavLink to="/marketplace" className={({ isActive }) => menuLinkClass(isActive)}>
                 Marketplace
               </NavLink>
-              <NavLink to="/myconfigs" className={({ isActive }) => menuLinkClass(isActive)}>
-                My configs
+              <NavLink to="/myenviroments" className={({ isActive }) => menuLinkClass(isActive)}>
+                My Enviroments
               </NavLink>
               {user?.id ? (
                 <>

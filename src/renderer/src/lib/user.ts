@@ -1,4 +1,4 @@
-import { ProfileInterface, Settings } from "./interfaces";
+import { ProfileInterface, Settings, tagInterface, newRuleset, ruleset, rule } from "./interfaces";
 import { backendRequest, backendRequestWithFiles } from "./request";
 
 export const getUserAvatar = async (userId: number): Promise<Blob | null> => {
@@ -27,6 +27,65 @@ export const updateAvatar = async (data: FormData): Promise<boolean> => {
 
 export const getUserProfile = async (userId: number): Promise<ProfileInterface> => {
   const response = await backendRequest(`user/${userId}`, "GET");
+  if (response.status === 200) {
+    return await response.json();
+  }
+  throw new Error();
+};
+
+export const getTagHints = async (query: string): Promise<{ tags: Array<tagInterface> }> => {
+  const response = await backendRequest(`tag?search=${query}`, "GET");
+  if (response.status === 200) {
+    return await response.json();
+  }
+  throw new Error();
+};
+
+export const createRuleset = async (data: newRuleset): Promise<boolean> => {
+  const response = await backendRequest("ruleset", "POST", data);
+  return response.ok;
+};
+
+export const getRulesetById = async (rulesetId: number): Promise<ruleset> => {
+  const response = await backendRequest(`ruleset/${rulesetId}`, "GET");
+  if (response.status === 200) {
+    return await response.json();
+  }
+  throw new Error();
+};
+
+export const updateRuleset = async (data: newRuleset, rulesetId: number): Promise<boolean> => {
+  const response = await backendRequest(`ruleset/${rulesetId}`, "PUT", data);
+  return response.ok;
+};
+
+export const fetchUserRulests = async (userId: number): Promise<Array<ruleset>> => {
+  const response = await backendRequest(`ruleset/user/${userId}`, "GET");
+  if (response.status === 200) {
+    return await response.json();
+  }
+  throw new Error();
+};
+
+export const fetchUserRules = async (
+  userId: number,
+  skip: number,
+  take: number
+): Promise<Array<rule>> => {
+  const response = await backendRequest(`rule/user/${userId}?skip=${skip}&take=${take}`, "GET");
+  if (response.status === 200) {
+    return await response.json();
+  }
+  throw new Error();
+};
+
+export const likeOrDislikeRule = async (ruleId: number): Promise<boolean> => {
+  const response = await backendRequest(`rule/like/${ruleId}`, "GET");
+  return response.ok;
+};
+
+export const fetchRuleset = async (rulesetId: number): Promise<ruleset> => {
+  const response = await backendRequest(`ruleset/${rulesetId}`, "GET");
   if (response.status === 200) {
     return await response.json();
   }

@@ -22,6 +22,7 @@ interface ButtonProps {
   submit?: boolean;
   disabled?: boolean;
   width?: string;
+  type?: "button" | "submit" | "reset";
 }
 
 interface UserInfo {
@@ -40,4 +41,70 @@ interface ProfileInterface {
   description?: string;
 }
 
-export type { InputProps, ButtonProps, ProfileInterface, UserInfo, Settings };
+interface tagInterface {
+  id: number;
+  name: string;
+  usageCount?: number;
+}
+
+interface newRuleset {
+  description?: string;
+  url: string;
+  branch: string;
+  tags?: string[];
+}
+interface TagInputProps {
+  id?: string;
+  placeholder: string;
+  className?: string;
+  containerClassName?: string;
+  disabled?: boolean;
+  readonly?: boolean;
+  name?: string;
+  tags: Array<tagInterface>;
+  setTags: React.Dispatch<React.SetStateAction<tagInterface[]>>;
+}
+
+interface ruleset {
+  id: number;
+  name: string;
+  branch: string;
+  description?: string;
+  url: string;
+  createdAt: Date;
+  updatedAt: Date;
+  tags: Array<tagInterface>;
+  rules: Array<rule>;
+}
+
+interface rule {
+  id: number;
+  name: string;
+  path: string;
+  rulesetId: number;
+  createdAt: Date;
+  updatedAt: Date;
+  likes: number;
+  isLiked?: boolean;
+}
+
+interface searchBackend {
+  rules: Array<rule>;
+  rulesets: Array<ruleset>;
+  users: Array<UserInfo>;
+  topResults: Array<unknown>;
+}
+
+export type {
+  InputProps,
+  ButtonProps,
+  ProfileInterface,
+  UserInfo,
+  Settings,
+  tagInterface,
+  TagInputProps,
+  newRuleset,
+  ruleset,
+  rule,
+  searchBackend
+};
