@@ -2,6 +2,7 @@ import { useState } from "react";
 import MainSettings from "./Sections/MainSettings";
 import SettingsSidebar from "./SettingsSidebar";
 import { AnimatePresence, motion, useIsPresent } from "framer-motion";
+import Tokens from "./Sections/Tokens";
 
 type currentPageType = "main" | "tokens";
 
@@ -14,16 +15,7 @@ export default function Settings(): JSX.Element {
       case "main":
         return <MainSettings />;
       case "tokens":
-        return (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, transition: { duration: 0.5 } }}
-            exit={{ opacity: 0 }}
-            key="tokens"
-          >
-            tokens
-          </motion.div>
-        );
+        return <Tokens />;
     }
   }
 
