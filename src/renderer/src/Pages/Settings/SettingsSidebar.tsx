@@ -17,16 +17,10 @@ const SettingsSidebar = ({
 
   return (
     <div className="flex flex-col gap-4 h-full p-4 border-r-[1px] border-bgLight w-1/6">
-      <p
-        onClick={() => setPage("main")}
-        className={tabClasses("main")}
-      >
+      <p onClick={() => setPage("main")} className={tabClasses("main")}>
         <TbSettingsFilled /> <span>Main</span>
       </p>
-      <p
-        onClick={() => setPage("tokens")}
-        className={tabClasses("tokens")}
-      >
+      <p onClick={() => setPage("tokens")} className={tabClasses("tokens")}>
         <TbBodyScan /> <span>Tokens</span>
       </p>
     </div>

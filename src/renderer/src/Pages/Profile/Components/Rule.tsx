@@ -40,6 +40,7 @@ export default function Rule({ rule, i }: { rule: rule; i: number }): JSX.Elemen
           target="_blank"
           className="hover:underline text-2xl font-roboto"
           title={rule.path}
+          rel="noreferrer"
         >
           {rule.name}
         </a>

@@ -47,7 +47,7 @@ function createWindow(): void {
 }
 
 function getBranches(address: string): Promise<any> {
-  let cmd = spawn("git", ["ls-remote", address]);
+  const cmd = spawn("git", ["ls-remote", address]);
 
   return new Promise((resolve, reject) => {
     cmd.stdout.on("data", (data) => {
