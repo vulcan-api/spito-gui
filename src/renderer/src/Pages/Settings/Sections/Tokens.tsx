@@ -10,10 +10,9 @@ import DisplayToken from "../Components/Modals/DisplayToken";
 
 export default function Tokens(): JSX.Element {
   const [tokens, setTokens] = useState<Token[]>([]);
-  const [isOpenCreateModal, setIsOpenCreateModal] = useState<boolean>(false);
+  const [isCreateTokenModalOpen, setIsCreateTokenModalOpen] = useState<boolean>(false);
+  const [isDisplayTokenModalOpen, setIsDisplayTokenModalOpen] = useState<boolean>(false);
   const [newToken, setNewToken] = useState<string>("");
-  const [isOpenDisplayTokenModal, setIsOpenDisplayTokenModal] = useState<boolean>(false);
-
 
   async function fetchData(): Promise<void> {
     const data = await getUserTokens();
@@ -35,10 +34,9 @@ export default function Tokens(): JSX.Element {
   async function handleCloseCreateModal(tokenParam?: string): Promise<void> {
     if (tokenParam) {
       setNewToken(tokenParam);
-      setIsOpenDisplayTokenModal(true);
+      setIsDisplayTokenModalOpen(true);
     }
-
-    setIsOpenCreateModal(false);
+    setIsCreateTokenModalOpen(false);
     await fetchData();
   }
 
@@ -65,16 +63,16 @@ export default function Tokens(): JSX.Element {
         </p>
         <p
           className="w-8 h-8 transition-colors duration-300 text-white bg-sky-500 hover:bg-sky-700 -right-10 rounded-full flex items-center justify-center cursor-pointer"
-          onClick={() => setIsOpenCreateModal(true)}
+          onClick={() => setIsCreateTokenModalOpen(true)}
         >
           <TbPlus />
         </p>
 
-        <TokensTable tokens={tokens} handleDeleteToken={handleDeleteToken} />
+        <TokensTable tokens={tokens} deleteTokenHandler={handleDeleteToken} />
       </div>
-      {isOpenCreateModal && <CreateToken closeModal={handleCloseCreateModal} />}
-      {isOpenDisplayTokenModal && (
-        <DisplayToken closeModal={() => setIsOpenDisplayTokenModal(false)} token={newToken} />
+      {isCreateTokenModalOpen && <CreateToken closeModal={handleCloseCreateModal} />}
+      {isDisplayTokenModalOpen && (
+        <DisplayToken closeModal={() => setIsDisplayTokenModalOpen(false)} token={newToken} />
       )}
     </motion.div>
   );

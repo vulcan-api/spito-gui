@@ -3,12 +3,12 @@ import { TbTrash } from "react-icons/tb";
 
 interface TokensTableProps {
   tokens: Token[];
-  handleDeleteToken: (id: number) => Promise<void>;
+  deleteTokenHandler: (id: number) => Promise<void>;
 }
 
 const TokensTable: React.FC<TokensTableProps> = ({
   tokens,
-  handleDeleteToken
+  deleteTokenHandler
 }: TokensTableProps): JSX.Element => {
   return (
     <table className="min-w-full divide-y divide-sky-500">
@@ -26,7 +26,10 @@ const TokensTable: React.FC<TokensTableProps> = ({
           >
             Expires at
           </th>
-          <th scope="col" className="relative px-6 py-3">
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+          >
             Created at
           </th>
           <th scope="col" className="relative px-6 py-3">
@@ -58,7 +61,7 @@ const TokensTable: React.FC<TokensTableProps> = ({
               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <button
                   className="text-sky-400 hover:text-sky-600"
-                  onClick={() => handleDeleteToken(token.id)}
+                  onClick={() => deleteTokenHandler(token.id)}
                 >
                   <TbTrash size={30} />
                 </button>
