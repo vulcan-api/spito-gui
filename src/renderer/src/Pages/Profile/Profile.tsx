@@ -1,9 +1,9 @@
 import AvatarComponent from "@renderer/Compontents/AvatarComponent";
 import { ProfileInterface } from "@renderer/lib/interfaces";
-import { getUserProfile, updateAvatar, updateSettings } from "@renderer/lib/user";
+import { getUserProfile, updateAvatar } from "@renderer/lib/user";
 import { motion, useIsPresent } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   TbBook,
   TbBriefcase,
@@ -13,8 +13,6 @@ import {
   TbPlus,
   TbSettingsFilled
 } from "react-icons/tb/";
-import Input from "@renderer/Layout/Input";
-import Button from "@renderer/Layout/Button";
 import toast from "react-hot-toast";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@renderer/lib/atoms";
@@ -24,6 +22,7 @@ import Rulesets from "./Pages/Rulesets";
 import Enviroments from "./Pages/Enviroments";
 import AvatarEditModal from "./Components/Modals/AvatarEditModal";
 import ManageContentModal from "./Components/Modals/ManageContentModal";
+import Button from "@renderer/Layout/Button";
 
 type site = "Main" | "Rules" | "Rulesets" | "Enviroments";
 
@@ -36,12 +35,12 @@ export default function Profile(): JSX.Element {
   const [avatarUrl, setAvatarUrl] = useState<string>("");
   const [avatarBlob, setAvatarBlob] = useState<Blob>();
   const loggedUserData = useAtomValue(userAtom);
+  const navigate = useNavigate();
 
   const { userId = 0 } = useParams<{ userId: string }>();
   const isPresent = useIsPresent();
 
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
   const newAvatarRef = useRef<any>(null);
   const avatarInputRef = useRef<HTMLInputElement>(null);
 
@@ -58,63 +57,6 @@ export default function Profile(): JSX.Element {
     }
   }
 
-  function handleReactingWithSettings(): void {
-    if (!isUserChangingSettings) {
-      setIsUserChangingSettings(true);
-    } else {
-      if (usernameRef.current && descriptionRef.current) {
-        if (
-          usernameRef.current.value === userData?.username &&
-          descriptionRef.current.value === userData?.description &&
-          !avatarBlob
-        ) {
-          setIsUserChangingSettings(false);
-        } else if (
-          confirm(
-            "You have unsaved changes! Do you want to close settings? Unsaved changes will be lost."
-          )
-        ) {
-          setAvatarBlob(undefined);
-          setIsUserChangingSettings(false);
-        }
-      }
-    }
-  }
-
-  async function handleSaveSettings(): Promise<void> {
-    if (usernameRef.current && descriptionRef.current) {
-      const username = usernameRef.current.value;
-      const description = descriptionRef.current.value;
-      if (username === "") {
-        toast.error("Username can't be empty!");
-        return;
-      }
-      if (description === userData?.description && username === userData?.username && !avatarBlob) {
-        setIsUserChangingSettings(false);
-        return;
-      }
-      const toastId = toast.loading("Updating...");
-      const isSettingsStatusOk = await updateSettings({
-        username,
-        description
-      });
-      if (avatarBlob) {
-        handleAvatarChange();
-      }
-      if (isSettingsStatusOk) {
-        toast.success("Settings saved!", {
-          id: toastId
-        });
-        fetchData();
-        setIsUserChangingSettings(false);
-      } else {
-        toast.error("Failed to save settings!", {
-          id: toastId
-        });
-      }
-    }
-  }
-
   async function handleAvatarChange(): Promise<void> {
     if (!avatarBlob) return;
     const avatarFile = new File([avatarBlob], "avatar.png", {
@@ -128,6 +70,7 @@ export default function Profile(): JSX.Element {
     } else {
       toast.error("Failed to save avatar");
     }
+    setIsUserChangingSettings(false);
   }
 
   useEffect(() => {
@@ -191,6 +134,7 @@ export default function Profile(): JSX.Element {
       return;
     }
     setAvatarUrl(URL.createObjectURL(file));
+    setIsUserChangingSettings(true);
     setIsUserChangingAvatar(true);
   }
 
@@ -209,7 +153,7 @@ export default function Profile(): JSX.Element {
         <div className="h-fit w-1/4 flex flex-col gap-4 px-8 py-8 duration-300 relative bg-bgColor">
           {loggedUserData?.id === +userId && (
             <TbSettingsFilled
-              onClick={handleReactingWithSettings}
+              onClick={() => navigate("/settings")}
               className="absolute right-4 top-4 text-2xl text-gray-400 transition-all hover:text-sky-500 hover:rotate-45 cursor-pointer duration-300"
             />
           )}
@@ -233,7 +177,7 @@ export default function Profile(): JSX.Element {
               defaultValue={avatarUrl}
               ref={avatarInputRef}
             />
-            {isUserChangingSettings && (
+            {+userId === loggedUserData?.id && (
               <label
                 htmlFor="avatarImage"
                 className="absolute inset-0 rounded-full bg-black bg-opacity-60 hidden peer-hover:flex hover:flex justify-center items-center text-white text-5xl cursor-pointer"
@@ -243,32 +187,15 @@ export default function Profile(): JSX.Element {
             )}
           </div>
           <div className="flex flex-col gap-4 w-full">
-            {isUserChangingSettings ? (
-              <>
-                <Input
-                  placeholder="Username"
-                  value={userData?.username}
-                  ref={usernameRef}
-                  max={16}
-                />
-                <textarea
-                  placeholder="Description"
-                  defaultValue={userData?.description}
-                  className="font-poppins max-h-72 block p-2 w-full text-lg duration-300 text-white bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-gray-500"
-                  ref={descriptionRef}
-                />
-                <Button theme="default" className="!w-full" onClick={handleSaveSettings}>
-                  Save
-                </Button>
-              </>
-            ) : (
-              <>
-                <h1 className="text-gray-100 text-4xl font-roboto">{userData?.username}</h1>
-                <p className="text-gray-400 text-lg font-poppins line-clamp-4">
-                  {userData?.description || "This user has no description yet!"}
-                </p>
-              </>
+            {isUserChangingSettings && (
+              <Button theme="default" className="!w-full" onClick={handleAvatarChange}>
+                Save
+              </Button>
             )}
+            <h1 className="text-gray-100 text-4xl font-roboto">{userData?.username}</h1>
+            <p className="text-gray-400 text-lg font-poppins line-clamp-4">
+              {userData?.description || "This user has no description yet!"}
+            </p>
           </div>
         </div>
         <div className="h-full w-[2px] bg-bgLight rounded-full" />

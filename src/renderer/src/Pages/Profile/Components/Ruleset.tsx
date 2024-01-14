@@ -39,6 +39,7 @@ export default function Ruleset({
             target="_blank"
             className="hover:underline text-2xl text-gray-400 font-roboto"
             title={ruleset.url}
+            rel="noreferrer"
           >
             {ruleset.name[0].toUpperCase() + ruleset.name.slice(1)}
           </a>

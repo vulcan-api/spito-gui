@@ -95,6 +95,13 @@ interface searchBackend {
   topResults: Array<unknown>;
 }
 
+interface Token {
+  id: number;
+  name: string;
+  expiresAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
 export type {
   InputProps,
   ButtonProps,
@@ -106,5 +113,6 @@ export type {
   newRuleset,
   ruleset,
   rule,
-  searchBackend
+  searchBackend,
+  Token
 };
