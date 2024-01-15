@@ -16,7 +16,7 @@ const SettingsSidebar = ({
   }
 
   return (
-    <div className="flex flex-col gap-4 h-full p-4 border-r-[1px] border-bgLight w-1/6">
+    <div className="flex flex-col gap-4 h-full p-4 border-r-[1px] border-bgLight !w-1/6 shadow-darkMain">
       <p onClick={() => setPage("main")} className={tabClasses("main")}>
         <TbSettingsFilled /> <span>Main</span>
       </p>

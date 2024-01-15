@@ -1,31 +1,44 @@
+import AvatarComponent from "@renderer/Compontents/AvatarComponent";
 import Button from "@renderer/Layout/Button";
 import Input from "@renderer/Layout/Input";
+import AvatarEditModal from "@renderer/Pages/Profile/Components/Modals/AvatarEditModal";
 import { userAtom } from "@renderer/lib/atoms";
 import { ProfileInterface } from "@renderer/lib/interfaces";
-import { getUserProfile, updateSettings } from "@renderer/lib/user";
+import { getUserProfile, updateAvatar, updateSettings } from "@renderer/lib/user";
 import { motion } from "framer-motion";
 import { useAtomValue } from "jotai";
 import { useState, useRef, useEffect } from "react";
 import toast from "react-hot-toast";
+import { TbEdit } from "react-icons/tb";
 
 export default function MainSettings(): JSX.Element {
-  const user = useAtomValue(userAtom);
+  const loggedUserData = useAtomValue(userAtom);
 
-  const [userData, setUserData] = useState<ProfileInterface>();
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const [userData, setUserData] = useState<ProfileInterface>({
+    username: "",
+    description: "",
+    id: 0
+  });
+  const [isUserChangingAvatar, setIsUserChangingAvatar] = useState<boolean>(false);
+  const [avatarUrl, setAvatarUrl] = useState<string>("");
+  const [avatarBlob, setAvatarBlob] = useState<Blob>();
+  const [username, setUsername] = useState<string>(userData.username);
+  const [description, setDescription] = useState<string>(userData.description || "");
+
+  const newAvatarRef = useRef<any>(null);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
 
   async function fetchData(): Promise<void> {
-    const data = await getUserProfile(user.id);
+    const data = await getUserProfile(loggedUserData.id);
     if (data.username) {
       setUserData(data);
+      setDescription(data.description || "");
+      setUsername(data.username);
     }
   }
 
   async function handleSaveSettings(): Promise<void> {
-    if (usernameRef.current && descriptionRef.current) {
-      const username = usernameRef.current.value;
-      const description = descriptionRef.current.value;
+    if (username && description) {
       if (username === "") {
         toast.error("Username can't be empty!");
         return;
@@ -56,26 +69,134 @@ export default function MainSettings(): JSX.Element {
     fetchData();
   }, []);
 
+  function handleUserChaningAvatar(): void {
+    setIsUserChangingAvatar(!isUserChangingAvatar);
+    clearFileInput();
+  }
+
+  function clearFileInput(): void {
+    if (avatarInputRef.current) {
+      avatarInputRef.current.value = "";
+    }
+  }
+
+  async function handleAvatarChange(): Promise<void> {
+    if (!avatarBlob) return;
+    const avatarFile = new File([avatarBlob], "avatar.png", {
+      type: "image/png"
+    });
+    const avatarFormData = new FormData();
+    avatarFormData.append("avatar", avatarFile);
+    const avatarStatusOk = await updateAvatar(avatarFormData);
+    const toastId = toast.loading("Updating avatar...");
+    if (avatarStatusOk) {
+      toast.success("Avatar updated succesfully", {
+        id: toastId
+      });
+    } else {
+      toast.error("Failed to save avatar", {
+        id: toastId
+      });
+    }
+  }
+
+  useEffect(() => {
+    handleAvatarChange();
+  }, [avatarBlob]);
+
+  function saveAvatarImage(): void {
+    if (!newAvatarRef.current) return;
+    const canvas: HTMLCanvasElement = newAvatarRef.current?.getImage();
+    canvas.toBlob((blob): void => {
+      if (!blob) return;
+      setAvatarUrl(URL.createObjectURL(blob));
+      setAvatarBlob(blob);
+    });
+    clearFileInput();
+    setIsUserChangingAvatar(false);
+  }
+
+  function uploadAvatar(e: any): void {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.type !== "image/png" && file.type !== "image/jpeg") {
+      toast.error("Only .png and .jpeg files are allowed!");
+      clearFileInput();
+      return;
+    }
+    setAvatarUrl(URL.createObjectURL(file));
+    setIsUserChangingAvatar(true);
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.5 } }}
       exit={{ opacity: 0 }}
       key="main"
-      className="flex gap-4 p-8"
+      className="flex justify-center items-center pb-28 gap-64 p-8 flex-1"
     >
+      {isUserChangingAvatar && (
+        <AvatarEditModal
+          closeModal={handleUserChaningAvatar}
+          newAvatarRef={newAvatarRef}
+          avatarUrl={avatarUrl}
+          saveAvatarImage={saveAvatarImage}
+        />
+      )}
       <div className="w-fit flex flex-col gap-4">
-        <p className="font-roboto text-2xl text-gray-400 text-center">About</p>
-        <Input placeholder="Username" value={userData?.username} ref={usernameRef} max={16} />
+        <p className="font-roboto text-4xl text-gray-400 text-center mb-10">About</p>
+        <Input
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.currentTarget.value)}
+          max={16}
+        />
         <textarea
           placeholder="Description"
           defaultValue={userData?.description}
-          className="font-poppins min-h-36 max-h-72 block p-2 w-full text-lg duration-300 text-white bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-gray-500"
-          ref={descriptionRef}
+          className="font-poppins h-72 block resize-none p-2 w-full text-lg duration-300 text-white bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-gray-500"
+          onChange={(e) => setDescription(e.currentTarget.value)}
         />
         <Button theme="default" className="!w-full" onClick={handleSaveSettings}>
           Save
         </Button>
+      </div>
+      <div className="h-fit border-1 rounded-xl border-borderGray shadow-darkMain p-16 relative">
+        <p className="text-2xl text-center absolute -top-12 left-40 font-poppins text-borderGray">
+          Previev:
+        </p>
+        <div className="relative shadow-darkMain rounded-full">
+          {avatarBlob ? (
+            <img src={URL.createObjectURL(avatarBlob)} className="rounded-full peer w-72 h-72" />
+          ) : (
+            <AvatarComponent
+              username={userData?.username || ""}
+              size="big"
+              className="peer shadow-darkMain"
+              userId={loggedUserData.id}
+            />
+          )}
+          <input
+            type="file"
+            name="avatarImage"
+            id="avatarImage"
+            className="hidden"
+            onChange={uploadAvatar}
+            defaultValue={avatarUrl}
+            ref={avatarInputRef}
+          />
+          <label
+            htmlFor="avatarImage"
+            className="absolute inset-0 rounded-full bg-black bg-opacity-60 hidden peer-hover:flex hover:flex justify-center items-center text-white text-5xl cursor-pointer"
+          >
+            <TbEdit />
+          </label>
+        </div>
+        <h1 className="text-gray-100 text-4xl font-roboto mt-8 mb-4">{username}</h1>
+        <p className="text-gray-400 text-lg font-poppins w-[260px] line-clamp-4 break-all overflow-hidden">
+          {description || "This user has no description yet!"}
+        </p>
       </div>
     </motion.div>
   );

@@ -20,7 +20,7 @@ export default function Settings(): JSX.Element {
   }
 
   return (
-    <div className="flex-1 flex flex-row gap-4 w-full">
+    <div className="flex-1 flex flex-row gap-4 w-full overflow-y-hidden">
       <SettingsSidebar page={currentPage} setPage={setCurrentPage} />
       <AnimatePresence mode="wait">{displayCurrentPage()}</AnimatePresence>
       <motion.div

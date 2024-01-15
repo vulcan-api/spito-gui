@@ -38,7 +38,7 @@ const TokensTable: React.FC<TokensTableProps> = ({
         </tr>
       </thead>
       <tbody className="bg-bgLight divide-y divide-gray-400">
-        {tokens &&
+        {tokens.length > 0 &&
           tokens.map((token: Token) => (
             <tr key={token.id}>
               <td className="px-6 py-4 whitespace-nowrap">

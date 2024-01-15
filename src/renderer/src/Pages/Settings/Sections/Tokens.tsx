@@ -49,8 +49,8 @@ export default function Tokens(): JSX.Element {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.5 } }}
       exit={{ opacity: 0 }}
-      key="main"
-      className="flex gap-4 p-8"
+      key="tokens"
+      className="flex gap-4 p-8 flex-1"
     >
       <div className="w-fit flex flex-col gap-4">
         <p className="font-roboto text-2xl text-gray-400 text-center">Your tokens</p>

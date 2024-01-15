@@ -78,7 +78,7 @@ export default function Searchbar(): JSX.Element {
         } transition-all duration-300 cursor-pointer`}
       />
       {searchInputRef.current?.value && isUserSearching && (
-        <div className="absolute left-0 top-full w-full p-2 h-fit bg-bgLight rounded-b-lg shadow-darkMain text-gray-400 flex flex-col gap-4 border-[1px] border-t-0 border-borderGray items-center z-50">
+        <div className="absolute left-0 top-full w-full p-2 h-fit bg-bgLight rounded-b-lg shadow-darkMain text-gray-400 flex flex-col gap-4 border-1 border-t-0 border-borderGray items-center z-50">
           {isFetching ? (
             <Loader size="w-8 h-8" />
           ) : checkIfResultsExists() ? (
