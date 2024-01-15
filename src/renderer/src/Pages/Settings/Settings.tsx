@@ -3,19 +3,20 @@ import MainSettings from "./Sections/MainSettings";
 import SettingsSidebar from "./SettingsSidebar";
 import { AnimatePresence, motion, useIsPresent } from "framer-motion";
 import Tokens from "./Sections/Tokens";
-
-type currentPageType = "main" | "tokens";
+import { currentPageType } from "@renderer/lib/interfaces";
 
 export default function Settings(): JSX.Element {
-  const [currentPage, setCurrentPage] = useState<currentPageType>("main");
+  const [currentPage, setCurrentPage] = useState<currentPageType>("about");
   const isPresent = useIsPresent();
 
   function displayCurrentPage(): JSX.Element {
     switch (currentPage) {
-      case "main":
+      case "about":
         return <MainSettings />;
       case "tokens":
         return <Tokens />;
+      default:
+        return <MainSettings />;
     }
   }
 

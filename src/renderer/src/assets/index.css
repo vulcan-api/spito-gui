@@ -45,3 +45,7 @@ body {
   inset: 0;
   background: linear-gradient(45deg, #0284c7 0%, #86efac 100%);
 }
+
+::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}

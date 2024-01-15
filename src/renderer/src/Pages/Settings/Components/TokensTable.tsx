@@ -11,8 +11,8 @@ const TokensTable: React.FC<TokensTableProps> = ({
   deleteTokenHandler
 }: TokensTableProps): JSX.Element => {
   return (
-    <table className="min-w-full divide-y divide-sky-500">
-      <thead className="text-white">
+    <table className="min-w-full divide-y divide-sky-500 rounded-lg overflow-hidden shadow-darkMain">
+      <thead className="text-white bg-borderGray">
         <tr>
           <th
             scope="col"

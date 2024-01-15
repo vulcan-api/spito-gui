@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import TokensTable from "../Components/TokensTable";
 import { deleteToken, getUserTokens } from "@renderer/lib/tokens";
 import toast from "react-hot-toast";
-import { TbPlus } from "react-icons/tb";
 import CreateToken from "../Components/Modals/CreateToken";
 import DisplayToken from "../Components/Modals/DisplayToken";
+import Button from "@renderer/Layout/Button";
 
 export default function Tokens(): JSX.Element {
   const [tokens, setTokens] = useState<Token[]>([]);
@@ -20,7 +20,7 @@ export default function Tokens(): JSX.Element {
   }
 
   async function handleDeleteToken(id: number): Promise<void> {
-    if (confirm("Are you sure you want to delete this token? This action cannot be undone")) {
+    if (confirm("Are you sure you want to delete this token? This action cannot be undone!")) {
       const status = await deleteToken(id);
       if (status == 204) {
         toast.success("Token deleted successfully!");
@@ -44,13 +44,23 @@ export default function Tokens(): JSX.Element {
     fetchData();
   }, []);
 
+  function displayTokenModalCloseHandler() {
+    if (
+      confirm(
+        "Are you sure you want to close this modal? You won't be able to see this token again!"
+      )
+    ) {
+      setIsDisplayTokenModalOpen(false);
+    }
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.5 } }}
       exit={{ opacity: 0 }}
       key="tokens"
-      className="flex gap-4 p-8 flex-1"
+      className="flex flex-col justify-center items-center gap-4 flex-1"
     >
       <div className="w-fit flex flex-col gap-4">
         <p className="font-roboto text-2xl text-gray-400 text-center">Your tokens</p>
@@ -58,22 +68,22 @@ export default function Tokens(): JSX.Element {
           You can use tokens to authenticate yourself in spito CLI.
         </p>
         <p className="font-roboto text-xl text-gray-400 text-center">
-          <span className="font-bold">Warning:</span> Tokens are sensitive data. Do not share them
-          with anyone!
+          <span className="text-red-400">Warning:</span> Tokens are sensitive data. Do not share
+          them with anyone!
         </p>
-        <p
-          className="w-8 h-8 transition-colors duration-300 text-white bg-sky-500 hover:bg-sky-700 -right-10 rounded-full flex items-center justify-center cursor-pointer"
-          onClick={() => setIsCreateTokenModalOpen(true)}
-        >
-          <TbPlus />
-        </p>
-
-        <TokensTable tokens={tokens} deleteTokenHandler={handleDeleteToken} />
+          <TokensTable tokens={tokens} deleteTokenHandler={handleDeleteToken} />
       </div>
       {isCreateTokenModalOpen && <CreateToken closeModal={handleCloseCreateModal} />}
       {isDisplayTokenModalOpen && (
-        <DisplayToken closeModal={() => setIsDisplayTokenModalOpen(false)} token={newToken} />
+        <DisplayToken closeModal={displayTokenModalCloseHandler} token={newToken} />
       )}
+      <Button
+        theme="alt"
+        onClick={() => setIsCreateTokenModalOpen(true)}
+        className="!w-fit mx-auto"
+      >
+        Create new token
+      </Button>
     </motion.div>
   );
 }

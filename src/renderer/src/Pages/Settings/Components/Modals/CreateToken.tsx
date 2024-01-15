@@ -19,6 +19,7 @@ export default function CreateToken({
     const data = await createToken(name, expiresAt);
     closeModal(data.token);
   }
+
   return (
     <AnimatePresence>
       <div className="flex items-center justify-center absolute left-0 top-0 w-screen h-screen z-20">
@@ -39,13 +40,17 @@ export default function CreateToken({
             onClick={() => closeModal()}
             className="absolute right-4 top-4 text-3xl cursor-pointer hover:text-sky-500 transition-colors"
           />
-
+          <p className="text-2xl text-gray-400 font-roboto">Create new token</p>
           <form className="flex flex-col w-full gap-4 relative">
-            <AnimatePresence mode="wait">
-              <Input placeholder="Name" name="name" type="text" ref={nameRef} />
-              <Input placeholder="Expires at" name="expiresAt" type="date" ref={expiresAtRef} />
-            </AnimatePresence>
-
+            <p className="text-center text-borderGray font-poppins">
+              The names are illustrative, set one that will easily remind you what the token is used
+              for
+            </p>
+            <Input placeholder="Name" name="name" type="text" ref={nameRef} />
+            <p className="text-center text-borderGray font-poppins">
+              Leaving below input blank, results in never expiring token.
+            </p>
+            <Input placeholder="Expires at" name="expiresAt" type="date" ref={expiresAtRef} />
             <Button theme="default" onClick={formSubmitHandler} className="!w-full text-xl">
               Create
               <TbDeviceFloppy />

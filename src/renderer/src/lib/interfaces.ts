@@ -102,6 +102,9 @@ interface Token {
   createdAt: Date;
   updatedAt: Date;
 }
+
+type currentPageType = "about" | "tokens" | "2fa" | "changePassword";
+
 export type {
   InputProps,
   ButtonProps,
@@ -114,5 +117,6 @@ export type {
   ruleset,
   rule,
   searchBackend,
-  Token
+  Token,
+  currentPageType
 };

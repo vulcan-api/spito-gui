@@ -7,11 +7,11 @@ export default function AvatarComponent(props: {
   userId: number;
   className?: string;
   username: string;
-  size: "small" | "big";
+  size: "small" | "medium" | "big";
 }): JSX.Element {
   const [avatarUrl, setAvatarUrl] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const avatarSize = props.size === "small" ? 32 : 288;
+  const avatarSize = props.size === "small" ? 32 : props.size === "medium" ? 176 : 288;
 
   const getAvatarUrl = useCallback(async (): Promise<void> => {
     const avatar = await getUserAvatar(props.userId);

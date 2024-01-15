@@ -66,6 +66,10 @@ export default function MainSettings(): JSX.Element {
   }
 
   useEffect(() => {
+    handleAvatarChange();
+  }, [avatarBlob]);
+
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -87,9 +91,9 @@ export default function MainSettings(): JSX.Element {
     });
     const avatarFormData = new FormData();
     avatarFormData.append("avatar", avatarFile);
-    const avatarStatusOk = await updateAvatar(avatarFormData);
+    const isAvatarStatusOk = await updateAvatar(avatarFormData);
     const toastId = toast.loading("Updating avatar...");
-    if (avatarStatusOk) {
+    if (isAvatarStatusOk) {
       toast.success("Avatar updated succesfully", {
         id: toastId
       });
@@ -99,10 +103,6 @@ export default function MainSettings(): JSX.Element {
       });
     }
   }
-
-  useEffect(() => {
-    handleAvatarChange();
-  }, [avatarBlob]);
 
   function saveAvatarImage(): void {
     if (!newAvatarRef.current) return;
@@ -134,7 +134,7 @@ export default function MainSettings(): JSX.Element {
       animate={{ opacity: 1, transition: { duration: 0.5 } }}
       exit={{ opacity: 0 }}
       key="main"
-      className="flex justify-center items-center pb-28 gap-64 p-8 flex-1"
+      className="flex justify-center items-center pb-28 gap-64 flex-1"
     >
       {isUserChangingAvatar && (
         <AvatarEditModal
@@ -145,7 +145,6 @@ export default function MainSettings(): JSX.Element {
         />
       )}
       <div className="w-fit flex flex-col gap-4">
-        <p className="font-roboto text-4xl text-gray-400 text-center mb-10">About</p>
         <Input
           placeholder="Username"
           value={username}
@@ -163,7 +162,7 @@ export default function MainSettings(): JSX.Element {
         </Button>
       </div>
       <div className="h-fit border-1 rounded-xl border-borderGray shadow-darkMain p-16 relative">
-        <p className="text-2xl text-center absolute -top-12 left-40 font-poppins text-borderGray">
+        <p className="text-2xl text-center absolute -top-12 left-40 font-roboto text-gray-400">
           Previev:
         </p>
         <div className="relative shadow-darkMain rounded-full">
