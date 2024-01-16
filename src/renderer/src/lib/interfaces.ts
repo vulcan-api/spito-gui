@@ -110,6 +110,10 @@ interface Token {
 
 type currentPageType = "about" | "tokens" | "2fa" | "changePassword";
 
+interface TwoFAQrCode {
+  url: string;
+}
+
 export type {
   InputProps,
   ButtonProps,
@@ -124,5 +128,6 @@ export type {
   searchBackend,
   Token,
   currentPageType,
-  backendResponse
+  backendResponse,
+  TwoFAQrCode
 };

@@ -1,25 +1,62 @@
 import Button from "@renderer/Layout/Button";
-import Input from "@renderer/Layout/Input";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AuthCode from "react-auth-code-input";
 import QRCode from "react-qr-code";
+import {
+  enableTwoFA,
+  getTwoFAQrCodeUrl,
+  getTwoFAStatus,
+  disable2FA as disable2FAAuth
+} from "@renderer/lib/user";
 
 export default function TwoFa(): JSX.Element {
   const [is2faEnabled, setIs2faEnabled] = useState<boolean>(false);
   const [twoFACode, setTwoFACode] = useState<string>();
+  const [qrCode, setQrCode] = useState<string>("");
+  const [secret, setSecret] = useState<string>("");
 
   function handleAuthCodeState(res: string): void {
     setTwoFACode(res);
   }
 
-  function disable2FA(): void {
-    console.log("Not implemented yet!");
+  async function disable2FA(): Promise<void> {
+    if (!confirm("Are you sure you want to disable 2FA?")) {
+      return;
+    }
+    const response = await disable2FAAuth();
+    if (response) {
+      setIs2faEnabled(false);
+    }
   }
 
-  function enable2FA(): void {
-    console.log("Not implemented yet!");
+  async function enable2FA(): Promise<void> {
+    if (twoFACode?.length !== 6) {
+      return;
+    }
+
+    const response = await enableTwoFA(secret, twoFACode);
+    if (response) {
+      setIs2faEnabled(true);
+    }
   }
+
+  async function getQrCode(): Promise<void> {
+    const res = await getTwoFAStatus();
+    if (!res) {
+      setIs2faEnabled(true);
+    } else {
+      const response = await getTwoFAQrCodeUrl();
+      if (response.status === 200) {
+        setQrCode(response.data.url.toString().split("=")[1]);
+        setSecret(response.data.url);
+      }
+    }
+  }
+
+  useEffect(() => {
+    getQrCode();
+  }, []);
 
   return (
     <motion.div
@@ -45,7 +82,7 @@ export default function TwoFa(): JSX.Element {
             <li>Enter the 6 digit code below</li>
           </ul>
           <QRCode
-            value="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            value={qrCode}
             className="p-2 border-2 rounded-lg shadow-darkMain bg-gray-200 border-bgLighter"
           />
           <AuthCode
