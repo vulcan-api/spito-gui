@@ -8,6 +8,7 @@ import { userAtom } from "@renderer/lib/atoms";
 import { useAtomValue } from "jotai";
 import { useNavigate } from "react-router-dom";
 import TwoFa from "./Sections/TwoFA";
+import ChangePassword from "./Sections/ChangePassword";
 
 export default function Settings(): JSX.Element {
   const [currentPage, setCurrentPage] = useState<currentPageType>("about");
@@ -29,6 +30,8 @@ export default function Settings(): JSX.Element {
         return <Tokens />;
       case "2fa":
         return <TwoFa />;
+      case "changePassword":
+        return <ChangePassword />;
       default:
         return <MainSettings />;
     }
