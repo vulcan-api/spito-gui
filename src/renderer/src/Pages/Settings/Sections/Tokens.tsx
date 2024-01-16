@@ -71,7 +71,7 @@ export default function Tokens(): JSX.Element {
           <span className="text-red-400">Warning:</span> Tokens are sensitive data. Do not share
           them with anyone!
         </p>
-          <TokensTable tokens={tokens} deleteTokenHandler={handleDeleteToken} />
+        <TokensTable tokens={tokens} deleteTokenHandler={handleDeleteToken} />
       </div>
       {isCreateTokenModalOpen && <CreateToken closeModal={handleCloseCreateModal} />}
       {isDisplayTokenModalOpen && (
