@@ -29,11 +29,11 @@ export default function MainSettings(): JSX.Element {
   const avatarInputRef = useRef<HTMLInputElement>(null);
 
   async function fetchData(): Promise<void> {
-    const data = await getUserProfile(loggedUserData.id);
-    if (data.username) {
-      setUserData(data);
-      setDescription(data.description || "");
-      setUsername(data.username);
+    const response = await getUserProfile(loggedUserData.id);
+    if (response.status === 200) {
+      setUserData(response.data);
+      setDescription(response.data.description || "");
+      setUsername(response.data.username);
     }
   }
 
@@ -192,8 +192,8 @@ export default function MainSettings(): JSX.Element {
             <TbEdit />
           </label>
         </div>
-        <h1 className="text-gray-100 text-4xl font-roboto mt-8 mb-4">{username}</h1>
-        <p className="text-gray-400 text-lg font-poppins w-[260px] line-clamp-4 break-all overflow-hidden">
+        <h1 className="text-gray-100 text-3xl font-roboto mt-8 mb-4 text-center">{username}</h1>
+        <p className="text-gray-400 text-lg font-poppins w-[260px] line-clamp-4 break-word overflow-hidden text-center">
           {description || "This user has no description yet!"}
         </p>
       </div>

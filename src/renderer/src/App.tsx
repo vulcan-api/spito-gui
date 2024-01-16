@@ -22,7 +22,7 @@ function App(): JSX.Element | null {
           element: <h1>Marketplace</h1>
         },
         {
-          path: "/myenviroments",
+          path: "/myenvironments",
           element: <h1>My configs</h1>
         },
         {

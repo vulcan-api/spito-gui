@@ -6,6 +6,7 @@ import Button from "./Button";
 import { getUserInfo, login, register } from "../lib/auth";
 import toast from "react-hot-toast";
 import { UserInfo } from "@renderer/lib/interfaces";
+import AuthCode from "react-auth-code-input";
 
 export default function AuthModal({
   closeModal,
@@ -19,10 +20,13 @@ export default function AuthModal({
   const passwordRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
   const repeatPasswordRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
   const [isUserRegistering, setIsUserRegistering] = useState<boolean>(false);
+  const [isTwoFAEnabled, setIsTwoFAEnabled] = useState<boolean>(false);
+  const [twoFACode, setTwoFACode] = useState<string>("");
 
   function changeAuthMethodHandler(): void {
     setIsUserRegistering((prev: boolean) => !prev);
   }
+
   const handleRegister = async (): Promise<void> => {
     if (!usernameRef.current?.value || !emailRef.current?.value || !passwordRef.current?.value) {
       return;
@@ -72,6 +76,15 @@ export default function AuthModal({
       });
     }
   };
+
+  function handleAuthCodeState(res: string): void {
+    setTwoFACode(res);
+  }
+
+  function submit2FA(): void {
+    console.log("Not implemented yet!");
+  }
+
   return (
     <div className="flex items-center justify-center absolute left-0 top-0 w-screen h-screen z-40">
       <motion.div
@@ -93,7 +106,27 @@ export default function AuthModal({
           className="absolute text-3xl right-4 top-4 cursor-pointer hover:text-sky-500 transition-colors"
           onClick={closeModal}
         />
-        {isUserRegistering ? (
+        {isTwoFAEnabled ? (
+          <motion.div
+            key="2FA"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="w-full h-full flex flex-col gap-8 md:justify-between justify-center"
+          >
+            <p className="text-center text-2xl font-poppins text-gray-400">Enter your 2FA token.</p>
+            <AuthCode
+              onChange={handleAuthCodeState}
+              allowedCharacters="numeric"
+              containerClassName="flex items-center justify-center gap-4"
+              inputClassName="w-8 h-10 bg-transparent border-2 border-bgLighter text-gray-400 rounded-lg text-3xl text-center shadow-darkMain"
+            />
+            <Button theme="default" className="mx-auto" onClick={submit2FA}>
+              Submit
+            </Button>
+          </motion.div>
+        ) : isUserRegistering ? (
           <motion.div
             key="login"
             initial={{ opacity: 0 }}

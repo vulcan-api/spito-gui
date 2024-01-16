@@ -30,6 +30,11 @@ interface UserInfo {
   username: string;
 }
 
+interface backendResponse<T> {
+  status: number;
+  data: T;
+}
+
 interface Settings {
   username: string;
   description?: string;
@@ -118,5 +123,6 @@ export type {
   rule,
   searchBackend,
   Token,
-  currentPageType
+  currentPageType,
+  backendResponse
 };

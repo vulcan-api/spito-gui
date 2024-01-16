@@ -68,6 +68,7 @@ export default function RulesetPage(): JSX.Element {
                 setIsUserEditingRuleset={setIsUserEditingRuleset}
                 index={0}
                 drawer={false}
+                where="ruleset"
               />
               <Input
                 placeholder="Search rules..."

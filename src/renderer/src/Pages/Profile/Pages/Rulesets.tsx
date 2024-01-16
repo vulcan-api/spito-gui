@@ -53,6 +53,8 @@ export default function Rulesets(): JSX.Element {
                 setEditedRulesetId={setEditedRulesetId}
                 setIsUserEditingRuleset={setIsUserEditingRuleset}
                 index={i}
+                where="profile"
+                key={ruleset.id}
               />
             ))
           ) : (

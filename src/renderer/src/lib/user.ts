@@ -1,4 +1,4 @@
-import { ProfileInterface, Settings, tagInterface, newRuleset, ruleset, rule } from "./interfaces";
+import { ProfileInterface, Settings, tagInterface, newRuleset, ruleset, rule, backendResponse } from "./interfaces";
 import { backendRequest, backendRequestWithFiles } from "./request";
 
 export const getUserAvatar = async (userId: number): Promise<Blob | null> => {
@@ -25,12 +25,12 @@ export const updateAvatar = async (data: FormData): Promise<boolean> => {
   return response.ok;
 };
 
-export const getUserProfile = async (userId: number): Promise<ProfileInterface> => {
+export const getUserProfile = async (userId: number): Promise<backendResponse<ProfileInterface>> => {
   const response = await backendRequest(`user/${userId}`, "GET");
-  if (response.status === 200) {
-    return await response.json();
-  }
-  throw new Error();
+  return {
+    status: response.status,
+    data: await response.json()
+  };
 };
 
 export const getTagHints = async (query: string): Promise<{ tags: Array<tagInterface> }> => {

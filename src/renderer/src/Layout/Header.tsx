@@ -72,7 +72,7 @@ export default function Header(): JSX.Element {
             <NavLink to="/marketplace" className={({ isActive }) => menuLinkClass(isActive)}>
               Marketplace
             </NavLink>
-            <NavLink to="/myenviroments" className={({ isActive }) => menuLinkClass(isActive)}>
+            <NavLink to="/myenvironments" className={({ isActive }) => menuLinkClass(isActive)}>
               My Enviroments
             </NavLink>
             {user?.id ? (
@@ -144,8 +144,8 @@ export default function Header(): JSX.Element {
               <NavLink to="/marketplace" className={({ isActive }) => menuLinkClass(isActive)}>
                 Marketplace
               </NavLink>
-              <NavLink to="/myenviroments" className={({ isActive }) => menuLinkClass(isActive)}>
-                My Enviroments
+              <NavLink to="/myenvironments" className={({ isActive }) => menuLinkClass(isActive)}>
+                My Environments
               </NavLink>
               {user?.id ? (
                 <>

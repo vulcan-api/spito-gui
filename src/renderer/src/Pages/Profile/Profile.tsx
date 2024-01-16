@@ -9,11 +9,11 @@ import { userAtom } from "@renderer/lib/atoms";
 import Overview from "./Pages/Overview";
 import Rules from "./Pages/Rules";
 import Rulesets from "./Pages/Rulesets";
-import Enviroments from "./Pages/Enviroments";
+import Environments from "./Pages/Environments";
 import ManageContentModal from "./Components/Modals/ManageContentModal";
 import AvatarComponent from "@renderer/Compontents/AvatarComponent";
 
-type site = "Main" | "Rules" | "Rulesets" | "Enviroments";
+type site = "Main" | "Rules" | "Rulesets" | "Environments";
 
 export default function Profile(): JSX.Element {
   const [userData, setUserData] = useState<ProfileInterface>();
@@ -26,9 +26,11 @@ export default function Profile(): JSX.Element {
   const isPresent = useIsPresent();
 
   async function fetchData(): Promise<void> {
-    const data = await getUserProfile(+userId);
-    if (data.username) {
-      setUserData(data);
+    const response = await getUserProfile(+userId);
+    if (response.status === 200) {
+      setUserData(response.data);
+    } else {
+      navigate("/");
     }
   }
 
@@ -56,8 +58,8 @@ export default function Profile(): JSX.Element {
         return <Rules />;
       case "Rulesets":
         return <Rulesets />;
-      case "Enviroments":
-        return <Enviroments />;
+      case "Environments":
+        return <Environments />;
     }
   }
 
@@ -79,8 +81,8 @@ export default function Profile(): JSX.Element {
             userId={+userId}
           />
           <div className="flex flex-col gap-4 w-full">
-            <h1 className="text-gray-100 text-4xl font-roboto">{userData?.username}</h1>
-            <p className="text-gray-400 text-lg font-poppins w-[260px] line-clamp-4 break-all overflow-hidden">
+            <h1 className="text-gray-100 text-3xl font-roboto text-center">{userData?.username}</h1>
+            <p className="text-gray-400 text-lg font-poppins w-[260px] line-clamp-4 break-word overflow-hidden text-center">
               {userData?.description || "This user has no description yet!"}
             </p>
           </div>
@@ -101,11 +103,11 @@ export default function Profile(): JSX.Element {
               RULESETS
             </p>
             <p
-              onClick={() => setSite("Enviroments")}
-              className={tabClasses("Enviroments") + " rounded-tr-lg"}
+              onClick={() => setSite("Environments")}
+              className={tabClasses("Environments") + " rounded-tr-lg"}
             >
               <TbBriefcase />
-              ENVIROMENTS
+              ENVIRONMENTS
             </p>
             {loggedUserData?.id === +userId && (
               <p

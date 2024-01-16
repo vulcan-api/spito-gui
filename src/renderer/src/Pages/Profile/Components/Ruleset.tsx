@@ -6,7 +6,7 @@ import { formatDistanceToNow } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAtomValue } from "jotai";
 import { TbEdit, TbLayoutBottombarExpand } from "react-icons/tb";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Rule from "./Rule";
 
 export default function Ruleset({
@@ -14,13 +14,15 @@ export default function Ruleset({
   setEditedRulesetId,
   setIsUserEditingRuleset,
   index,
-  drawer = true
+  drawer = true,
+  where = "profile"
 }: {
   ruleset: ruleset;
   setEditedRulesetId: React.Dispatch<React.SetStateAction<number>>;
   setIsUserEditingRuleset: React.Dispatch<React.SetStateAction<boolean>>;
   index: number;
   drawer?: boolean;
+  where?: "profile" | "ruleset";
 }): JSX.Element {
   const loggedUserData = useAtomValue(userAtom);
   const { userId = 0 } = useParams<{ userId: string }>();
@@ -34,15 +36,24 @@ export default function Ruleset({
     >
       <div className="flex justify-between">
         <div className="flex flex-col gap-4">
-          <a
-            href={ruleset.url}
-            target="_blank"
-            className="hover:underline text-2xl text-gray-400 font-roboto"
-            title={ruleset.url}
-            rel="noreferrer"
-          >
-            {ruleset.name[0].toUpperCase() + ruleset.name.slice(1)}
-          </a>
+          {where === "ruleset" ? (
+            <a
+              href={ruleset.url}
+              target="_blank"
+              className="hover:underline text-2xl text-gray-400 font-roboto"
+              title={ruleset.url}
+            >
+              {ruleset.name[0].toUpperCase() + ruleset.name.slice(1)}
+            </a>
+          ) : (
+            <Link
+              to={`/ruleset/${ruleset.id}`}
+              title={ruleset.url}
+              className="hover:underline text-2xl text-gray-400 font-roboto"
+            >
+              {ruleset.name[0].toUpperCase() + ruleset.name.slice(1)}
+            </Link>
+          )}
           <div className="flex items-center gap-2">
             {ruleset.tags.length > 0 &&
               ruleset.tags.slice(0, 5).map((tag, i) => {
