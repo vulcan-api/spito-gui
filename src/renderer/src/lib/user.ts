@@ -1,4 +1,13 @@
-import { ProfileInterface, Settings, tagInterface, newRuleset, ruleset, rule, backendResponse, TwoFAQrCode } from "./interfaces";
+import {
+  ProfileInterface,
+  Settings,
+  tagInterface,
+  newRuleset,
+  ruleset,
+  rule,
+  backendResponse,
+  TwoFAQrCode
+} from "./interfaces";
 import { backendRequest, backendRequestWithFiles } from "./request";
 
 export const getUserAvatar = async (userId: number): Promise<Blob | null> => {
@@ -25,7 +34,9 @@ export const updateAvatar = async (data: FormData): Promise<boolean> => {
   return response.ok;
 };
 
-export const getUserProfile = async (userId: number): Promise<backendResponse<ProfileInterface>> => {
+export const getUserProfile = async (
+  userId: number
+): Promise<backendResponse<ProfileInterface>> => {
   const response = await backendRequest(`user/${userId}`, "GET");
   return {
     status: response.status,
@@ -95,7 +106,7 @@ export const fetchRuleset = async (rulesetId: number): Promise<ruleset> => {
 export const enableTwoFA = async (secret: string, code: string): Promise<boolean> => {
   const response = await backendRequest("auth/totp/enable", "PATCH", { secret, code });
   return response.ok;
-}
+};
 
 export const getTwoFAStatus = async (): Promise<boolean> => {
   const response = await backendRequest("auth/totp/is-enabled", "GET");
@@ -108,9 +119,9 @@ export const getTwoFAQrCodeUrl = async (): Promise<backendResponse<TwoFAQrCode>>
     status: response.status,
     data: await response.json()
   };
-}
+};
 
 export const disable2FA = async (): Promise<boolean> => {
   const response = await backendRequest("auth/totp/remove", "PATCH");
   return response.ok;
-}
+};

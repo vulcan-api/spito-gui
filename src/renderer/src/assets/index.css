@@ -43,11 +43,11 @@ body {
 .privacy-screen {
   position: fixed;
   inset: 0;
-  background: linear-gradient(45deg, #14a1e7 20%, #242424DF 100%);
+  background: linear-gradient(45deg, #14a1e7 20%, #242424df 100%);
 }
 
 ::-webkit-calendar-picker-indicator {
-    filter: invert(1);
+  filter: invert(1);
 }
 
 input::-webkit-outer-spin-button,
@@ -56,6 +56,6 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }

@@ -37,7 +37,13 @@ export default function DisplayToken({
             className="absolute right-4 top-4 text-3xl cursor-pointer hover:text-sky-500 transition-colors"
           />
           <p className="font-roboto text-xl text-gray-400 text-center">Your token is:</p>
-          <p className="font-roboto text-xl text-gray-400 text-center flex items-center gap-4">{token} <TbCopy onClick={copyTokenToClipoard} className="cursor-pointer rounded-md transition-colors hover:bg-borderGray" /></p>
+          <p className="font-roboto text-xl text-gray-400 text-center flex items-center gap-4">
+            {token}{" "}
+            <TbCopy
+              onClick={copyTokenToClipoard}
+              className="cursor-pointer rounded-md transition-colors hover:bg-borderGray"
+            />
+          </p>
           <p className="font-roboto text-xl text-gray-400 text-center">
             Copy and save it somewhere safe. You will not be able to see it again!
           </p>

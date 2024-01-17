@@ -52,3 +52,14 @@ export const logout = (): void => {
   localStorage.removeItem("userInfo");
   localStorage.removeItem("token");
 };
+
+export const changePassword = async (
+  currentPassword: string,
+  newPassword: string
+): Promise<number> => {
+  const response = await backendRequest("auth/password/change", "PUT", {
+    currentPassword,
+    newPassword
+  });
+  return response.status;
+};

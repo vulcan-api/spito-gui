@@ -11,9 +11,11 @@ import { useAtomValue } from "jotai";
 import { useState, useRef, useEffect } from "react";
 import toast from "react-hot-toast";
 import { TbEdit } from "react-icons/tb";
+import { useNavigate } from "react-router-dom";
 
 export default function MainSettings(): JSX.Element {
   const loggedUserData = useAtomValue(userAtom);
+  const navigate = useNavigate();
 
   const [userData, setUserData] = useState<ProfileInterface>({
     username: "",
@@ -32,6 +34,9 @@ export default function MainSettings(): JSX.Element {
 
   async function fetchData(): Promise<void> {
     const response = await getUserProfile(loggedUserData.id);
+    if (response.status === 401) {
+      navigate("/");
+    }
     if (response.status === 200) {
       setUserData(response.data);
       setDescription(response.data.description || "");
