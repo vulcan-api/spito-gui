@@ -31,9 +31,21 @@ export const login = async (email: string, password: string): Promise<number> =>
     password
   });
   const data = await response.json();
+  if (!data.is2FAEnabled) {
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("userInfo", JSON.stringify(data.userInfo));
+  } else {
+    return 600;
+  }
+  return response.status;
+};
+
+export const verify2FA = async (email: string, code: string): Promise<boolean> => {
+  const response = await backendRequest("auth/totp/verify", "POST", { email, code });
+  const data = await response.json();
   localStorage.setItem("token", data.token);
   localStorage.setItem("userInfo", JSON.stringify(data.userInfo));
-  return response.status;
+  return response.ok;
 };
 
 export const logout = (): void => {

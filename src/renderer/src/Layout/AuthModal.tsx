@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { BsX } from "react-icons/bs";
 import Input from "./Input";
 import Button from "./Button";
-import { getUserInfo, login, register } from "../lib/auth";
+import { getUserInfo, login, register, verify2FA } from "../lib/auth";
 import toast from "react-hot-toast";
 import { UserInfo } from "@renderer/lib/interfaces";
 import AuthCode from "react-auth-code-input";
@@ -15,10 +15,10 @@ export default function AuthModal({
   closeModal: () => void;
   updateUser: (user: UserInfo) => void;
 }): JSX.Element {
-  const emailRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
   const usernameRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
   const passwordRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
   const repeatPasswordRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+  const [email, setEmail] = useState<string>("");
   const [isUserRegistering, setIsUserRegistering] = useState<boolean>(false);
   const [isTwoFAEnabled, setIsTwoFAEnabled] = useState<boolean>(false);
   const [twoFACode, setTwoFACode] = useState<string>("");
@@ -28,7 +28,7 @@ export default function AuthModal({
   }
 
   const handleRegister = async (): Promise<void> => {
-    if (!usernameRef.current?.value || !emailRef.current?.value || !passwordRef.current?.value) {
+    if (!usernameRef.current?.value || !email || !passwordRef.current?.value) {
       return;
     }
     if (passwordRef.current?.value !== repeatPasswordRef.current?.value) {
@@ -36,11 +36,7 @@ export default function AuthModal({
       return;
     }
     const toastId = toast.loading("Registering...");
-    const status = await register(
-      usernameRef.current?.value,
-      emailRef.current?.value,
-      passwordRef.current?.value
-    );
+    const status = await register(usernameRef.current?.value, email, passwordRef.current?.value);
     if (status === 201) {
       toast.success("Successfully registered", {
         id: toastId
@@ -54,12 +50,15 @@ export default function AuthModal({
   };
 
   const handleLogin = async (): Promise<void> => {
-    if (!emailRef.current?.value || !passwordRef.current?.value) {
+    if (!email || !passwordRef.current?.value) {
       return;
     }
     const toastId = toast.loading("Logging in...");
-    const status = await login(emailRef.current?.value, passwordRef.current?.value);
-    if (status === 200) {
+    const status = await login(email, passwordRef.current?.value);
+    if (status === 600) {
+      setIsTwoFAEnabled(true);
+      toast.dismiss(toastId);
+    } else if (status === 200) {
       toast.success("Successfully logged in", {
         id: toastId
       });
@@ -81,8 +80,20 @@ export default function AuthModal({
     setTwoFACode(res);
   }
 
-  function submit2FA(): void {
-    console.log("Not implemented yet!");
+  async function submit2FA(): Promise<void> {
+    if (twoFACode?.length !== 6) {
+      return;
+    }
+    const toastId = toast.loading("Logging in...");
+    const response = await verify2FA(email || "", twoFACode);
+    if (response) {
+      toast.success("Successfully logged in", {
+        id: toastId
+      });
+      const info: UserInfo | null = getUserInfo();
+      if (info) updateUser(info);
+      closeModal();
+    }
   }
 
   return (
@@ -137,7 +148,12 @@ export default function AuthModal({
           >
             <h2 className="text-center text-6xl font-roboto mb-4">Register</h2>
             <Input placeholder="Username" ref={usernameRef} />
-            <Input placeholder="Email" type="email" ref={emailRef} />
+            <Input
+              placeholder="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
             <Input placeholder="Password" type="password" ref={passwordRef} />
             <Input placeholder="Repeat password" type="password" ref={repeatPasswordRef} />
             <div className="flex items-center gap-2">
@@ -159,7 +175,7 @@ export default function AuthModal({
             className="w-full h-full flex flex-col gap-4 md:justify-between justify-center"
           >
             <h2 className="text-center text-6xl font-roboto mb-8">Login</h2>
-            <Input placeholder="Email" type="email" ref={emailRef} />
+            <Input placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
             <Input placeholder="Password" type="password" ref={passwordRef} />
             <p className="text-center cursor-pointer">Forgot password?</p>
             <div className="flex items-center gap-2">

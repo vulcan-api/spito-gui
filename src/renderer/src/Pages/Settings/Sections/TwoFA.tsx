@@ -9,12 +9,15 @@ import {
   getTwoFAStatus,
   disable2FA as disable2FAAuth
 } from "@renderer/lib/user";
+import toast from "react-hot-toast";
+import Loader from "@renderer/Layout/Loader";
 
 export default function TwoFa(): JSX.Element {
   const [is2faEnabled, setIs2faEnabled] = useState<boolean>(false);
   const [twoFACode, setTwoFACode] = useState<string>();
   const [qrCode, setQrCode] = useState<string>("");
   const [secret, setSecret] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   function handleAuthCodeState(res: string): void {
     setTwoFACode(res);
@@ -24,9 +27,14 @@ export default function TwoFa(): JSX.Element {
     if (!confirm("Are you sure you want to disable 2FA?")) {
       return;
     }
+
+    const toastId = toast.loading("Disabling 2FA...");
     const response = await disable2FAAuth();
     if (response) {
       setIs2faEnabled(false);
+      toast.success("Successfully disabled 2FA", {
+        id: toastId
+      });
     }
   }
 
@@ -35,23 +43,34 @@ export default function TwoFa(): JSX.Element {
       return;
     }
 
+    const toastId = toast.loading("Enabling 2FA...");
     const response = await enableTwoFA(secret, twoFACode);
     if (response) {
+      toast.success("Successfully enabled 2FA", {
+        id: toastId
+      });
       setIs2faEnabled(true);
+    } else {
+      toast.error("Failed to enable 2FA", {
+        id: toastId
+      });
     }
   }
 
   async function getQrCode(): Promise<void> {
     const res = await getTwoFAStatus();
-    if (!res) {
+    if (res) {
       setIs2faEnabled(true);
     } else {
       const response = await getTwoFAQrCodeUrl();
       if (response.status === 200) {
-        setQrCode(response.data.url.toString().split("=")[1]);
-        setSecret(response.data.url);
+        setQrCode(response.data.url);
+        setSecret(response.data.url.toString().split("=")[1]);
       }
     }
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
   }
 
   useEffect(() => {
@@ -66,7 +85,9 @@ export default function TwoFa(): JSX.Element {
       key="2fa"
       className="flex-1 flex flex-col gap-16 items-center justify-center"
     >
-      {is2faEnabled ? (
+      {isLoading ? (
+        <Loader />
+      ) : is2faEnabled ? (
         <>
           <p className="font-poppins text-gray-400 text-2xl">2FA is Enabled!</p>
           <Button theme="default" onClick={disable2FA}>
@@ -75,8 +96,8 @@ export default function TwoFa(): JSX.Element {
         </>
       ) : (
         <>
-          <ul className="font-poppins text-gray-400 text-2xl list-disc">
-            <p>Follow these steps:</p>
+          <ul className="font-roboto list-inside text-gray-400 text-2xl list-disc">
+            <p className="mb-4 text-3xl">Follow these steps:</p>
             <li>Install any auth app (eg. Google Authenticator)</li>
             <li>Scan the QR code</li>
             <li>Enter the 6 digit code below</li>
