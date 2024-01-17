@@ -9,6 +9,7 @@ import {
   getTwoFAStatus,
   disable2FA as disable2FAAuth
 } from "@renderer/lib/user";
+import toast from "react-hot-toast";
 
 export default function TwoFa(): JSX.Element {
   const [is2faEnabled, setIs2faEnabled] = useState<boolean>(false);
@@ -24,9 +25,14 @@ export default function TwoFa(): JSX.Element {
     if (!confirm("Are you sure you want to disable 2FA?")) {
       return;
     }
+
+    const toastId = toast.loading("Disabling 2FA...");
     const response = await disable2FAAuth();
     if (response) {
       setIs2faEnabled(false);
+      toast.success("Successfully disabled 2FA", {
+        id: toastId
+      });
     }
   }
 
@@ -35,21 +41,29 @@ export default function TwoFa(): JSX.Element {
       return;
     }
 
+    const toastId = toast.loading("Enabling 2FA...");
     const response = await enableTwoFA(secret, twoFACode);
     if (response) {
+      toast.success("Successfully enabled 2FA", {
+        id: toastId
+      });
       setIs2faEnabled(true);
+    } else {
+      toast.error("Failed to enable 2FA", {
+        id: toastId
+      });
     }
   }
 
   async function getQrCode(): Promise<void> {
     const res = await getTwoFAStatus();
-    if (!res) {
+    if (res) {
       setIs2faEnabled(true);
     } else {
       const response = await getTwoFAQrCodeUrl();
       if (response.status === 200) {
-        setQrCode(response.data.url.toString().split("=")[1]);
-        setSecret(response.data.url);
+        setQrCode(response.data.url);
+        setSecret(response.data.url.toString().split("=")[1]);
       }
     }
   }
