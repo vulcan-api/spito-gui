@@ -40,6 +40,7 @@ export default function Rulesets(): JSX.Element {
           isUserEditing={true}
           closeModal={closeEditModal}
           rulesetId={editedRulesetId}
+          isUserEditingEnvironment={false}
         />
       )}
       {isFetching ? (

@@ -6,6 +6,7 @@ import Toaster from "./Layout/Toaster";
 import Profile from "./Pages/Profile/Profile";
 import RulesetPage from "./Pages/Ruleset/RulesetPage";
 import Settings from "./Pages/Settings/Settings";
+import EnvironmentPage from "./Pages/Environment/EnvironmentPage";
 
 function App(): JSX.Element | null {
   const element = useRoutes([
@@ -32,6 +33,10 @@ function App(): JSX.Element | null {
         {
           path: "/ruleset/:rulesetId",
           element: <RulesetPage />
+        },
+        {
+          path: "/environment/:environmentId",
+          element: <EnvironmentPage />
         },
         {
           path: "/settings",

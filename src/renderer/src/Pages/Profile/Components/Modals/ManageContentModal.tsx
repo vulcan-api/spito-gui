@@ -4,15 +4,20 @@ import { TbX } from "react-icons/tb";
 import NewRuleset from "./NewRuleset";
 import NewEnviroment from "./NewEnviroment";
 import EditRulesetModal from "./EditRulesetModal";
+import EditEnvironmentModal from "./EditEnvironmentModal";
 
 export default function ManageContentModal({
   closeModal,
   isUserEditing,
-  rulesetId = 0
+  isUserEditingEnvironment,
+  rulesetId = 0,
+  environmentId = 0
 }: {
   closeModal: () => void;
   isUserEditing?: boolean;
+  isUserEditingEnvironment?: boolean;
   rulesetId?: number;
+  environmentId?: number;
 }): JSX.Element {
   const [isUserAddingRuleset, setIsUserAddingRuleset] = useState<boolean>(true);
 
@@ -51,7 +56,7 @@ export default function ManageContentModal({
             className="absolute right-4 top-4 text-3xl cursor-pointer hover:text-sky-500 transition-colors"
           />
           {isUserEditing ? (
-            <p className="text-2xl font-roboto">Edit Ruleset</p>
+            <p className="text-2xl font-roboto">Edit {isUserEditingEnvironment ? "Environment" : "Ruleset"}</p>
           ) : (
             <>
               <div className="flex items-center relative w-full">
@@ -68,11 +73,15 @@ export default function ManageContentModal({
             </>
           )}
           {isUserEditing ? (
-            <EditRulesetModal closeModal={closeModal} rulesetId={rulesetId} />
+            !isUserEditingEnvironment ? (
+              <EditRulesetModal closeModal={closeModal} rulesetId={rulesetId} />
+            ) : (
+              <EditEnvironmentModal closeModal={closeModal} environmentId={environmentId} />
+            )
           ) : isUserAddingRuleset ? (
             <NewRuleset closeModal={closeModal} />
           ) : (
-            <NewEnviroment closeModal={closeModal}/>
+            <NewEnviroment closeModal={closeModal} />
           )}
         </motion.div>
       </div>
