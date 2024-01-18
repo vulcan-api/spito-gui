@@ -55,7 +55,6 @@ interface tagInterface {
 interface newRuleset {
   description?: string;
   url: string;
-  branch: string;
   tags?: string[];
 }
 interface TagInputProps {

@@ -28,16 +28,23 @@ export default function ChangePassword(): JSX.Element {
       return;
     }
 
+    const toastId = toast.loading("Changing password...");
     const status = await changePassword(
       currentPasswordRef.current.value,
       newPasswordRef.current.value
     );
     if (status === 200) {
-      toast.success("Password changed successfully");
+      toast.success("Password changed successfully", {
+        id: toastId,
+      });
     } else if (status === 403) {
-      toast.error("Current password is incorrect");
+      toast.error("Current password is incorrect", {
+        id: toastId,
+      });
     } else {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong", {
+        id: toastId,
+      });
     }
   };
 
@@ -47,13 +54,16 @@ export default function ChangePassword(): JSX.Element {
       animate={{ opacity: 1, transition: { duration: 0.5 } }}
       exit={{ opacity: 0 }}
       key="main"
-      className="flex justify-center items-center pb-28 gap-64 flex-1"
+      className="flex justify-center items-center flex-1"
     >
-      <div className="w-fit flex flex-col gap-4">
+      <div className="flex items-center flex-col gap-4">
+        <p className="text-4xl text-gray-400 font-roboto mb-8">Change password</p>
+        <p className="text-xl text-bgLighter font-roboto text-left w-full">Enter current password:</p>
         <Input placeholder="Current password" ref={currentPasswordRef} type="password" />
+        <p className="text-xl text-bgLighter font-roboto text-left w-full mt-8">Enter new password:</p>
         <Input placeholder="New password" ref={newPasswordRef} type="password" />
         <Input placeholder="Repeat new password" ref={repeatNewPasswordRef} type="password" />
-        <Button theme="default" className="!w-full" onClick={handleSubmit}>
+        <Button theme="default" className="!w-full mt-8" onClick={handleSubmit}>
           Save
         </Button>
       </div>

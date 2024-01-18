@@ -12,7 +12,6 @@ export default function NewRuleset({ closeModal }: { closeModal: () => void }): 
   const [stage, setStage] = useState<number>(1);
   const [tags, setTags] = useState<Array<tagInterface>>([]);
   const [address, setAddress] = useState<string>("");
-  const [branch, setBranch] = useState<string>("main");
   const [description, setDescription] = useState<string>();
 
   async function formSubmitHandler(): Promise<void> {
@@ -27,7 +26,6 @@ export default function NewRuleset({ closeModal }: { closeModal: () => void }): 
     const toastId = toast.loading("Creating ruleset...");
     const res = await createRuleset({
       url: address,
-      branch,
       description: description,
       tags: tagNames
     });
@@ -100,12 +98,6 @@ export default function NewRuleset({ closeModal }: { closeModal: () => void }): 
               <span className="my-4 text-center font-poppins text-borderGray">
                 Eg. https://github.com/avorty/spito-ruleset
               </span>
-              <Input
-                placeholder="Branch"
-                name="branch"
-                onChange={(e) => setBranch(e.target.value)}
-                value={branch}
-              />
             </motion.div>
           )}
           {stage === 2 && (

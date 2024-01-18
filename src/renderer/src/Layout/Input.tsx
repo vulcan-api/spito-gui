@@ -48,12 +48,12 @@ export default forwardRef(function Input(
       {type === "password" &&
         (isPasswordHidden ? (
           <BsEyeSlashFill
-            className="text-2xl cursor-pointer absolute right-2 top-4"
+            className="text-2xl cursor-pointer absolute text-white right-2 top-4"
             onClick={changeVisibility}
           />
         ) : (
           <BsEyeFill
-            className="text-2xl cursor-pointer absolute right-2 top-4"
+            className="text-2xl cursor-pointer absolute text-white right-2 top-4"
             onClick={changeVisibility}
           />
         ))}
