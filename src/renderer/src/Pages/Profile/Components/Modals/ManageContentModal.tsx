@@ -72,7 +72,7 @@ export default function ManageContentModal({
           ) : isUserAddingRuleset ? (
             <NewRuleset closeModal={closeModal} />
           ) : (
-            <NewEnviroment />
+            <NewEnviroment closeModal={closeModal}/>
           )}
         </motion.div>
       </div>

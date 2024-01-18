@@ -113,6 +113,25 @@ interface TwoFAQrCode {
   url: string;
 }
 
+interface newEnvironment {
+  name: string;
+  description?: string;
+  isPrivate: boolean;
+  tags: Array<string>;
+}
+
+interface environment {
+  id: number;
+  name: string;
+  description?: string;
+  tags: Array<tagInterface>;
+  createdAt: Date;
+  updatedAt: Date;
+  isLiked: boolean;
+  likes: number;
+  user: UserInfo;
+}
+
 export type {
   InputProps,
   ButtonProps,
@@ -128,5 +147,7 @@ export type {
   Token,
   currentPageType,
   backendResponse,
-  TwoFAQrCode
+  TwoFAQrCode,
+  newEnvironment,
+  environment
 };
