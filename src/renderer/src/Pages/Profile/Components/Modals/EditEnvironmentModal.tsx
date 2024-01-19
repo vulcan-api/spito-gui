@@ -41,7 +41,7 @@ export default function EditEnvironmentModal({
     const toastId = toast.loading("Editing enviroment...");
     const res = await updateEnvironment(environmentId, data);
     if (res) {
-      toast.success("Enviroment created successfully", {
+      toast.success("Enviroment edited successfully", {
         id: toastId
       });
       closeModal();
@@ -59,7 +59,7 @@ export default function EditEnvironmentModal({
       setEnviromentName(res.data.name);
       setDescription(res.data.description || "");
       setTags(res.data.tags);
-      //   setIsPrivate(res.data.isPrivate);
+      setIsPrivate(res.data.isPrivate || false);
       setIsFetching(false);
     } else {
       toast.error("Something went wrong");

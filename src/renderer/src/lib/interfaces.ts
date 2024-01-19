@@ -97,6 +97,7 @@ interface searchBackend {
   rulesets: Array<ruleset>;
   users: Array<UserInfo>;
   topResults: Array<unknown>;
+  environments: Array<environment>;
 }
 
 interface Token {
@@ -130,6 +131,7 @@ interface environment {
   isLiked: boolean;
   likes: number;
   user: UserInfo;
+  isPrivate?: boolean;
 }
 
 export type {

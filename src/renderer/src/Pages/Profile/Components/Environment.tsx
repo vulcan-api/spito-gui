@@ -15,12 +15,16 @@ export default function Environment({
   environment,
   setEditedEnvironmentId,
   setIsUserEditingEnvironment,
-  index
+  index,
+  className = "",
+  where = "profile"
 }: {
   environment: environment;
   setEditedEnvironmentId: React.Dispatch<React.SetStateAction<number>>;
   setIsUserEditingEnvironment: React.Dispatch<React.SetStateAction<boolean>>;
   index: number;
+  className?: string;
+  where?: "profile" | "page";
 }): JSX.Element {
   const [likesCount, setLikesCount] = useState<number>(environment.likes || 0);
   const [isLiked, setIsLiked] = useState<boolean>(environment.isLiked || false);
@@ -65,19 +69,25 @@ export default function Environment({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0, transition: { delay: 0.1 * index, duration: 0.2 } }}
       key={environment.id}
-      className="flex w-full rounded-lg h-64 shadow-darkMain border-2 border-bgLight relative overflow-hidden"
+      className={`${className} w-full flex rounded-lg h-64 shadow-darkMain border-2 border-bgLight relative overflow-hidden`}
     >
       <Avatar className="aspect-square" name={environment.name} size="256" />
       <div className="flex p-4 flex-col justify-between gap-4 w-full h-full">
         <div className="flex justify-between">
-          <Link
-            className="hover:underline"
-            title="Environment details"
-            to={`/environment/${environment.id}`}
-          >
-            {environment.name[0].toUpperCase() + environment.name.slice(1)}
-          </Link>
-          <span className="flex flex-col gap-2 text-gray-500 font-poppins">
+          {where === "profile" ? (
+            <Link
+              className="hover:underline text-xl font-roboto text-gray-400"
+              title="Environment details"
+              to={`/environment/${environment.id}`}
+            >
+              {environment.name[0].toUpperCase() + environment.name.slice(1)}
+            </Link>
+          ) : (
+            <p className="text-xl font-roboto text-gray-400">
+              {environment.name[0].toUpperCase() + environment.name.slice(1)}
+            </p>
+          )}
+          <span className="flex flex-col items-end gap-2 text-gray-500 font-poppins text-lg">
             <p>Created: {formatDistanceToNow(environment.createdAt, { addSuffix: true })}</p>
             {environment.updatedAt !== environment.createdAt && (
               <p>Updated: {formatDistanceToNow(environment.updatedAt, { addSuffix: true })}</p>

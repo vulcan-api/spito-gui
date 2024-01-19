@@ -1,3 +1,4 @@
+import EnvironmentResult from "./EnvironmentResults";
 import RuleResult from "./RuleResult";
 import RulesetResult from "./RulesetResult";
 import UserResult from "./UserResult";
@@ -48,6 +49,20 @@ export default function SearchResults({ results }: { results: searchBackend }): 
           <p className="text-left w-full text-xl">Rulesets:</p>
           {results.rulesets.map((ruleset) => (
             <RulesetResult ruleset={ruleset} key={ruleset.id} />
+          ))}
+        </>
+      )}
+      {results.rulesets.length > 0 && (
+        <>
+          {(results.environments.length > 0 ||
+            results.rules.length > 0 ||
+            results.users.length > 0 ||
+            results.topResults.length > 0) && (
+            <div className="w-full h-[1px] bg-borderGray rounded-full" />
+          )}
+          <p className="text-left w-full text-xl">Environments:</p>
+          {results.environments.map((environment) => (
+            <EnvironmentResult environment={environment} key={environment.id} />
           ))}
         </>
       )}

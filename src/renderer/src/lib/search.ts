@@ -1,10 +1,10 @@
 import { backendRequest } from "./request";
-import { searchBackend as searchBackendInterface } from "./interfaces";
+import { backendResponse, searchBackend as searchBackendInterface } from "./interfaces";
 
-export const searchBackend = async (query: string): Promise<searchBackendInterface> => {
+export const searchBackend = async (query: string): Promise<backendResponse<searchBackendInterface>> => {
   const response = await backendRequest(`search?query=${query}`, "GET");
-  if (response.status === 200) {
-    return response.json();
+  return {
+    status: response.status,
+    data: await response.json(),
   }
-  throw new Error("Failed to search");
 };

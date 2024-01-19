@@ -6,7 +6,7 @@ export default function RulesetResult({ ruleset }: { ruleset: ruleset }): JSX.El
   return (
     <Link to={`/ruleset/${ruleset.id}`} className="w-full flex items-center gap-4 text-2xl">
       <TbFolder />
-      <p>{ruleset.name}</p>
+      <p>{ruleset.name[0].toUpperCase() + ruleset.name.slice(1)}</p>
     </Link>
   );
 }
