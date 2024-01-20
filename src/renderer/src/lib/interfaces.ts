@@ -132,6 +132,7 @@ interface environment {
   likes: number;
   user: UserInfo;
   isPrivate?: boolean;
+  rules: Array<rule>;
 }
 
 export type {

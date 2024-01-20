@@ -6,9 +6,17 @@ import { motion } from "framer-motion";
 import { useAtomValue } from "jotai";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { TbStar, TbStarFilled } from "react-icons/tb";
+import { TbPlus, TbStar, TbStarFilled } from "react-icons/tb";
 
-export default function Rule({ rule, i }: { rule: rule; i: number }): JSX.Element {
+export default function Rule({
+  rule,
+  i,
+  addRuleToEnvironment
+}: {
+  rule: rule;
+  i: number;
+  addRuleToEnvironment?: (ruleId) => void;
+}): JSX.Element {
   const [isLiked, setIsLiked] = useState<boolean>(rule.isLiked || false);
   const [likesCount, setLikesCount] = useState<number>(rule.likes || 0);
   const loggedUserData = useAtomValue(userAtom);
@@ -35,24 +43,22 @@ export default function Rule({ rule, i }: { rule: rule; i: number }): JSX.Elemen
       className="text-xl font-poppins shadow-darkMain border-2 border-bgLight rounded-lg p-4 flex flex-col gap-4 text-gray-400"
     >
       <span className="flex items-center justify-between">
-        <a
-          href={rule.path}
-          target="_blank"
-          className="hover:underline text-2xl font-roboto"
-          title={rule.path}
-          rel="noreferrer"
-        >
-          {rule.name}
-        </a>
-        <span className="flex items-center gap-2 cursor-pointer" onClick={changeRuleLikeStatus}>
+        <span className="text-2xl font-roboto">{rule.name}</span>
+        <span className="flex items-center gap-2 cursor-pointer">
           {likesCount}
           {isLiked ? (
-            <span className="relative">
+            <span className="relative" onClick={changeRuleLikeStatus}>
               <TbStarFilled className="text-yellow-500 cursor-pointer" />
               <TbStarFilled className="text-yellow-500 cursor-pointer animate-ping-once absolute inset-0" />
             </span>
           ) : (
-            <TbStar className="text-yellow-500 cursor-pointer" />
+            <TbStar className="text-yellow-500 cursor-pointer" onClick={changeRuleLikeStatus} />
+          )}
+          {addRuleToEnvironment && (
+            <TbPlus
+              className="text-gray-400 cursor-pointer hover:text-sky-400 transition-colors"
+              onClick={() => addRuleToEnvironment(rule.id)}
+            />
           )}
         </span>
       </span>

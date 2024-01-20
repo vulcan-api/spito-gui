@@ -24,17 +24,32 @@ export const likeOrDislike = async (environmentId: number): Promise<boolean> => 
 export const deleteEnvironment = async (environmentId: number): Promise<boolean> => {
   const response = await backendRequest(`environment/${environmentId}`, "DELETE");
   return response.ok;
-}
+};
 
-export const updateEnvironment = async (environmentId: number, data: newEnvironment): Promise<boolean> => {
+export const updateEnvironment = async (
+  environmentId: number,
+  data: newEnvironment
+): Promise<boolean> => {
   const response = await backendRequest(`environment/${environmentId}`, "PUT", data);
   return response.ok;
-}
+};
 
-export const getEnvironmentById = async (environmentId: number): Promise<backendResponse<environment>> => {
+export const getEnvironmentById = async (
+  environmentId: number
+): Promise<backendResponse<environment>> => {
   const response = await backendRequest(`environment/${environmentId}`, "GET");
   return {
     status: response.status,
     data: await response.json()
   };
-}
+};
+
+export const addRuleToEnv = async (
+  environmentId: number,
+  ruleId: number
+): Promise<number> => {
+  const response = await backendRequest(`environment/${environmentId}/rules/add`, "POST", {
+    ruleId
+  });
+  return response.status;
+};
