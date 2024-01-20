@@ -8,6 +8,7 @@ import Button from "@renderer/Layout/Button";
 import { getRulesetById, updateRuleset } from "@renderer/lib/user";
 import Loader from "@renderer/Layout/Loader";
 import toast from "react-hot-toast";
+import { twMerge } from "tailwind-merge";
 
 export default function EditRulesetModal({
   closeModal,
@@ -58,7 +59,6 @@ export default function EditRulesetModal({
     const res = await updateRuleset(
       {
         url: address,
-        branch,
         description,
         tags: tagNames
       },
@@ -82,27 +82,34 @@ export default function EditRulesetModal({
           1
         </div>
         <div
-          className={`w-16 ${
-            stage >= 2 ? "bg-sky-600" : "bg-borderGray"
-          } transition-colors duration-300 h-1`}
+          className={twMerge(
+            "w-16",
+            stage >= 2 ? "bg-sky-600" : "bg-borderGray",
+            "transition-colors duration-300 h-1"
+          )}
         />
         <div
-          className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 font-poppins cursor-pointer ${
-            stage >= 2 ? "bg-sky-600" : "bg-borderGray"
-          }`}
+          className={twMerge(
+            "w-16",
+            stage >= 2 ? "bg-sky-600" : "bg-borderGray",
+            "transition-colors duration-300 h-1"
+          )}
           onClick={() => setStage(2)}
         >
           2
         </div>
         <div
-          className={`w-16 ${
-            stage === 3 ? "bg-sky-600" : "bg-borderGray"
-          } transition-colors duration-300 h-1`}
+          className={twMerge(
+            "w-16",
+            stage === 3 ? "bg-sky-600" : "bg-borderGray",
+            "transition-colors duration-300 h-1"
+          )}
         />
         <div
-          className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 font-poppins cursor-pointer ${
+          className={twMerge(
+            "w-8 h-8 rounded-full bg-borderGray flex items-center justify-center font-poppins cursor-pointer",
             stage === 3 ? "bg-sky-600" : "bg-borderGray"
-          }`}
+          )}
           onClick={() => setStage(3)}
         >
           3

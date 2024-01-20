@@ -2,6 +2,7 @@ import Tag from "@renderer/Layout/Tag";
 import { TagInputProps, tagInterface } from "@renderer/lib/interfaces";
 import { getTagHints } from "@renderer/lib/user";
 import { RefObject, useEffect, useRef, useState } from "react";
+import { twMerge } from "tailwind-merge";
 
 export default function TagInput({
   id,
@@ -59,9 +60,9 @@ export default function TagInput({
     }
   }
 
-  function detectOnAbortingSearch(ref: RefObject<HTMLDivElement>) {
+  function detectOnAbortingSearch(ref: RefObject<HTMLDivElement>): void {
     useEffect(() => {
-      function handleClickOutside(event: Event) {
+      function handleClickOutside(event: Event): void {
         if (ref.current && !ref.current.contains(event.target as Node)) {
           setIsUserSearching(false);
         }
@@ -76,7 +77,10 @@ export default function TagInput({
   return (
     <>
       <div
-        className={`flex items-center flex-wrap gap-2 max-h-32 mb-4 overflow-y-auto ${containerClassName}`}
+        className={twMerge(
+          "flex items-center flex-wrap gap-2 max-h-32 mb-4 overflow-y-auto",
+          containerClassName
+        )}
       >
         {tags.length ? (
           tags.map((tag) => <Tag key={tag.name} tag={tag} onDelete={() => deleteTag(tag)} />)
@@ -84,12 +88,15 @@ export default function TagInput({
           <p className="text-center text-gray-500 w-full">Tags will appear here!</p>
         )}
       </div>
-      <div className={`relative ${containerClassName}`} ref={wrapperRef}>
+      <div className={twMerge("relative", containerClassName)} ref={wrapperRef}>
         <input
           type="text"
-          className={`${className} font-poppins block pl-2.5 pb-2.5 pt-4 pr-12 w-full text-lg text-white bg-transparent ${
-            isUserSearching ? "rounded-t-lg" : "rounded-lg"
-          } border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-gray-500`}
+          className={twMerge(
+            `${className} font-poppins block pl-2.5 pb-2.5 pt-4 pr-12 w-full text-lg text-white bg-transparent ${
+              isUserSearching ? "rounded-t-lg" : "rounded-lg"
+            } border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-gray-500`,
+            className
+          )}
           readOnly={readonly}
           name={name}
           id={id || placeholder}
@@ -106,9 +113,10 @@ export default function TagInput({
           {placeholder}
         </label>
         <div
-          className={`${
+          className={twMerge(
+            "absolute w-full max-h-32 overflow-y-auto rounded-b-lg border-2 border-t-0 border-sky-500",
             isUserSearching ? "block" : "hidden"
-          } absolute top-full left-0 w-full bg-bgColor overflow-hidden border-2 border-t-0 border-sky-500 rounded-b-lg font-poppins selection:bg-transparent`}
+          )}
         >
           {tagHints.length ? (
             tagHints.map((tag) => (

@@ -11,6 +11,7 @@ import { UserInfo } from "@renderer/lib/interfaces";
 import { logout } from "@renderer/lib/auth";
 import toast from "react-hot-toast";
 import AvatarComponent from "@renderer/Compontents/AvatarComponent";
+import { twMerge } from "tailwind-merge";
 
 export default function Header(): JSX.Element {
   const [isUserLoggingIn, setIsUserLoggingIn] = useState<boolean>(false);
@@ -18,9 +19,10 @@ export default function Header(): JSX.Element {
   const [user, setUser] = useAtom(userAtom);
 
   const menuLinkClass = (isActive: boolean): string => {
-    return `text-2xl font-roboto uppercase transition-all cursor-pointer text-center ${
+    return twMerge(
+      "text-2xl font-roboto uppercase transition duration-300 ease-in-out hover:opacity-80 cursor-pointer text-center",
       isActive ? "text-sky-400" : "text-gray-500"
-    }`;
+    );
   };
 
   function handleLoginModalOpen(): void {
@@ -64,7 +66,6 @@ export default function Header(): JSX.Element {
       <header className="w-screen py-4 px-8 flex items-center justify-between lg:gap-16 gap-8">
         <Link to="/" className="text-4xl uppercase tracking-widest font-roboto text-sky-400">
           <span className="mr-3">Spito</span>
-          <span>GUI</span>
         </Link>
         <div className="w-full flex items-center justify-between gap-8">
           <Searchbar />
@@ -73,14 +74,14 @@ export default function Header(): JSX.Element {
               Marketplace
             </NavLink>
             <NavLink to="/myenvironments" className={({ isActive }) => menuLinkClass(isActive)}>
-              My Enviroments
+              My Environments
             </NavLink>
             {user?.id ? (
               <>
                 <NavLink
                   to={`/profile/${user.id}`}
                   className={({ isActive }) => {
-                    return menuLinkClass(isActive) + " flex items-center gap-2 normal-case";
+                    return twMerge(menuLinkClass(isActive), "flex items-center gap-2 normal-case");
                   }}
                 >
                   <AvatarComponent size="small" userId={user.id} username={user.username} />
@@ -132,9 +133,10 @@ export default function Header(): JSX.Element {
             )}
           </AnimatePresence>
           <div
-            className={`xl:hidden flex flex-col items-center gap-8 px-8 py-16 md:w-1/2 w-full h-full fixed bg-bgColor z-20 ${
+            className={twMerge(
+              "xl:hidden flex flex-col items-center gap-8 px-8 py-16 md:w-1/2 w-full h-full fixed bg-bgColor z-20 transition-all duration-500 top-0 border-l-2 md:border-sky-500 border-transparent",
               isMenuOpen ? "right-0 " : "-right-full"
-            } transition-all duration-500 top-0 border-l-2 md:border-sky-500 border-transparent`}
+            )}
           >
             <h2 className="text-4xl text-gray-100 font-roboto">Menu</h2>
             <nav className="flex flex-col gap-8 items-center">

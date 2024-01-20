@@ -1,10 +1,10 @@
+import { twMerge } from "tailwind-merge";
+
 export default function Loader({ size }: { size?: string }): JSX.Element {
   return (
     <svg
       aria-hidden="true"
-      className={`${
-        size || "w-16 h-16"
-      } mx-auto text-bgLight animate-spin dark:text-bgLight fill-sky-500`}
+      className={twMerge("animate-spin mx-auto text-bgLight fill-sky-500", size || "w-16 h-16")}
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

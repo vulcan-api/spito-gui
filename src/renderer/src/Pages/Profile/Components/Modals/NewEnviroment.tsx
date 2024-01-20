@@ -6,6 +6,7 @@ import Input from "@renderer/Layout/Input";
 import { tagInterface } from "@renderer/lib/interfaces";
 import Checkbox from "@renderer/Layout/Checkbox";
 import { TbArrowLeft, TbArrowRight, TbDeviceFloppy } from "react-icons/tb";
+import { twMerge } from "tailwind-merge";
 
 export default function NewEnviroment(): JSX.Element {
   const [stage, setStage] = useState<number>(1);
@@ -28,27 +29,31 @@ export default function NewEnviroment(): JSX.Element {
           1
         </div>
         <div
-          className={`w-16 ${
+          className={twMerge(
+            "w-16 transition-colors duration-300 h-1",
             stage >= 2 ? "bg-sky-600" : "bg-borderGray"
-          } transition-colors duration-300 h-1`}
+          )}
         />
         <div
-          className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 font-poppins cursor-pointer ${
+          className={twMerge(
+            "w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 font-poppins cursor-pointer",
             stage >= 2 ? "bg-sky-600" : "bg-borderGray"
-          }`}
+          )}
           onClick={() => setStage(2)}
         >
           2
         </div>
         <div
-          className={`w-16 ${
-            stage === 3 ? "bg-sky-600" : "bg-borderGray"
-          } transition-colors duration-300 h-1`}
+          className={twMerge(
+            "w-16 transition-colors duration-300 h-1",
+            stage >= 2 ? "bg-sky-600" : "bg-borderGray"
+          )}
         />
         <div
-          className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 font-poppins cursor-pointer ${
+          className={twMerge(
+            "w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 font-poppins cursor-pointer",
             stage === 3 ? "bg-sky-600" : "bg-borderGray"
-          }`}
+          )}
           onClick={() => setStage(3)}
         >
           3

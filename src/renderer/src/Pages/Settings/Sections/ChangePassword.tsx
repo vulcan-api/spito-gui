@@ -35,15 +35,15 @@ export default function ChangePassword(): JSX.Element {
     );
     if (status === 200) {
       toast.success("Password changed successfully", {
-        id: toastId,
+        id: toastId
       });
     } else if (status === 403) {
       toast.error("Current password is incorrect", {
-        id: toastId,
+        id: toastId
       });
     } else {
       toast.error("Something went wrong", {
-        id: toastId,
+        id: toastId
       });
     }
   };
@@ -58,9 +58,13 @@ export default function ChangePassword(): JSX.Element {
     >
       <div className="flex items-center flex-col gap-4">
         <p className="text-4xl text-gray-400 font-roboto mb-8">Change password</p>
-        <p className="text-xl text-bgLighter font-roboto text-left w-full">Enter current password:</p>
+        <p className="text-xl text-bgLighter font-roboto text-left w-full">
+          Enter current password:
+        </p>
         <Input placeholder="Current password" ref={currentPasswordRef} type="password" />
-        <p className="text-xl text-bgLighter font-roboto text-left w-full mt-8">Enter new password:</p>
+        <p className="text-xl text-bgLighter font-roboto text-left w-full mt-8">
+          Enter new password:
+        </p>
         <Input placeholder="New password" ref={newPasswordRef} type="password" />
         <Input placeholder="Repeat new password" ref={repeatNewPasswordRef} type="password" />
         <Button theme="default" className="!w-full mt-8" onClick={handleSubmit}>

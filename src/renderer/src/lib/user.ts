@@ -111,7 +111,7 @@ export const enableTwoFA = async (secret: string, code: string): Promise<boolean
 export const getTwoFAStatus = async (): Promise<boolean> => {
   const response = await backendRequest("auth/totp/is-enabled", "GET");
   return (await response.json()).is2faEnabled;
-}
+};
 
 export const getTwoFAQrCodeUrl = async (): Promise<backendResponse<TwoFAQrCode>> => {
   const response = await backendRequest("auth/totp/code", "GET");
