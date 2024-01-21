@@ -12,6 +12,7 @@ import Rulesets from "./Pages/Rulesets";
 import Environments from "./Pages/Environments";
 import ManageContentModal from "./Components/Modals/ManageContentModal";
 import AvatarComponent from "@renderer/Compontents/AvatarComponent";
+import { twMerge } from "tailwind-merge";
 
 type site = "Main" | "Rules" | "Rulesets" | "Environments";
 
@@ -43,11 +44,12 @@ export default function Profile(): JSX.Element {
   }
 
   function tabClasses(tab: site): string {
-    return `font-roboto transition-all px-8 py-2 w-full border-b-2 flex items-center gap-2 justify-center ${
+    return twMerge(
+      "font-roboto transition-all px-8 py-2 w-full border-b-2 flex items-center gap-2 justify-center",
       site === tab
         ? "text-gray-300 border-sky-400"
         : "text-gray-400 cursor-pointer hover:border-sky-700 border-bgLight hover:bg-bgLight"
-    }`;
+    );
   }
 
   function displayCorrectSite(): JSX.Element {

@@ -70,8 +70,15 @@ export const updateRuleset = async (data: newRuleset, rulesetId: number): Promis
   return response.ok;
 };
 
-export const fetchUserRulests = async (userId: number): Promise<Array<ruleset>> => {
-  const response = await backendRequest(`ruleset/user/${userId}`, "GET");
+export const fetchUserRulests = async (
+  userId: number,
+  skip = 0,
+  take = 10
+): Promise<{
+  data: Array<ruleset>;
+  count: number;
+}> => {
+  const response = await backendRequest(`ruleset/user/${userId}?skip=${skip}&take=${take}`, "GET");
   if (response.status === 200) {
     return await response.json();
   }
