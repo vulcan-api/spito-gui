@@ -42,8 +42,9 @@ export default function Ruleset({
               target="_blank"
               className="hover:underline text-2xl text-gray-400 font-roboto"
               title={ruleset.url}
+              rel="noreferrer"
             >
-              {ruleset.name[0].toUpperCase() + ruleset.name.slice(1)}
+              {ruleset.name}
             </a>
           ) : (
             <Link
@@ -51,7 +52,7 @@ export default function Ruleset({
               title={ruleset.url}
               className="hover:underline text-2xl text-gray-400 font-roboto"
             >
-              {ruleset.name[0].toUpperCase() + ruleset.name.slice(1)}
+              {ruleset.name}
             </Link>
           )}
           <div className="flex items-center gap-2">
@@ -102,15 +103,14 @@ export default function Ruleset({
                   className="text-borderGray hover:text-gray-500  transition-all cursor-pointer"
                 />
               }
-              children={
-                <div className="w-2/3 mx-auto h-full grid grid-cols-3 gap-8 mt-8 text-gray-400">
-                  <AnimatePresence>
-                    {ruleset.rules.length > 0 &&
-                      ruleset.rules.map((rule, i) => <Rule rule={rule} i={i} key={rule.id} />)}
-                  </AnimatePresence>
-                </div>
-              }
-            />
+            >
+              <div className="w-2/3 mx-auto h-full grid grid-cols-3 gap-8 mt-8 text-gray-400">
+                <AnimatePresence>
+                  {ruleset.rules.length > 0 &&
+                    ruleset.rules.map((rule, i) => <Rule rule={rule} i={i} key={rule.id} />)}
+                </AnimatePresence>
+              </div>
+            </DrawerComponent>
           )}
         </p>
       </span>
