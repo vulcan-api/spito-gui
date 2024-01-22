@@ -100,7 +100,7 @@ export default function EnvironmentPage(): JSX.Element {
       });
       setRules((prev) => prev.filter((r) => r.id !== ruleId));
     } else if (res === 409) {
-      toast.error("There is no such rule in environment!", {
+      toast.error("There is no such rule in the environment!", {
         id: toastId,
       });
     } else {
