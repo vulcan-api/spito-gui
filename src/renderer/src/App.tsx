@@ -23,7 +23,7 @@ function App(): JSX.Element | null {
           element: <h1>Marketplace</h1>
         },
         {
-          path: "/savedenvironments",
+          path: "/environments/saved",
           element: <h1>Saved Environments</h1>
         },
         {
