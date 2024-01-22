@@ -44,40 +44,28 @@ export const getEnvironmentById = async (
   };
 };
 
-export const addRuleToEnv = async (
-  environmentId: number,
-  ruleId: number
-): Promise<number> => {
+export const addRuleToEnv = async (environmentId: number, ruleId: number): Promise<number> => {
   const response = await backendRequest(`environment/${environmentId}/rules/add`, "POST", {
     ruleId
   });
   return response.status;
 };
 
-export const deleteRuleFromEnv = async (
-  environmentId: number,
-  ruleId: number
-): Promise<number> => {
+export const deleteRuleFromEnv = async (environmentId: number, ruleId: number): Promise<number> => {
   const response = await backendRequest(`environment/${environmentId}/rules/${ruleId}`, "DELETE");
   return response.status;
-}
+};
 
 export const updateEnvironmentLogo = async (
   environmentId: number,
   data: FormData
 ): Promise<boolean> => {
-  const response = await backendRequestWithFiles(
-    `environment/${environmentId}/logo`,
-    "PUT",
-    data
-  );
+  const response = await backendRequestWithFiles(`environment/${environmentId}/logo`, "PUT", data);
   return response.ok;
-}
+};
 
-export const getEnvironmentLogo = async (
-  environmentId: number
-): Promise<Blob | null> => {
+export const getEnvironmentLogo = async (environmentId: number): Promise<Blob | null> => {
   const response = await backendRequest(`environment/${environmentId}/logo`, "GET");
   if (!response.ok || response.status === 204) return null;
   return await response.blob();
-}
+};

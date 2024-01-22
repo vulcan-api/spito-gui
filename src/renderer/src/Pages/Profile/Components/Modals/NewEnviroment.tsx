@@ -18,12 +18,12 @@ export default function NewEnviroment({ closeModal }: { closeModal: () => void }
   const [isPrivate, setIsPrivate] = useState<boolean>(false);
 
   async function formSubmitHandler(): Promise<void> {
-    if (enviromentName.length < 3){
+    if (enviromentName.length < 3) {
       toast.error("Environment name must be at least 3 characters long");
       setStage(1);
       return;
     }
-    
+
     const data = {
       name: enviromentName,
       description: description,

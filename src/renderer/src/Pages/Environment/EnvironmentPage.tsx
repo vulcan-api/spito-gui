@@ -76,7 +76,7 @@ export default function EnvironmentPage(): JSX.Element {
     const res = await addRuleToEnv(+environmentId, ruleId);
     if (res === 201) {
       toast.success("Rule added to environment!", {
-        id: toastId,
+        id: toastId
       });
       const rule = searchRulesResults.find((rule) => rule.id === ruleId);
       rule && setRules((prev) => [...prev, rule]);
@@ -96,16 +96,16 @@ export default function EnvironmentPage(): JSX.Element {
     const status = await deleteRuleFromEnv(+environmentId, ruleId);
     if (res === 200) {
       toast.success("Rule deleted from the environment!", {
-        id: toastId,
+        id: toastId
       });
       setRules((prev) => prev.filter((r) => r.id !== ruleId));
     } else if (res === 409) {
       toast.error("There is no such rule in the environment!", {
-        id: toastId,
+        id: toastId
       });
     } else {
       toast.error("Something went wrong", {
-        id: toastId,
+        id: toastId
       });
     }
   }

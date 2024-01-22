@@ -13,7 +13,7 @@ export default function Searchbar(): JSX.Element {
     rulesets: [],
     users: [],
     topResults: [],
-    environments: [],
+    environments: []
   });
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const searchInputRef = useRef<HTMLInputElement>(null);

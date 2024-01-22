@@ -10,7 +10,7 @@ export default function EnvironmentResult({
   return (
     <Link to={`/environment/${environment.id}`} className="w-full flex items-center gap-4 text-2xl">
       <TbBriefcase />
-      <p>{environment.name[0].toUpperCase() + environment.name.slice(1)}</p>
+      <p>{environment.name}</p>
     </Link>
   );
 }

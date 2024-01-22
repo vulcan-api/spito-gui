@@ -142,14 +142,12 @@ export default function Environment({
             <Link
               className="hover:underline text-xl font-roboto text-gray-400"
               title="Environment details"
-              to={`/environment/${environment.id}`}
+              to={`/environments/${environment.id}`}
             >
-              {environment.name[0].toUpperCase() + environment.name.slice(1)}
+              {environment.name}
             </Link>
           ) : (
-            <p className="text-xl font-roboto text-gray-400">
-              {environment.name[0].toUpperCase() + environment.name.slice(1)}
-            </p>
+            <p className="text-xl font-roboto text-gray-400">{environment.name}</p>
           )}
           <span className="flex flex-col items-end gap-2 text-gray-500 font-poppins text-lg">
             <p className="text-sm">

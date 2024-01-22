@@ -56,7 +56,9 @@ export default function ManageContentModal({
             className="absolute right-4 top-4 text-3xl cursor-pointer hover:text-sky-500 transition-colors"
           />
           {isUserEditing ? (
-            <p className="text-2xl font-roboto">Edit {isUserEditingEnvironment ? "Environment" : "Ruleset"}</p>
+            <p className="text-2xl font-roboto">
+              Edit {isUserEditingEnvironment ? "Environment" : "Ruleset"}
+            </p>
           ) : (
             <>
               <div className="flex items-center relative w-full">
