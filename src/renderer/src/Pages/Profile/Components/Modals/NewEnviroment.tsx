@@ -19,7 +19,7 @@ export default function NewEnviroment({ closeModal }: { closeModal: () => void }
 
   async function formSubmitHandler(): Promise<void> {
     if (enviromentName.length < 3){
-      toast.error("Enviroment name must be at least 3 characters long");
+      toast.error("Environment name must be at least 3 characters long");
       setStage(1);
       return;
     }
