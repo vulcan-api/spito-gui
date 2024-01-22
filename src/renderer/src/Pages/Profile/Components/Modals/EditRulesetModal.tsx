@@ -127,7 +127,7 @@ export default function EditRulesetModal({
                 className={`w-full h-48 flex flex-col p-4`}
               >
                 <Input
-                  placeholder="Ruleset github repository address"
+                  placeholder="Ruleset git repository URL address"
                   name="address"
                   onChange={(e) => setAddress(e.target.value)}
                   value={address}
