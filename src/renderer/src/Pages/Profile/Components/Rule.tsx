@@ -6,16 +6,18 @@ import { motion } from "framer-motion";
 import { useAtomValue } from "jotai";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { TbPlus, TbStar, TbStarFilled } from "react-icons/tb";
+import { TbPlus, TbStar, TbStarFilled, TbTrash } from "react-icons/tb";
 
 export default function Rule({
   rule,
   i,
-  addRuleToEnvironment
+  addRuleToEnvironment,
+  deleteRuleFronEnvironment
 }: {
   rule: rule;
   i: number;
   addRuleToEnvironment?: (ruleId) => void;
+  deleteRuleFronEnvironment?: (ruleId) => void;
 }): JSX.Element {
   const [isLiked, setIsLiked] = useState<boolean>(rule.isLiked || false);
   const [likesCount, setLikesCount] = useState<number>(rule.likes || 0);
@@ -60,11 +62,19 @@ export default function Rule({
               onClick={() => addRuleToEnvironment(rule.id)}
             />
           )}
+          {deleteRuleFronEnvironment && (
+            <TbTrash
+              className="text-gray-400 cursor-pointer hover:text-sky-400 transition-colors"
+              onClick={() => deleteRuleFronEnvironment(rule.id)}
+            />
+          )}
         </span>
       </span>
-      <p>Created: {formatDistanceToNow(rule.createdAt, { addSuffix: true })}</p>
+      <p className="text-sm">Created: {formatDistanceToNow(rule.createdAt, { addSuffix: true })}</p>
       {rule.updatedAt !== rule.createdAt && rule.updatedAt && (
-        <p>Updated: {formatDistanceToNow(rule.updatedAt, { addSuffix: true })}</p>
+        <p className="text-sm">
+          Updated: {formatDistanceToNow(rule.updatedAt, { addSuffix: true })}
+        </p>
       )}
     </motion.div>
   );

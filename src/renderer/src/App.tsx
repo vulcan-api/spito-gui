@@ -23,8 +23,8 @@ function App(): JSX.Element | null {
           element: <h1>Marketplace</h1>
         },
         {
-          path: "/myenvironments",
-          element: <h1>My configs</h1>
+          path: "/savedenvironments",
+          element: <h1>Saved Environments</h1>
         },
         {
           path: "/profile/:userId",

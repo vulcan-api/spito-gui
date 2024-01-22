@@ -1,4 +1,4 @@
-import { addRuleToEnv, getEnvironmentById } from "@renderer/lib/environments";
+import { addRuleToEnv, deleteRuleFromEnv, getEnvironmentById } from "@renderer/lib/environments";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { environment, rule } from "@renderer/lib/interfaces";
@@ -72,17 +72,41 @@ export default function EnvironmentPage(): JSX.Element {
       toast.error("You need to be logged in to add rules to environments!");
       return;
     }
+    const toastId = toast.loading("Adding rule to environment...");
     const res = await addRuleToEnv(+environmentId, ruleId);
-    console.log(res);
     if (res === 201) {
-      toast.success("Rule added to environment!");
+      toast.success("Rule added to environment!", {
+        id: toastId,
+      });
       const rule = searchRulesResults.find((rule) => rule.id === ruleId);
       rule && setRules((prev) => [...prev, rule]);
-    }
-    if (res === 409) {
-      toast.error("Rule already exists in this environment!");
+    } else if (res === 409) {
+      toast.error("Rule already exists in this environment!", {
+        id: toastId
+      });
     } else {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong", {
+        id: toastId
+      });
+    }
+  }
+
+  async function deleteRuleFronEnvironment(ruleId: number): Promise<void> {
+    const toastId = toast.loading("Deleting rule from environment...");
+    const res = await deleteRuleFromEnv(+environmentId, ruleId);
+    if (res === 200) {
+      toast.success("Rule deleted from environment!", {
+        id: toastId,
+      });
+      setRules((prev) => prev.filter((r) => r.id !== ruleId));
+    } else if (res === 409) {
+      toast.error("There is no such rule in environment!", {
+        id: toastId,
+      });
+    } else {
+      toast.error("Something went wrong", {
+        id: toastId,
+      });
     }
   }
 
@@ -115,7 +139,12 @@ export default function EnvironmentPage(): JSX.Element {
             <p className="text-xl text-gray-400 font-roboto mx-4">Environment rules</p>
             <div className="grid grid-cols-3 gap-8 mx-4">
               {rules.map((rule, i) => (
-                <Rule rule={rule} i={i} key={rule.id} />
+                <Rule
+                  rule={rule}
+                  i={i}
+                  key={rule.id}
+                  deleteRuleFronEnvironment={deleteRuleFronEnvironment}
+                />
               ))}
             </div>
           </>
@@ -129,18 +158,29 @@ export default function EnvironmentPage(): JSX.Element {
           <p className="text-xl text-gray-400 font-roboto">Search for rules</p>
           <Input
             placeholder="Search for rules..."
-            className="shadow-darkMain w-1/2"
+            className="shadow-darkMain !w-1/2"
             ref={searchRef}
             onChange={searchForRules}
           />
           {isUserWaitingForRules ? (
             <Loader size="w-16 mt-4" />
-          ) : searchRulesResults.length > 0 ? (
-            <div className="grid grid-cols-3 gap-8 mt-4">
-              {searchRulesResults.map((rule, i) => (
-                <Rule rule={rule} i={i} key={rule.id} addRuleToEnvironment={addRuleToEnvironment} />
-              ))}
-            </div>
+          ) : searchRulesResults ? (
+            searchRulesResults.length > 0 ? (
+              <div className="grid grid-cols-3 gap-8 mt-4">
+                {searchRulesResults.map((rule, i) => (
+                  <Rule
+                    rule={rule}
+                    i={i}
+                    key={rule.id}
+                    addRuleToEnvironment={addRuleToEnvironment}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-gray-500 text-2xl font-poppins mt-10">
+                Start searching for rules!
+              </p>
+            )
           ) : (
             <p className="text-2xl text-borderGray font-roboto mx-auto">No rules found!</p>
           )}

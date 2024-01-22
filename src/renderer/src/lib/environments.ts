@@ -53,3 +53,11 @@ export const addRuleToEnv = async (
   });
   return response.status;
 };
+
+export const deleteRuleFromEnv = async (
+  environmentId: number,
+  ruleId: number
+): Promise<number> => {
+  const response = await backendRequest(`environment/${environmentId}/rules/${ruleId}`, "DELETE");
+  return response.status;
+}

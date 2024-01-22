@@ -88,9 +88,13 @@ export default function Environment({
             </p>
           )}
           <span className="flex flex-col items-end gap-2 text-gray-500 font-poppins text-lg">
-            <p>Created: {formatDistanceToNow(environment.createdAt, { addSuffix: true })}</p>
+            <p className="text-sm">
+              Created: {formatDistanceToNow(environment.createdAt, { addSuffix: true })}
+            </p>
             {environment.updatedAt !== environment.createdAt && (
-              <p>Updated: {formatDistanceToNow(environment.updatedAt, { addSuffix: true })}</p>
+              <p className="text-sm">
+                Updated: {formatDistanceToNow(environment.updatedAt, { addSuffix: true })}
+              </p>
             )}
             <span
               className="flex items-center justify-end gap-2 cursor-pointer"

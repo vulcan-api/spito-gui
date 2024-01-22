@@ -57,7 +57,9 @@ export default function Environments(): JSX.Element {
               />
             ))
           ) : (
-            <p className="text-gray-400 text-2xl font-roboto">No environments</p>
+            <p className="text-center text-gray-500 text-2xl font-poppins mt-10">
+              This user has no environments!
+            </p>
           )}
         </AnimatePresence>
       )}

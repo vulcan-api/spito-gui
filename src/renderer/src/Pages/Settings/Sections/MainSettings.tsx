@@ -169,6 +169,9 @@ export default function MainSettings(): JSX.Element {
               className="font-poppins h-72 block resize-none p-2 w-full text-lg duration-300 text-white bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-gray-500"
               onChange={(e) => setDescription(e.currentTarget.value)}
             />
+            <p className="text-sm text-center font-roboto text-gray-400">
+              Be causious while editing profile, offensive content will be deleted!
+            </p>
             <Button theme="default" className="!w-full" onClick={handleSaveSettings}>
               Save
             </Button>
