@@ -1,15 +1,20 @@
 import Tag from "@renderer/Layout/Tag";
 import { userAtom } from "@renderer/lib/atoms";
-import { deleteEnvironment, likeOrDislike } from "@renderer/lib/environments";
+import {
+  deleteEnvironment,
+  getEnvironmentLogo,
+  likeOrDislike,
+  updateEnvironmentLogo
+} from "@renderer/lib/environments";
 import { environment } from "@renderer/lib/interfaces";
 import { formatDistanceToNow } from "date-fns";
 import { motion } from "framer-motion";
 import { useAtomValue } from "jotai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Avatar from "react-avatar";
 import toast from "react-hot-toast";
 import { TbEdit, TbStar, TbStarFilled, TbTrash } from "react-icons/tb";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Environment({
   environment,
@@ -28,7 +33,22 @@ export default function Environment({
 }): JSX.Element {
   const [likesCount, setLikesCount] = useState<number>(environment.likes || 0);
   const [isLiked, setIsLiked] = useState<boolean>(environment.isLiked || false);
+  const [environmentLogo, setEnvironmentLogo] = useState<string>();
+
   const loggedUserData = useAtomValue(userAtom);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    getEnvLogo();
+  }, [getEnvLogo, environment.id]);
+
+  async function getEnvLogo(): Promise<void> {
+    const res = await getEnvironmentLogo(environment.id);
+    if (res) {
+      const url = URL.createObjectURL(new Blob([res], { type: "image/png" }));
+      setEnvironmentLogo(url);
+    }
+  }
 
   async function changeEnvironmentLikeStatus(): Promise<void> {
     if (isLiked) {
@@ -52,15 +72,40 @@ export default function Environment({
     }
   }
 
-  async function deleteRuleset() {
+  async function deleteEnv() {
     if (confirm("Are you sure you want to delete this environment?")) {
       const toastId = toast.loading("Deleting environment...");
       const res = await deleteEnvironment(environment.id);
       if (res) {
         toast.success("Environment deleted", { id: toastId });
+        navigate("/");
       } else {
         toast.error("Something went wrong", { id: toastId });
       }
+    }
+  }
+
+  async function changeLogo(e: React.ChangeEvent<HTMLInputElement>) {
+    if (!e.target.files) return;
+    const file = e.target.files[0];
+    if (!file.type.includes("image")) {
+      toast.error("Logo must be an image");
+      e.target.value = "";
+      return;
+    } else if (file.size > 1024 * 1024 * 5) {
+      toast.error("Logo can't be bigger than 5MB");
+      e.target.value = "";
+      return;
+    }
+    setEnvironmentLogo(URL.createObjectURL(e.target.files[0]));
+    const formData = new FormData();
+    formData.append("logo", file);
+    const res = await updateEnvironmentLogo(environment.id, formData);
+    if (res) {
+      toast.success("Logo updated");
+    } else {
+      toast.error("Something went wrong");
+      setEnvironmentLogo("");
     }
   }
 
@@ -71,7 +116,26 @@ export default function Environment({
       key={environment.id}
       className={`${className} w-full flex rounded-lg h-64 shadow-darkMain border-2 border-bgLight relative overflow-hidden`}
     >
-      <Avatar className="aspect-square" name={environment.name} size="256" />
+      <div className="relative aspect-square w-64 group flex items-center justify-center">
+        {environmentLogo ? (
+          <img src={environmentLogo} />
+        ) : (
+          <Avatar className="aspect-square" name={environment.name} size="256" />
+        )}
+        <input
+          type="file"
+          name="logo"
+          id="logo"
+          className="hidden"
+          onChange={(e) => changeLogo(e)}
+        />
+        <label
+          htmlFor="logo"
+          className="w-64 h-64 absolute inset-0 bg-black/40 hidden group-hover:flex justify-center items-center text-white text-4xl cursor-pointer"
+        >
+          <TbEdit />
+        </label>
+      </div>
       <div className="flex p-4 flex-col justify-between gap-4 w-full h-full">
         <div className="flex justify-between">
           {where === "profile" ? (
@@ -145,7 +209,7 @@ export default function Environment({
                   className="cursor-pointer text-borderGray hover:text-gray-500 transition-all"
                 />
                 <TbTrash
-                  onClick={deleteRuleset}
+                  onClick={deleteEnv}
                   title="Delete ruleset"
                   className="cursor-pointer text-borderGray hover:text-gray-500 transition-all"
                 />

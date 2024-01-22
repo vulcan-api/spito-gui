@@ -133,6 +133,7 @@ interface environment {
   user: UserInfo;
   isPrivate?: boolean;
   rules: Array<rule>;
+  logo: Blob;
 }
 
 export type {
