@@ -12,7 +12,8 @@ export default function Searchbar(): JSX.Element {
     rules: [],
     rulesets: [],
     users: [],
-    topResults: []
+    topResults: [],
+    environments: []
   });
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -39,7 +40,7 @@ export default function Searchbar(): JSX.Element {
     }
     setIsFetching(true);
     const res = await searchBackend(searchInputRef.current?.value as string);
-    setResults(res);
+    setResults(res.data);
     setIsFetching(false);
   }
 

@@ -98,6 +98,7 @@ interface searchBackend {
   rulesets: Array<ruleset>;
   users: Array<UserInfo>;
   topResults: Array<unknown>;
+  environments: Array<environment>;
 }
 
 interface Token {
@@ -112,6 +113,28 @@ type currentPageType = "about" | "tokens" | "2fa" | "changePassword";
 
 interface TwoFAQrCode {
   url: string;
+}
+
+interface newEnvironment {
+  name: string;
+  description?: string;
+  isPrivate: boolean;
+  tags: Array<string>;
+}
+
+interface environment {
+  id: number;
+  name: string;
+  description?: string;
+  tags: Array<tagInterface>;
+  createdAt: Date;
+  updatedAt: Date;
+  isLiked: boolean;
+  likes: number;
+  user: UserInfo;
+  isPrivate?: boolean;
+  rules: Array<rule>;
+  logo: Blob;
 }
 
 export type {
@@ -129,5 +152,7 @@ export type {
   Token,
   currentPageType,
   backendResponse,
-  TwoFAQrCode
+  TwoFAQrCode,
+  newEnvironment,
+  environment
 };

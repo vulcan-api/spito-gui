@@ -1,22 +1,48 @@
 import Button from "@renderer/Layout/Button";
 import { AnimatePresence, motion } from "framer-motion";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import TagInput from "../TagInput";
 import Input from "@renderer/Layout/Input";
 import { tagInterface } from "@renderer/lib/interfaces";
 import Checkbox from "@renderer/Layout/Checkbox";
 import { TbArrowLeft, TbArrowRight, TbDeviceFloppy } from "react-icons/tb";
+import { createEnvironment } from "@renderer/lib/environments";
+import toast from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
 
-export default function NewEnviroment(): JSX.Element {
+export default function NewEnviroment({ closeModal }: { closeModal: () => void }): JSX.Element {
   const [stage, setStage] = useState<number>(1);
   const [enviromentName, setEnviromentName] = useState<string>("");
   const [tags, setTags] = useState<Array<tagInterface>>([]);
-  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const [description, setDescription] = useState<string>("");
   const [isPrivate, setIsPrivate] = useState<boolean>(false);
 
-  function formSubmitHandler() {
-    //TODO: Make submitting function when backend is ready
+  async function formSubmitHandler(): Promise<void> {
+    if (enviromentName.length < 3) {
+      toast.error("Environment name must be at least 3 characters long");
+      setStage(1);
+      return;
+    }
+
+    const data = {
+      name: enviromentName,
+      description: description,
+      tags: tags.map((tag) => tag.name),
+      isPrivate: isPrivate
+    };
+
+    const toastId = toast.loading("Creating environment...");
+    const res = await createEnvironment(data);
+    if (res) {
+      toast.success("Enviroment created successfully", {
+        id: toastId
+      });
+      closeModal();
+    } else {
+      toast.error("Something went wrong", {
+        id: toastId
+      });
+    }
   }
 
   return (
@@ -95,7 +121,8 @@ export default function NewEnviroment(): JSX.Element {
                 placeholder="Description (optional)"
                 className={`font-poppins h-44 resize-none block p-2 w-full text-lg text-white bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-gray-500 placeholder:text-gray-500 duration-300`}
                 name="description"
-                ref={descriptionRef}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
               />
             </motion.div>
           )}

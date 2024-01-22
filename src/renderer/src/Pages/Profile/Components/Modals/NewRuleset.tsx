@@ -38,12 +38,6 @@ export default function NewRuleset({ closeModal }: { closeModal: () => void }): 
     closeModal();
   }
 
-  // async function getBranches(): Promise<void> {
-  //   window.electron.ipcRenderer.invoke("getBranches", address).then((res) => {
-  //     console.log(res);
-  //   });
-  // }
-
   return (
     <>
       <div className="flex items-center">
