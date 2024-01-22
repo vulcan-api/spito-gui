@@ -31,7 +31,7 @@ export default function NewEnviroment({ closeModal }: { closeModal: () => void }
       isPrivate: isPrivate
     };
 
-    const toastId = toast.loading("Creating enviroment...");
+    const toastId = toast.loading("Creating environment...");
     const res = await createEnvironment(data);
     if (res) {
       toast.success("Enviroment created successfully", {
