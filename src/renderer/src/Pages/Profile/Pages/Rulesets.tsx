@@ -6,22 +6,41 @@ import { AnimatePresence } from "framer-motion";
 import Loader from "@renderer/Layout/Loader";
 import ManageContentModal from "../Components/Modals/ManageContentModal";
 import Ruleset from "../Components/Ruleset";
+import { calculateSkipAndTake, calculateTotalPages } from "@renderer/lib/utils";
+import Pagination from "@renderer/Compontents/Pagination";
 
 export default function Rulesets(): JSX.Element {
   const [isFetching, setIsFetching] = useState<boolean>(true);
   const [rulesets, setRulesets] = useState<Array<ruleset>>([]);
   const [isUserEditingRuleset, setIsUserEditingRuleset] = useState<boolean>(false);
   const [editedRulesetId, setEditedRulesetId] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
+  const [perPage, setPerPage] = useState<number>(10);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [total, setTotal] = useState<number>(0);
 
   const { userId = 0 } = useParams<{ userId: string }>();
 
-  async function fetchRulesets(): Promise<void> {
+  async function fetchRulesets(pageParam?: number, perPageParam?: number): Promise<void> {
     setIsFetching(true);
-    const fetchedRulesets = await fetchUserRulests(+userId);
+    const pageData = calculateSkipAndTake(pageParam || page, perPageParam || perPage);
+    const fetchedRulesets = await fetchUserRulests(+userId, pageData.skip, pageData.take);
     if (fetchedRulesets) {
       setIsFetching(false);
-      setRulesets(fetchedRulesets);
+      setRulesets(fetchedRulesets.data);
+      setTotal(fetchedRulesets.count);
+      setTotalPages(calculateTotalPages(fetchedRulesets.count, perPage));
     }
+  }
+
+  function handlePageChange(pageParam: number): void {
+    setPage(pageParam);
+    fetchRulesets(pageParam, perPage);
+  }
+
+  function handlePerPageChange(perPageParam: number): void {
+    setPerPage(perPage);
+    fetchRulesets(1, perPageParam);
   }
 
   function closeEditModal(): void {
@@ -63,6 +82,14 @@ export default function Rulesets(): JSX.Element {
               This user has no rulesets!
             </p>
           )}
+          <Pagination
+            total={total}
+            perPage={perPage}
+            page={page}
+            totalPages={totalPages}
+            handlePageChange={handlePageChange}
+            handlePerPageChange={handlePerPageChange}
+          />
         </AnimatePresence>
       )}
     </>

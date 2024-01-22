@@ -1,6 +1,7 @@
 import { forwardRef, useState } from "react";
 import { InputProps } from "../lib/interfaces";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
+import { twMerge } from "tailwind-merge";
 
 export default forwardRef(function Input(
   {
@@ -10,6 +11,7 @@ export default forwardRef(function Input(
     className,
     containerClassName,
     value,
+    onKeyDown,
     onChange,
     disabled,
     readonly,
@@ -25,10 +27,13 @@ export default forwardRef(function Input(
   }
 
   return (
-    <div className={`relative ${containerClassName}`}>
+    <div className={twMerge("relative", containerClassName)}>
       <input
         type={!isPasswordHidden ? "text" : type || "text"}
-        className={`${className} font-poppins block pl-2.5 pb-2.5 pt-4 pr-4 w-full text-lg text-gray-100 bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-bgLighter`}
+        className={twMerge(
+          "font-poppins block pl-2.5 pb-2.5 pt-4 pr-4 w-full text-lg text-gray-100 bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-bgLighter",
+          className
+        )}
         defaultValue={value || ""}
         onChange={onChange}
         readOnly={readonly}
@@ -38,6 +43,7 @@ export default forwardRef(function Input(
         disabled={disabled}
         ref={ref || null}
         maxLength={max}
+        onKeyDown={onKeyDown}
       />
       <label
         htmlFor={id || placeholder}

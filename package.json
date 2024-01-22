@@ -36,6 +36,7 @@
     "react-loader-spinner": "^5.4.5",
     "react-qr-code": "^2.0.12",
     "react-router-dom": "^6.21.2",
+    "tailwind-merge": "^2.2.0",
     "vaul": "^0.8.0",
     "vite-plugin-commonjs-externals": "^0.1.4"
   },

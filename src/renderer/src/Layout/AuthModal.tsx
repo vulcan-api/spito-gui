@@ -7,6 +7,7 @@ import { getUserInfo, login, register, verify2FA } from "../lib/auth";
 import toast from "react-hot-toast";
 import { UserInfo } from "@renderer/lib/interfaces";
 import AuthCode from "react-auth-code-input";
+import { twMerge } from "tailwind-merge";
 
 export default function AuthModal({
   closeModal,
@@ -109,9 +110,10 @@ export default function AuthModal({
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 0 }}
-        className={`2xl:w-1/4 xl:w-1/3 md:w-1/2 w-full bg-bgColor md:border-2 md:rounded-xl md:border-bgLight shadow-darkMain text-gray-100 relative md:p-8 md:py-16 md:pb-8 p-24 h-full ${
+        className={twMerge(
+          "2xl:w-1/4 xl:w-1/3 md:w-1/2 w-full bg-bgColor md:border-2 md:rounded-xl md:border-bgLight shadow-darkMain text-gray-100 relative md:p-8 md:py-16 md:pb-8 p-24 h-full",
           isUserRegistering ? "md:h-2/3 min-h-[700px]" : "md:h-1/2 min-h-[500px]"
-        }`}
+        )}
       >
         <BsX
           className="absolute text-3xl right-4 top-4 cursor-pointer hover:text-sky-500 transition-colors"
@@ -155,7 +157,12 @@ export default function AuthModal({
               onChange={(e) => setEmail(e.target.value)}
             />
             <Input placeholder="Password" type="password" ref={passwordRef} />
-            <Input placeholder="Repeat password" type="password" ref={repeatPasswordRef} />
+            <Input
+              placeholder="Repeat password"
+              type="password"
+              ref={repeatPasswordRef}
+              onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+            />
             <div className="flex items-center gap-2">
               <Button theme="alt" className="!w-full" onClick={changeAuthMethodHandler}>
                 Back to Login
@@ -175,8 +182,18 @@ export default function AuthModal({
             className="w-full h-full flex flex-col gap-4 md:justify-between justify-center"
           >
             <h2 className="text-center text-6xl font-roboto mb-8">Login</h2>
-            <Input placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <Input placeholder="Password" type="password" ref={passwordRef} />
+            <Input
+              placeholder="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input
+              placeholder="Password"
+              type="password"
+              ref={passwordRef}
+              onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+            />
             <p className="text-center cursor-pointer">Forgot password?</p>
             <div className="flex items-center gap-2">
               <Button theme="alt" className="!w-full" onClick={changeAuthMethodHandler}>
