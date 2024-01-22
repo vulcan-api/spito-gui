@@ -35,7 +35,7 @@ function App(): JSX.Element | null {
           element: <RulesetPage />
         },
         {
-          path: "/environment/:environmentId",
+          path: "/environments/:environmentId",
           element: <EnvironmentPage />
         },
         {
