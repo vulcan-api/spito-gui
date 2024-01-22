@@ -94,12 +94,12 @@ export default function EnvironmentPage(): JSX.Element {
   async function deleteRuleFronEnvironment(ruleId: number): Promise<void> {
     const toastId = toast.loading("Deleting rule from the environment...");
     const status = await deleteRuleFromEnv(+environmentId, ruleId);
-    if (res === 200) {
+    if (status === 200) {
       toast.success("Rule deleted from the environment!", {
         id: toastId
       });
       setRules((prev) => prev.filter((r) => r.id !== ruleId));
-    } else if (res === 409) {
+    } else if (status === 409) {
       toast.error("There is no such rule in the environment!", {
         id: toastId
       });
