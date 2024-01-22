@@ -95,7 +95,7 @@ export default function EnvironmentPage(): JSX.Element {
     const toastId = toast.loading("Deleting rule from the environment...");
     const status = await deleteRuleFromEnv(+environmentId, ruleId);
     if (res === 200) {
-      toast.success("Rule deleted from environment!", {
+      toast.success("Rule deleted from the environment!", {
         id: toastId,
       });
       setRules((prev) => prev.filter((r) => r.id !== ruleId));
