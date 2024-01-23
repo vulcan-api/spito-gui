@@ -3,7 +3,7 @@ import { ruleset, rule } from "@renderer/lib/interfaces";
 import { useParams } from "react-router-dom";
 import ManageContentModal from "../Profile/Components/Modals/ManageContentModal";
 import Loader from "@renderer/Layout/Loader";
-import { AnimatePresence, motion, useIsPresent } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Ruleset from "../Profile/Components/Ruleset";
 import { fetchRuleset } from "@renderer/lib/user";
 import Rule from "../Profile/Components/Rule";
@@ -18,7 +18,6 @@ export default function RulesetPage(): JSX.Element {
   const [searchedQuery, setSearchedQuery] = useState<string>("");
 
   const { rulesetId = 0 } = useParams<{ rulesetId: string }>();
-  const isPresent = useIsPresent();
 
   async function fetchRulesets(): Promise<void> {
     setIsFetching(true);
@@ -48,7 +47,13 @@ export default function RulesetPage(): JSX.Element {
   }, [searchedQuery]);
 
   return (
-    <div className="w-3/5 mx-auto mt-10">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4 }}
+      className="w-3/5 mx-auto mt-10"
+    >
       {isUserEditingRuleset && (
         <ManageContentModal
           isUserEditing={true}
@@ -94,13 +99,6 @@ export default function RulesetPage(): JSX.Element {
           )}
         </AnimatePresence>
       )}
-      <motion.div
-        initial={{ scaleX: 1 }}
-        animate={{ scaleX: 0, transition: { duration: 0.6, ease: "circOut" } }}
-        exit={{ scaleX: 1, transition: { duration: 0.6, ease: "circIn" } }}
-        style={{ originX: isPresent ? 0 : 1 }}
-        className="privacy-screen z-50"
-      />
-    </div>
+    </motion.div>
   );
 }

@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import Loader from "@renderer/Layout/Loader";
 import Environment from "../Profile/Components/Environment";
 import ManageContentModal from "../Profile/Components/Modals/ManageContentModal";
-import { motion, useIsPresent } from "framer-motion";
+import { motion } from "framer-motion";
 import Rule from "../Profile/Components/Rule";
 import Input from "@renderer/Layout/Input";
 import { searchBackendForRules } from "@renderer/lib/search";
@@ -22,7 +22,6 @@ export default function EnvironmentPage(): JSX.Element {
   const [isUserEditingEnvironment, setIsUserEditingEnvironment] = useState<boolean>(false);
   const [editedEnvironmentId, setEditedEnvironmentId] = useState<number>(0);
 
-  const isPresent = useIsPresent();
   const loggedUserData = useAtomValue(userAtom);
 
   const { environmentId = 0 } = useParams<{ environmentId: string }>();
@@ -111,7 +110,13 @@ export default function EnvironmentPage(): JSX.Element {
   }
 
   return (
-    <div className="flex flex-col gap-8 p-8 w-2/3 mx-auto">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4 }}
+      className="flex flex-col gap-8 p-8 w-2/3 mx-auto"
+    >
       {isUserEditingEnvironment && (
         <ManageContentModal
           isUserEditing={true}
@@ -177,7 +182,7 @@ export default function EnvironmentPage(): JSX.Element {
                 ))}
               </div>
             ) : (
-              <p className="text-center text-gray-500 text-2xl font-poppins mt-10">
+              <p className="text-2xl text-borderGray font-roboto mx-auto mt-10">
                 Start searching for rules!
               </p>
             )
@@ -186,13 +191,6 @@ export default function EnvironmentPage(): JSX.Element {
           )}
         </div>
       )}
-      <motion.div
-        initial={{ scaleX: 1 }}
-        animate={{ scaleX: 0, transition: { duration: 0.6, ease: "circOut" } }}
-        exit={{ scaleX: 1, transition: { duration: 0.6, ease: "circIn" } }}
-        style={{ originX: isPresent ? 0 : 1 }}
-        className="privacy-screen z-50"
-      />
-    </div>
+    </motion.div>
   );
 }

@@ -39,7 +39,7 @@ export default function Rulesets(): JSX.Element {
   }
 
   function handlePerPageChange(perPageParam: number): void {
-    setPerPage(perPage);
+    setPerPage(perPageParam);
     fetchRulesets(1, perPageParam);
   }
 

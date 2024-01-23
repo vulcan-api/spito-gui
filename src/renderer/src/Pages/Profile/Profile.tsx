@@ -1,6 +1,6 @@
 import { ProfileInterface } from "@renderer/lib/interfaces";
 import { getUserProfile } from "@renderer/lib/user";
-import { motion, useIsPresent } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { TbBook, TbBriefcase, TbFile, TbFolder, TbPlus, TbSettingsFilled } from "react-icons/tb/";
@@ -24,7 +24,6 @@ export default function Profile(): JSX.Element {
   const navigate = useNavigate();
 
   const { userId = 0 } = useParams<{ userId: string }>();
-  const isPresent = useIsPresent();
 
   async function fetchData(): Promise<void> {
     const response = await getUserProfile(+userId);
@@ -66,7 +65,13 @@ export default function Profile(): JSX.Element {
   }
 
   return (
-    <div className="flex-1 w-4/5 mx-auto flex flex-col px-16 overflow-y-auto my-4">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4 }}
+      className="flex-1 w-4/5 mx-auto flex flex-col px-16 overflow-y-auto my-4"
+    >
       {isUserAddingContent && <ManageContentModal closeModal={handleAddingContent} />}
       <div className="w-full pb-8 flex gap-8 py-8">
         <div className="h-fit w-1/4 flex flex-col gap-4 px-8 py-8 duration-300 relative bg-bgColor">
@@ -123,13 +128,6 @@ export default function Profile(): JSX.Element {
           <div className="flex flex-col gap-8 p-4 text-gray-400">{displayCorrectSite()}</div>
         </div>
       </div>
-      <motion.div
-        initial={{ scaleX: 1 }}
-        animate={{ scaleX: 0, transition: { duration: 0.6, ease: "circOut" } }}
-        exit={{ scaleX: 1, transition: { duration: 0.6, ease: "circIn" } }}
-        style={{ originX: isPresent ? 0 : 1 }}
-        className="privacy-screen z-50"
-      />
-    </div>
+    </motion.div>
   );
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import MainSettings from "./Sections/MainSettings";
 import SettingsSidebar from "./SettingsSidebar";
-import { AnimatePresence, motion, useIsPresent } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Tokens from "./Sections/Tokens";
 import { currentPageType } from "@renderer/lib/interfaces";
 import { userAtom } from "@renderer/lib/atoms";
@@ -12,7 +12,7 @@ import ChangePassword from "./Sections/ChangePassword";
 
 export default function Settings(): JSX.Element {
   const [currentPage, setCurrentPage] = useState<currentPageType>("about");
-  const isPresent = useIsPresent();
+
   const loggedUserData = useAtomValue(userAtom);
   const navigate = useNavigate();
 
@@ -38,20 +38,19 @@ export default function Settings(): JSX.Element {
   }
 
   return (
-    <div className="flex-1 flex flex-row gap-4 w-full overflow-y-hidden">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4 }}
+      className="flex-1 flex flex-row gap-4 w-full overflow-y-hidden"
+    >
       <SettingsSidebar
         page={currentPage}
         setPage={setCurrentPage}
         loggedUserData={loggedUserData}
       />
       <AnimatePresence mode="wait">{displayCurrentPage()}</AnimatePresence>
-      <motion.div
-        initial={{ scaleX: 1 }}
-        animate={{ scaleX: 0, transition: { duration: 0.6, ease: "circOut" } }}
-        exit={{ scaleX: 1, transition: { duration: 0.6, ease: "circIn" } }}
-        style={{ originX: isPresent ? 0 : 1 }}
-        className="privacy-screen z-50"
-      />
-    </div>
+    </motion.div>
   );
 }

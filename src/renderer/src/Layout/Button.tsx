@@ -19,8 +19,8 @@ export default function Button({
       className={twMerge(
         `${
           theme === "alt"
-            ? "hover:border-sky-500 border-bgLight hover:text-sky-500 text-gray-200"
-            : "hover:bg-sky-600 bg-bgLight text-gray-200 hover:border-sky-700"
+            ? "border-bgLight hover:border-bgLighter bg-bgLight text-gray-300 hover:text-gray-400"
+            : "border-bgLighter text-gray-400 hover:border-sky-500 hover:text-sky-400"
         } active:scale-90 transition-all p-2 flex items-center rounded-lg justify-center shadow-darkMain gap-2 box-border border-2 text-2xl font-roboto ${className} ${
           width || "sm:w-48 w-32"
         }`,
@@ -39,8 +39,8 @@ export default function Button({
       className={twMerge(
         `${
           theme === "alt"
-            ? "hover:border-sky-500 border-bgLight hover:text-sky-500 text-gray-200"
-            : "hover:bg-sky-600 bg-bgLight text-gray-200 hover:border-sky-700"
+            ? "border-bgLight hover:border-bgLighter bg-bgLight text-gray-300 hover:text-gray-400"
+            : "border-bgLighter text-gray-400 hover:border-sky-500 hover:text-sky-400"
         } active:scale-90 transition-all p-2 flex items-center rounded-lg justify-center shadow-darkMain gap-2 box-border border-2 text-2xl font-roboto ${className} ${
           width || "sm:w-48 w-32"
         }`,

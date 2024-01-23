@@ -52,7 +52,7 @@ export default function SearchResults({ results }: { results: searchBackend }): 
           ))}
         </>
       )}
-      {results.rulesets.length > 0 && (
+      {results.environments.length > 0 && (
         <>
           {(results.environments.length > 0 ||
             results.rules.length > 0 ||
