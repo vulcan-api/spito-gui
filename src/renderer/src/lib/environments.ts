@@ -70,7 +70,10 @@ export const getEnvironmentLogo = async (environmentId: number): Promise<Blob | 
   return await response.blob();
 };
 
-export const getTrendingEnvironments = async (skip = 0, take = 10): Promise<environment[]> => {
+export const getTrendingEnvironments = async (skip = 0, take = 10): Promise<backendResponse<environment[]>> => {
   const response = await backendRequest(`environment/trending?skip=${skip}&take=${take}`, "GET");
-  return await response.json();
+  return {
+    status: response.status,
+    data: await response.json()
+  }
 };
