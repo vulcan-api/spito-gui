@@ -70,9 +70,6 @@ export default function Header(): JSX.Element {
         <div className="w-full flex items-center justify-between gap-8">
           <Searchbar />
           <nav className="xl:flex hidden gap-16 items-center">
-            <NavLink to="/marketplace" className={({ isActive }) => menuLinkClass(isActive)}>
-              Marketplace
-            </NavLink>
             <NavLink to="/environments/saved" className={({ isActive }) => menuLinkClass(isActive)}>
               Saved Enviroments
             </NavLink>

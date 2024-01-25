@@ -25,8 +25,8 @@ export default function Environment({
   where = "profile"
 }: {
   environment: environment;
-  setEditedEnvironmentId: React.Dispatch<React.SetStateAction<number>>;
-  setIsUserEditingEnvironment: React.Dispatch<React.SetStateAction<boolean>>;
+  setEditedEnvironmentId?: React.Dispatch<React.SetStateAction<number>>;
+  setIsUserEditingEnvironment?: React.Dispatch<React.SetStateAction<boolean>>;
   index: number;
   className?: string;
   where?: "profile" | "page";
@@ -72,7 +72,7 @@ export default function Environment({
     }
   }
 
-  async function deleteEnv() {
+  async function deleteEnv(): Promise<void> {
     if (confirm("Are you sure you want to delete this environment?")) {
       const toastId = toast.loading("Deleting environment...");
       const res = await deleteEnvironment(environment.id);
@@ -85,7 +85,7 @@ export default function Environment({
     }
   }
 
-  async function changeLogo(e: React.ChangeEvent<HTMLInputElement>) {
+  async function changeLogo(e: React.ChangeEvent<HTMLInputElement>): Promise<void> {
     if (!e.target.files) return;
     const file = e.target.files[0];
     if (!file.type.includes("image")) {

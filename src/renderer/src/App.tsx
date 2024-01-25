@@ -7,6 +7,7 @@ import Profile from "./Pages/Profile/Profile";
 import RulesetPage from "./Pages/Ruleset/RulesetPage";
 import Settings from "./Pages/Settings/Settings";
 import EnvironmentPage from "./Pages/Environment/EnvironmentPage";
+import Home from "./Pages/Home/Home";
 
 function App(): JSX.Element | null {
   const element = useRoutes([
@@ -16,11 +17,7 @@ function App(): JSX.Element | null {
       children: [
         {
           path: "/",
-          element: <h1>Landing page</h1>
-        },
-        {
-          path: "/marketplace",
-          element: <h1>Marketplace</h1>
+          element: <Home />
         },
         {
           path: "/environments/saved",
