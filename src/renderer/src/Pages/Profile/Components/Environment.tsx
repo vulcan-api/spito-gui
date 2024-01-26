@@ -230,15 +230,6 @@ export default function Environment({
                       setEditedEnvironmentId(environment.id);
                       setIsUserEditingEnvironment(true);
                     }}
-<<<<<<< HEAD
-                    title="Edit environment"
-                    className="cursor-pointer text-borderGray hover:text-gray-500 transition-all"
-                  />
-                  <TbTrash
-                    onClick={deleteEnv}
-                    title="Delete environment"
-                    className="cursor-pointer text-borderGray hover:text-gray-500 transition-all"
-=======
                     title="Edit ruleset"
                     className="cursor-pointer text-borderGray hover:text-gray-500 transition-colors"
                   />
@@ -246,7 +237,6 @@ export default function Environment({
                     onClick={deleteEnv}
                     title="Delete ruleset"
                     className="cursor-pointer text-borderGray hover:text-gray-500 transition-colors"
->>>>>>> 488597e (Fixed displaying saved env's)
                   />
                   {where !== "saved" && !isSaved && (
                     <TbDownload
