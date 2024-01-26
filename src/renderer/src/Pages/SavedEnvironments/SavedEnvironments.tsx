@@ -10,7 +10,7 @@ import { userAtom } from "@renderer/lib/atoms";
 import { useAtomValue } from "jotai";
 import { useNavigate } from "react-router-dom";
 
-export default function SavedEnvieonments(): JSX.Element {
+export default function SavedEnvironments(): JSX.Element {
   const [environments, setEnvironments] = useState<environment[]>([]);
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isGrid, setIsGrid] = useState<boolean>(false);
