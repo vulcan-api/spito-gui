@@ -8,6 +8,7 @@ import RulesetPage from "./Pages/Ruleset/RulesetPage";
 import Settings from "./Pages/Settings/Settings";
 import EnvironmentPage from "./Pages/Environment/EnvironmentPage";
 import Home from "./Pages/Home/Home";
+import SavedEnvieonments from "./Pages/SavedEnvironments/SavedEnvironments";
 
 function App(): JSX.Element | null {
   const element = useRoutes([
@@ -21,7 +22,7 @@ function App(): JSX.Element | null {
         },
         {
           path: "/environments/saved",
-          element: <h1>Saved Environments</h1>
+          element: <SavedEnvieonments />
         },
         {
           path: "/profile/:userId",

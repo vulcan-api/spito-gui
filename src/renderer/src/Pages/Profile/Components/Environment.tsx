@@ -2,6 +2,7 @@ import Tag from "@renderer/Layout/Tag";
 import { userAtom } from "@renderer/lib/atoms";
 import {
   deleteEnvironment,
+  saveEnvironment,
   getEnvironmentLogo,
   likeOrDislike,
   updateEnvironmentLogo
@@ -13,7 +14,7 @@ import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import Avatar from "react-avatar";
 import toast from "react-hot-toast";
-import { TbEdit, TbStar, TbStarFilled, TbTrash } from "react-icons/tb";
+import { TbDownload, TbEdit, TbStar, TbStarFilled, TbTrash } from "react-icons/tb";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Environment({
@@ -31,13 +32,14 @@ export default function Environment({
   setIsUserEditingEnvironment?: React.Dispatch<React.SetStateAction<boolean>>;
   index: number;
   className?: string;
-  where?: "profile" | "page";
+  where?: "profile" | "page" | "saved";
   canChangeLogo?: boolean;
   view?: "normal" | "compact";
 }): JSX.Element {
   const [likesCount, setLikesCount] = useState<number>(environment.likes || 0);
   const [isLiked, setIsLiked] = useState<boolean>(environment.isLiked || false);
   const [environmentLogo, setEnvironmentLogo] = useState<string>();
+  const [isSaved, setIsSaved] = useState<boolean>(environment.isSaved || false);
 
   const loggedUserData = useAtomValue(userAtom);
   const navigate = useNavigate();
@@ -113,6 +115,21 @@ export default function Environment({
     }
   }
 
+  async function saveEnv(): Promise<void> {
+    const toastId = toast.loading("Saving environment...");
+    const status = await saveEnvironment(environment.id);
+    if (status) {
+      toast.success("Succesfully saved environment", {
+        id: toastId
+      });
+      setIsSaved(true);
+    } else {
+      toast.error("Something went wrong", {
+        id: toastId
+      })
+    }
+  }
+
   const normalView = (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -122,7 +139,7 @@ export default function Environment({
     >
       <div className="relative aspect-square w-64 group flex items-center justify-center">
         {environmentLogo ? (
-          <img src={environmentLogo} className="w-full h-full"/>
+          <img src={environmentLogo} className="w-full h-full" />
         ) : (
           <Avatar className="aspect-square" name={environment.name} size="256" />
         )}
@@ -165,7 +182,9 @@ export default function Environment({
               </p>
             )}
             <span
-              className="flex items-center justify-end gap-2 cursor-pointer"
+              className={`${
+                isLiked ? "text-white" : "text-gray-400"
+              } flex items-center justify-end gap-2 cursor-pointer`}
               onClick={changeEnvironmentLikeStatus}
             >
               {likesCount}
@@ -187,7 +206,7 @@ export default function Environment({
             })}
           {environment.tags.length > 5 && (
             <span
-              className="text-gray-500 hover:text-gray-400 cursor-pointer"
+              className="text-gray-500"
               title={environment.tags
                 .slice(5)
                 .map((tag) => tag.name)
@@ -211,6 +230,7 @@ export default function Environment({
                       setEditedEnvironmentId(environment.id);
                       setIsUserEditingEnvironment(true);
                     }}
+<<<<<<< HEAD
                     title="Edit environment"
                     className="cursor-pointer text-borderGray hover:text-gray-500 transition-all"
                   />
@@ -218,7 +238,23 @@ export default function Environment({
                     onClick={deleteEnv}
                     title="Delete environment"
                     className="cursor-pointer text-borderGray hover:text-gray-500 transition-all"
+=======
+                    title="Edit ruleset"
+                    className="cursor-pointer text-borderGray hover:text-gray-500 transition-colors"
                   />
+                  <TbTrash
+                    onClick={deleteEnv}
+                    title="Delete ruleset"
+                    className="cursor-pointer text-borderGray hover:text-gray-500 transition-colors"
+>>>>>>> 488597e (Fixed displaying saved env's)
+                  />
+                  {where !== "saved" && !isSaved && (
+                    <TbDownload
+                      className="cursor-pointer text-borderGray hover:text-gray-500 transition-colors"
+                      onClick={saveEnv}
+                      title="Save environment"
+                    />
+                  )}
                 </>
               )}
           </p>
@@ -248,16 +284,18 @@ export default function Environment({
         />
       )}
       <div className="p-4">
-        <span className="flex items-center justify-between">
+        <span className="flex items-center gap-2">
           <Link
-            className="hover:underline text-xl font-roboto text-gray-400"
+            className="hover:underline text-xl font-roboto text-gray-400 mr-auto"
             title="Environment details"
             to={`/environments/${environment.id}`}
           >
             {environment.name}
           </Link>
           <p
-            className="flex items-center justify-end gap-2 cursor-pointer"
+            className={`${
+              isLiked ? "text-white" : "text-gray-400"
+            } flex items-center justify-end gap-2 cursor-pointer`}
             onClick={changeEnvironmentLikeStatus}
           >
             {likesCount}
@@ -270,6 +308,13 @@ export default function Environment({
               <TbStar className="text-yellow-500 cursor-pointer" />
             )}
           </p>
+          {where !== "saved" && !isSaved && (
+            <TbDownload
+              className="cursor-pointer text-gray-400 hover:text-gray-100 transition-colors"
+              onClick={saveEnv}
+              title="Save environment"
+            />
+          )}
         </span>
         <div className="flex items-center justify-center flex-wrap w-full gap-2 mt-4 group-hover:opacity-100 opacity-0 transition-all duration-500">
           {environment.tags.length > 0 &&

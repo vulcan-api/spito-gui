@@ -38,7 +38,7 @@ export default function Home(): JSX.Element {
       <h1 className="text-2xl font-poppins text-center my-8 text-gray-500">
         Most downloaded environments in last week
       </h1>
-      <div className="flex flex-row flex-wrap mt-8">
+      <div className="flex flex-row gap-4 flex-wrap mt-8">
         <AnimatePresence>
           {isTrendingEnvironmentBeingFetched ? (
             <Loader />

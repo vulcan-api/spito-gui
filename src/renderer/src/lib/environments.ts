@@ -77,3 +77,16 @@ export const getTrendingEnvironments = async (skip = 0, take = 10): Promise<back
     data: await response.json()
   }
 };
+
+export const saveEnvironment = async (environmentId: number): Promise<boolean> => {
+  const response = await backendRequest(`environment/${environmentId}/save`, "GET");
+  return response.ok;
+}
+
+export const getSavedEnvironments = async (): Promise<backendResponse<environment[]>> => {
+  const response = await backendRequest(`environment/saved`, "GET");
+  return {
+    status: response.status,
+    data: await response.json()
+  }
+}
