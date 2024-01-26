@@ -211,7 +211,7 @@ export default function Environment({
                       setEditedEnvironmentId(environment.id);
                       setIsUserEditingEnvironment(true);
                     }}
-                    title="Edit ruleset"
+                    title="Edit environment"
                     className="cursor-pointer text-borderGray hover:text-gray-500 transition-all"
                   />
                   <TbTrash
