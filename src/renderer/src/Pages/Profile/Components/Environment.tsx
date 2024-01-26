@@ -216,7 +216,7 @@ export default function Environment({
                   />
                   <TbTrash
                     onClick={deleteEnv}
-                    title="Delete ruleset"
+                    title="Delete environment"
                     className="cursor-pointer text-borderGray hover:text-gray-500 transition-all"
                   />
                 </>
