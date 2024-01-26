@@ -16,6 +16,7 @@ import Avatar from "react-avatar";
 import toast from "react-hot-toast";
 import { TbDownload, TbEdit, TbStar, TbStarFilled, TbTrash } from "react-icons/tb";
 import { Link, useNavigate } from "react-router-dom";
+import { twMerge } from "tailwind-merge";
 
 export default function Environment({
   environment,
@@ -182,9 +183,9 @@ export default function Environment({
               </p>
             )}
             <span
-              className={`${
-                isLiked ? "text-white" : "text-gray-400"
-              } flex items-center justify-end gap-2 cursor-pointer`}
+              className={twMerge(
+                isLiked ? "text-white" : "text-gray-400",
+              'flex items-center justify-end gap-2 cursor-pointer')}
               onClick={changeEnvironmentLikeStatus}
             >
               {likesCount}
@@ -283,9 +284,10 @@ export default function Environment({
             {environment.name}
           </Link>
           <p
-            className={`${
-              isLiked ? "text-white" : "text-gray-400"
-            } flex items-center justify-end gap-2 cursor-pointer`}
+            className={twMerge(
+              isLiked ? "text-white" : "text-gray-400",
+              "flex items-center justify-end gap-2 cursor-pointer"
+            )}
             onClick={changeEnvironmentLikeStatus}
           >
             {likesCount}
