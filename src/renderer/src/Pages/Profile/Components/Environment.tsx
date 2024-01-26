@@ -2,6 +2,7 @@ import Tag from "@renderer/Layout/Tag";
 import { userAtom } from "@renderer/lib/atoms";
 import {
   deleteEnvironment,
+  saveEnvironment,
   getEnvironmentLogo,
   likeOrDislike,
   updateEnvironmentLogo
@@ -13,8 +14,9 @@ import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import Avatar from "react-avatar";
 import toast from "react-hot-toast";
-import { TbEdit, TbStar, TbStarFilled, TbTrash } from "react-icons/tb";
+import { TbDownload, TbEdit, TbStar, TbStarFilled, TbTrash } from "react-icons/tb";
 import { Link, useNavigate } from "react-router-dom";
+import { twMerge } from "tailwind-merge";
 
 export default function Environment({
   environment,
@@ -22,25 +24,30 @@ export default function Environment({
   setIsUserEditingEnvironment,
   index,
   className = "",
-  where = "profile"
+  where = "profile",
+  canChangeLogo = true,
+  view = "normal"
 }: {
   environment: environment;
-  setEditedEnvironmentId: React.Dispatch<React.SetStateAction<number>>;
-  setIsUserEditingEnvironment: React.Dispatch<React.SetStateAction<boolean>>;
+  setEditedEnvironmentId?: React.Dispatch<React.SetStateAction<number>>;
+  setIsUserEditingEnvironment?: React.Dispatch<React.SetStateAction<boolean>>;
   index: number;
   className?: string;
-  where?: "profile" | "page";
+  where?: "profile" | "page" | "saved";
+  canChangeLogo?: boolean;
+  view?: "normal" | "compact";
 }): JSX.Element {
   const [likesCount, setLikesCount] = useState<number>(environment.likes || 0);
   const [isLiked, setIsLiked] = useState<boolean>(environment.isLiked || false);
   const [environmentLogo, setEnvironmentLogo] = useState<string>();
+  const [isSaved, setIsSaved] = useState<boolean>(environment.isSaved || false);
 
   const loggedUserData = useAtomValue(userAtom);
   const navigate = useNavigate();
 
   useEffect(() => {
     getEnvLogo();
-  }, [getEnvLogo, environment.id]);
+  }, [environment.id]);
 
   async function getEnvLogo(): Promise<void> {
     const res = await getEnvironmentLogo(environment.id);
@@ -72,7 +79,7 @@ export default function Environment({
     }
   }
 
-  async function deleteEnv() {
+  async function deleteEnv(): Promise<void> {
     if (confirm("Are you sure you want to delete this environment?")) {
       const toastId = toast.loading("Deleting environment...");
       const res = await deleteEnvironment(environment.id);
@@ -85,7 +92,7 @@ export default function Environment({
     }
   }
 
-  async function changeLogo(e: React.ChangeEvent<HTMLInputElement>) {
+  async function changeLogo(e: React.ChangeEvent<HTMLInputElement>): Promise<void> {
     if (!e.target.files) return;
     const file = e.target.files[0];
     if (!file.type.includes("image")) {
@@ -109,7 +116,22 @@ export default function Environment({
     }
   }
 
-  return (
+  async function saveEnv(): Promise<void> {
+    const toastId = toast.loading("Saving environment...");
+    const status = await saveEnvironment(environment.id);
+    if (status) {
+      toast.success("Succesfully saved environment", {
+        id: toastId
+      });
+      setIsSaved(true);
+    } else {
+      toast.error("Something went wrong", {
+        id: toastId
+      })
+    }
+  }
+
+  const normalView = (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0, transition: { delay: 0.1 * index, duration: 0.2 } }}
@@ -118,7 +140,7 @@ export default function Environment({
     >
       <div className="relative aspect-square w-64 group flex items-center justify-center">
         {environmentLogo ? (
-          <img src={environmentLogo} />
+          <img src={environmentLogo} className="w-full h-full" />
         ) : (
           <Avatar className="aspect-square" name={environment.name} size="256" />
         )}
@@ -129,12 +151,14 @@ export default function Environment({
           className="hidden"
           onChange={(e) => changeLogo(e)}
         />
-        <label
-          htmlFor="logo"
-          className="w-64 h-64 absolute inset-0 bg-black/40 hidden group-hover:flex justify-center items-center text-white text-4xl cursor-pointer"
-        >
-          <TbEdit />
-        </label>
+        {canChangeLogo && (
+          <label
+            htmlFor="logo"
+            className="w-64 h-64 absolute inset-0 bg-black/40 hidden group-hover:flex justify-center items-center text-white text-4xl cursor-pointer"
+          >
+            <TbEdit />
+          </label>
+        )}
       </div>
       <div className="flex p-4 flex-col justify-between gap-4 w-full h-full">
         <div className="flex justify-between">
@@ -159,7 +183,9 @@ export default function Environment({
               </p>
             )}
             <span
-              className="flex items-center justify-end gap-2 cursor-pointer"
+              className={twMerge(
+                isLiked ? "text-white" : "text-gray-400",
+              'flex items-center justify-end gap-2 cursor-pointer')}
               onClick={changeEnvironmentLikeStatus}
             >
               {likesCount}
@@ -181,7 +207,7 @@ export default function Environment({
             })}
           {environment.tags.length > 5 && (
             <span
-              className="text-gray-500 hover:text-gray-400 cursor-pointer"
+              className="text-gray-500"
               title={environment.tags
                 .slice(5)
                 .map((tag) => tag.name)
@@ -196,26 +222,125 @@ export default function Environment({
             {environment.description || "No description"}
           </p>
           <p className="flex items-center gap-2">
-            {loggedUserData.id === environment.user.id && (
-              <>
-                <TbEdit
-                  onClick={() => {
-                    setEditedEnvironmentId(environment.id);
-                    setIsUserEditingEnvironment(true);
-                  }}
-                  title="Edit ruleset"
-                  className="cursor-pointer text-borderGray hover:text-gray-500 transition-all"
-                />
-                <TbTrash
-                  onClick={deleteEnv}
-                  title="Delete ruleset"
-                  className="cursor-pointer text-borderGray hover:text-gray-500 transition-all"
-                />
-              </>
-            )}
+            {loggedUserData.id === environment.user.id &&
+              setEditedEnvironmentId &&
+              setIsUserEditingEnvironment && (
+                <>
+                  <TbEdit
+                    onClick={() => {
+                      setEditedEnvironmentId(environment.id);
+                      setIsUserEditingEnvironment(true);
+                    }}
+                    title="Edit ruleset"
+                    className="cursor-pointer text-borderGray hover:text-gray-500 transition-colors"
+                  />
+                  <TbTrash
+                    onClick={deleteEnv}
+                    title="Delete ruleset"
+                    className="cursor-pointer text-borderGray hover:text-gray-500 transition-colors"
+                  />
+                  {where !== "saved" && !isSaved && (
+                    <TbDownload
+                      className="cursor-pointer text-borderGray hover:text-gray-500 transition-colors"
+                      onClick={saveEnv}
+                      title="Save environment"
+                    />
+                  )}
+                </>
+              )}
           </p>
         </span>
       </div>
     </motion.div>
   );
+
+  const compactView = (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0, transition: { delay: 0.1 * index, duration: 0.2 } }}
+      key={environment.id}
+      className={`${className} flex flex-col group justify-between rounded-lg w-80 h-96 shadow-darkMain border-2 border-bgLight relative overflow-hidden bg-gradient-to-t from-transparent to-zinc-900 to-90%`}
+    >
+      {environmentLogo ? (
+        <img
+          src={environmentLogo}
+          className="-z-10 absolute w-full h-full inset-0 group-hover:blur-sm transition-all duration-500"
+        />
+      ) : (
+        <Avatar
+          className="aspect-square -z-10 absolute w-full h-full inset-0 mt-auto"
+          size="320"
+          textSizeRatio={4}
+          name={environment.name}
+        />
+      )}
+      <div className="p-4">
+        <span className="flex items-center gap-2">
+          <Link
+            className="hover:underline text-xl font-roboto text-gray-400 mr-auto"
+            title="Environment details"
+            to={`/environments/${environment.id}`}
+          >
+            {environment.name}
+          </Link>
+          <p
+            className={twMerge(
+              isLiked ? "text-white" : "text-gray-400",
+              "flex items-center justify-end gap-2 cursor-pointer"
+            )}
+            onClick={changeEnvironmentLikeStatus}
+          >
+            {likesCount}
+            {isLiked ? (
+              <span className="relative">
+                <TbStarFilled className="text-yellow-500 cursor-pointer" />
+                <TbStarFilled className="text-yellow-500 cursor-pointer animate-ping-once absolute inset-0" />
+              </span>
+            ) : (
+              <TbStar className="text-yellow-500 cursor-pointer" />
+            )}
+          </p>
+          {where !== "saved" && !isSaved && (
+            <TbDownload
+              className="cursor-pointer text-gray-400 hover:text-gray-100 transition-colors"
+              onClick={saveEnv}
+              title="Save environment"
+            />
+          )}
+        </span>
+        <div className="flex items-center justify-center flex-wrap w-full gap-2 mt-4 group-hover:opacity-100 opacity-0 transition-all duration-500">
+          {environment.tags.length > 0 &&
+            environment.tags.slice(0, 5).map((tag, i) => {
+              return <Tag key={tag.id} tag={tag} animation={true} i={i} />;
+            })}
+          {environment.tags.length > 5 && (
+            <span
+              className="text-gray-500"
+              title={environment.tags
+                .slice(5)
+                .map((tag) => tag.name)
+                .join(", ")}
+            >
+              +{environment.tags.length - 5} more
+            </span>
+          )}
+        </div>
+      </div>
+      <span className="group-hover:bottom-0 -bottom-36 relative transition-all duration-500 bg-bgLight/90 border-t-1 border-bgLight p-4">
+        <p className="font-poppins text-xl text-gray-400 line-clamp-2 drop-shadow-lg">
+          {environment.description || "No description"}
+        </p>
+        <p className="text-sm text-gray-500">
+          Created: {formatDistanceToNow(environment.createdAt, { addSuffix: true })}
+        </p>
+        {environment.updatedAt !== environment.createdAt && (
+          <p className="text-sm text-gray-500">
+            Updated: {formatDistanceToNow(environment.updatedAt, { addSuffix: true })}
+          </p>
+        )}
+      </span>
+    </motion.div>
+  );
+
+  return view === "normal" ? normalView : compactView;
 }

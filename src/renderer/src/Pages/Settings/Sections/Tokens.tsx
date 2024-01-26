@@ -79,7 +79,11 @@ export default function Tokens(): JSX.Element {
               <span className="text-red-400">Warning:</span> Tokens are sensitive data. Do not share
               them with anyone!
             </p>
-            <TokensTable tokens={tokens} deleteTokenHandler={handleDeleteToken} />
+            {tokens.length > 0 ? (
+              <TokensTable tokens={tokens} deleteTokenHandler={handleDeleteToken} />
+            ) : (
+              <p className="text-2xl text-gray-500 text-center font-roboto mt-8">No tokens!</p>
+            )}
           </div>
           {isCreateTokenModalOpen && <CreateToken closeModal={handleCloseCreateModal} />}
           {isDisplayTokenModalOpen && (
@@ -88,7 +92,7 @@ export default function Tokens(): JSX.Element {
           <Button
             theme="alt"
             onClick={() => setIsCreateTokenModalOpen(true)}
-            className="!w-fit mx-auto"
+            className="!w-fit mx-auto mt-10"
           >
             Create new token
           </Button>

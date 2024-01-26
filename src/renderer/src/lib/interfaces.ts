@@ -133,6 +133,7 @@ interface environment {
   likes: number;
   user: UserInfo;
   isPrivate?: boolean;
+  isSaved?: boolean;
   rules: Array<rule>;
   logo: Blob;
 }

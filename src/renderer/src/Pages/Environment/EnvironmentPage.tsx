@@ -158,7 +158,7 @@ export default function EnvironmentPage(): JSX.Element {
             This environment has no rules!
           </p>
         ))}
-      {!isFetching && (
+      {!isFetching && loggedUserData.id === environment?.user.id && (
         <div className="flex flex-col gap-4 mx-4">
           <p className="text-xl text-gray-400 font-roboto">Search for rules</p>
           <Input

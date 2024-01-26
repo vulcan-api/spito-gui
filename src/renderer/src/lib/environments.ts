@@ -69,3 +69,24 @@ export const getEnvironmentLogo = async (environmentId: number): Promise<Blob | 
   if (!response.ok || response.status === 204) return null;
   return await response.blob();
 };
+
+export const getTrendingEnvironments = async (skip = 0, take = 10): Promise<backendResponse<environment[]>> => {
+  const response = await backendRequest(`environment/trending?skip=${skip}&take=${take}`, "GET");
+  return {
+    status: response.status,
+    data: await response.json()
+  }
+};
+
+export const saveEnvironment = async (environmentId: number): Promise<boolean> => {
+  const response = await backendRequest(`environment/${environmentId}/save`, "GET");
+  return response.ok;
+}
+
+export const getSavedEnvironments = async (): Promise<backendResponse<environment[]>> => {
+  const response = await backendRequest(`environment/saved`, "GET");
+  return {
+    status: response.status,
+    data: await response.json()
+  }
+}
