@@ -11,46 +11,48 @@ import TwoFa from "./Sections/TwoFA";
 import ChangePassword from "./Sections/ChangePassword";
 
 export default function Settings(): JSX.Element {
-  const [currentPage, setCurrentPage] = useState<currentPageType>("about");
+    const [currentPage, setCurrentPage] = useState<currentPageType>("about");
 
-  const loggedUserData = useAtomValue(userAtom);
-  const navigate = useNavigate();
+    const loggedUserData = useAtomValue(userAtom);
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!loggedUserData.id) {
-      navigate("/");
+    useEffect(() => {
+        if (!loggedUserData.id) {
+            navigate("/");
+        }
+    }, [loggedUserData]);
+
+    function displayCurrentPage(): JSX.Element {
+        switch (currentPage) {
+            case "about":
+                return <MainSettings />;
+            case "tokens":
+                return <Tokens />;
+            case "2fa":
+                return <TwoFa />;
+            case "changePassword":
+                return <ChangePassword />;
+            default:
+                return <MainSettings />;
+        }
     }
-  }, [loggedUserData]);
 
-  function displayCurrentPage(): JSX.Element {
-    switch (currentPage) {
-      case "about":
-        return <MainSettings />;
-      case "tokens":
-        return <Tokens />;
-      case "2fa":
-        return <TwoFa />;
-      case "changePassword":
-        return <ChangePassword />;
-      default:
-        return <MainSettings />;
-    }
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.4 }}
-      className="flex-1 flex flex-row gap-4 w-full overflow-y-hidden"
-    >
-      <SettingsSidebar
-        page={currentPage}
-        setPage={setCurrentPage}
-        loggedUserData={loggedUserData}
-      />
-      <AnimatePresence mode="wait">{displayCurrentPage()}</AnimatePresence>
-    </motion.div>
-  );
+    return (
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="flex-1 flex flex-row gap-4 w-full overflow-y-hidden"
+        >
+            <SettingsSidebar
+                page={currentPage}
+                setPage={setCurrentPage}
+                loggedUserData={loggedUserData}
+            />
+            <AnimatePresence mode="wait">
+                {displayCurrentPage()}
+            </AnimatePresence>
+        </motion.div>
+    );
 }
