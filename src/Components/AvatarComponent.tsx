@@ -1,7 +1,7 @@
 import { getUserAvatar } from "../lib/user";
 import { useState, useCallback, useEffect } from "react";
-import Avatar from "react-avatar";
 import { ColorRing } from "react-loader-spinner";
+import DefaultAvatar from "./DefaultAvatar";
 
 export default function AvatarComponent(props: {
     userId: number;
@@ -56,12 +56,7 @@ export default function AvatarComponent(props: {
                     alt="User's avatar"
                 />
             ) : (
-                <Avatar
-                    name={props.username}
-                    size={String(avatarSize)}
-                    round={true}
-                    className={props.className}
-                />
+                <DefaultAvatar size={avatarSize} username={props.username} />
             )}
         </>
     );

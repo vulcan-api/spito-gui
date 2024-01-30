@@ -54,6 +54,10 @@ export default function AuthModal({
                 id: toastId,
             });
             setIsUserRegistering(false);
+        } else if (status === 403) {
+            toast.error("Email or username already in use", {
+                id: toastId,
+            });
         } else {
             toast.error("Failed to register", {
                 id: toastId,

@@ -7,12 +7,10 @@ import {
     likeOrDislike,
     updateEnvironmentLogo,
 } from "../../../lib/environments";
-import { environment } from "../../../lib/interfaces";
 import { formatDistanceToNow } from "date-fns";
 import { motion } from "framer-motion";
 import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
-import Avatar from "react-avatar";
 import toast from "react-hot-toast";
 import {
     TbDownload,
@@ -23,6 +21,11 @@ import {
 } from "react-icons/tb";
 import { Link, useNavigate } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
+import DefaultAvatar from "../../../Components/DefaultAvatar";
+import {
+    tagInterface,
+    environment as tEnvironment,
+} from "../../../lib/interfaces";
 
 export default function Environment({
     environment,
@@ -34,7 +37,7 @@ export default function Environment({
     canChangeLogo = true,
     view = "normal",
 }: {
-    environment: environment;
+    environment: tEnvironment;
     setEditedEnvironmentId?: React.Dispatch<React.SetStateAction<number>>;
     setIsUserEditingEnvironment?: React.Dispatch<React.SetStateAction<boolean>>;
     index: number;
@@ -162,10 +165,11 @@ export default function Environment({
                 {environmentLogo ? (
                     <img src={environmentLogo} className="w-full h-full" />
                 ) : (
-                    <Avatar
+                    <DefaultAvatar
+                        size={256}
+                        isRounded={false}
+                        username={environment.name}
                         className="aspect-square"
-                        name={environment.name}
-                        size="256"
                     />
                 )}
                 <input
@@ -235,22 +239,24 @@ export default function Environment({
                 </div>
                 <div className="flex items-center gap-2">
                     {environment.tags.length > 0 &&
-                        environment.tags.slice(0, 5).map((tag, i) => {
-                            return (
-                                <Tag
-                                    key={tag.id}
-                                    tag={tag}
-                                    animation={true}
-                                    i={i}
-                                />
-                            );
-                        })}
+                        environment.tags
+                            .slice(0, 5)
+                            .map((tag: tagInterface, i: number) => {
+                                return (
+                                    <Tag
+                                        key={tag.id}
+                                        tag={tag}
+                                        animation={true}
+                                        i={i}
+                                    />
+                                );
+                            })}
                     {environment.tags.length > 5 && (
                         <span
                             className="text-gray-500"
                             title={environment.tags
                                 .slice(5)
-                                .map((tag) => tag.name)
+                                .map((tag: tagInterface) => tag.name)
                                 .join(", ")}
                         >
                             +{environment.tags.length - 5} more
@@ -313,11 +319,11 @@ export default function Environment({
                     className="-z-10 absolute w-full h-full inset-0 group-hover:blur-sm transition-all duration-500"
                 />
             ) : (
-                <Avatar
+                <DefaultAvatar
+                    size={320}
+                    isRounded={false}
+                    username={environment.name}
                     className="aspect-square -z-10 absolute w-full h-full inset-0 mt-auto"
-                    size="320"
-                    textSizeRatio={4}
-                    name={environment.name}
                 />
             )}
             <div className="p-4">
@@ -356,22 +362,24 @@ export default function Environment({
                 </span>
                 <div className="flex items-center justify-center flex-wrap w-full gap-2 mt-4 group-hover:opacity-100 opacity-0 transition-all duration-500">
                     {environment.tags.length > 0 &&
-                        environment.tags.slice(0, 5).map((tag, i) => {
-                            return (
-                                <Tag
-                                    key={tag.id}
-                                    tag={tag}
-                                    animation={true}
-                                    i={i}
-                                />
-                            );
-                        })}
+                        environment.tags
+                            .slice(0, 5)
+                            .map((tag: tagInterface, i: number) => {
+                                return (
+                                    <Tag
+                                        key={tag.id}
+                                        tag={tag}
+                                        animation={true}
+                                        i={i}
+                                    />
+                                );
+                            })}
                     {environment.tags.length > 5 && (
                         <span
                             className="text-gray-500"
                             title={environment.tags
                                 .slice(5)
-                                .map((tag) => tag.name)
+                                .map((tag: tagInterface) => tag.name)
                                 .join(", ")}
                         >
                             +{environment.tags.length - 5} more
