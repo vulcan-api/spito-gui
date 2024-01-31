@@ -138,6 +138,11 @@ interface environment {
     logo: Blob;
 }
 
+interface UserActivity {
+    createdRulesets: Array<ruleset>;
+    createdEnvironments: Array<environment>;
+}
+
 export type {
     InputProps,
     ButtonProps,
@@ -156,4 +161,5 @@ export type {
     TwoFAQrCode,
     newEnvironment,
     environment,
+    UserActivity,
 };
