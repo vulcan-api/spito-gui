@@ -26,8 +26,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
       - name: Check formatting
-        run: pnpm format-check
-      - name: Run typecheck
-        run: pnpm typecheck
+        run: pnpm format:check
+      - name: Run ESLint
+        run: pnpm lint
       - name: Build project
         run: pnpm build
