@@ -62,7 +62,7 @@ export default function Profile(): JSX.Element {
     function displayCorrectSite(): JSX.Element {
         switch (site) {
             case "Main":
-                return <Overview userId={+userId} />;
+                return <Overview />;
             case "Rules":
                 return <Rules />;
             case "Rulesets":

@@ -3,12 +3,10 @@ import Input from "../../../Layout/Input";
 import { useEffect, useMemo, useState } from "react";
 import { UserActivity } from "../../../lib/interfaces";
 import { getUserActivity } from "../../../lib/user";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-interface Props {
-    userId: number;
-}
-export default function Overview({ userId }: Props): JSX.Element {
+export default function Overview(): JSX.Element {
+    const { userId = 0 } = useParams<{ userId: string }>();
     const [fromDate, setFromDate] = useState<Date>(
         new Date(new Date().setMonth(new Date().getMonth() - 1))
     );
@@ -17,7 +15,8 @@ export default function Overview({ userId }: Props): JSX.Element {
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getUserActivity(userId, fromDate, toDate);
+            if (!userId) return;
+            const data = await getUserActivity(+userId, fromDate, toDate);
             setActivity(data);
         };
         fetchData();
