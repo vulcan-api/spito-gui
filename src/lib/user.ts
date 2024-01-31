@@ -7,6 +7,7 @@ import {
     rule,
     backendResponse,
     TwoFAQrCode,
+    UserActivity,
 } from "./interfaces";
 import { backendRequest, backendRequestWithFiles } from "./request";
 
@@ -154,4 +155,18 @@ export const getTwoFAQrCodeUrl = async (): Promise<
 export const disable2FA = async (): Promise<boolean> => {
     const response = await backendRequest("auth/totp/remove", "PATCH");
     return response.ok;
+};
+
+export const getUserActivity = async (
+    userId: number,
+    from: Date,
+    to: Date
+): Promise<UserActivity> => {
+    const formattedFrom = from.toISOString().split("T")[0];
+    const formattedTo = to.toISOString().split("T")[0];
+    const response = await backendRequest(
+        `user/activity/${userId}?from=${formattedFrom}&to=${formattedTo}`,
+        "GET"
+    );
+    return await response.json();
 };
