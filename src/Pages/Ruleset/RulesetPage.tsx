@@ -56,6 +56,7 @@ export default function RulesetPage(): JSX.Element {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            key="rulesetPage"
             transition={{ duration: 0.4 }}
             className="w-3/5 mx-auto mt-10"
         >

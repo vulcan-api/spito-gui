@@ -161,9 +161,9 @@ export default function Environment({
             key={environment.id}
             className={`${className} w-full flex rounded-lg h-64 shadow-darkMain border-2 border-bgLight relative overflow-hidden`}
         >
-            <div className="relative aspect-square w-64 group flex items-center justify-center">
+            <div className="relative aspect-square w-64 h-64 group flex items-center justify-center">
                 {environmentLogo ? (
-                    <img src={environmentLogo} className="w-full h-full" />
+                    <img src={environmentLogo} className="!w-64 h-64" />
                 ) : (
                     <DefaultAvatar
                         size={256}
@@ -287,13 +287,15 @@ export default function Environment({
                                         title="Delete ruleset"
                                         className="cursor-pointer text-borderGray hover:text-gray-500 transition-colors"
                                     />
-                                    {where !== "saved" && !isSaved && (
-                                        <TbDownload
-                                            className="cursor-pointer text-borderGray hover:text-gray-500 transition-colors"
-                                            onClick={saveEnv}
-                                            title="Save environment"
-                                        />
-                                    )}
+                                    {where !== "saved" &&
+                                        !isSaved &&
+                                        loggedUserData.username && (
+                                            <TbDownload
+                                                className="cursor-pointer text-borderGray hover:text-gray-500 transition-colors"
+                                                onClick={saveEnv}
+                                                title="Save environment"
+                                            />
+                                        )}
                                 </>
                             )}
                     </p>
@@ -352,13 +354,15 @@ export default function Environment({
                             <TbStar className="text-yellow-500 cursor-pointer" />
                         )}
                     </p>
-                    {where !== "saved" && !isSaved && (
-                        <TbDownload
-                            className="cursor-pointer text-gray-400 hover:text-gray-100 transition-colors"
-                            onClick={saveEnv}
-                            title="Save environment"
-                        />
-                    )}
+                    {where !== "saved" &&
+                        !isSaved &&
+                        loggedUserData.username && (
+                            <TbDownload
+                                className="cursor-pointer text-gray-400 hover:text-gray-100 transition-colors"
+                                onClick={saveEnv}
+                                title="Save environment"
+                            />
+                        )}
                 </span>
                 <div className="flex items-center justify-center flex-wrap w-full gap-2 mt-4 group-hover:opacity-100 opacity-0 transition-all duration-500">
                     {environment.tags.length > 0 &&

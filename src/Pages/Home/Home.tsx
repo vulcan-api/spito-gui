@@ -37,6 +37,7 @@ export default function Home(): JSX.Element {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
+            key="home"
             className="flex-1 w-4/5 mx-auto flex flex-col px-16 overflow-y-auto my-4 text-white"
         >
             <h1 className="text-2xl font-poppins text-center my-8 text-gray-500">

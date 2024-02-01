@@ -124,6 +124,7 @@ export default function EnvironmentPage(): JSX.Element {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            key="environmentPage"
             transition={{ duration: 0.4 }}
             className="flex flex-col gap-8 p-8 w-2/3 mx-auto"
         >

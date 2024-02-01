@@ -49,7 +49,6 @@ export default function Searchbar(): JSX.Element {
         setIsFetching(false);
     }
 
-    //TODO: Check if this works
     function checkIfResultsExists(): boolean {
         for (const key in results) {
             if (results[key as keyof searchBackendInterface].length > 0) {

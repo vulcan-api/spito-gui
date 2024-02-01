@@ -42,6 +42,7 @@ export default function Settings(): JSX.Element {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            key="settings"
             transition={{ duration: 0.4 }}
             className="flex-1 flex flex-row gap-4 w-full overflow-y-hidden"
         >

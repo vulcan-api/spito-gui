@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { useLocation, useRoutes } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Header from "./Layout/Header";
 import Toaster from "./Layout/Toaster";
@@ -8,9 +8,10 @@ import Settings from "./Pages/Settings/Settings";
 import EnvironmentPage from "./Pages/Environment/EnvironmentPage";
 import Home from "./Pages/Home/Home";
 import SavedEnvironments from "./Pages/SavedEnvironments/SavedEnvironments";
+import { cloneElement } from "react";
 
 function App(): JSX.Element | null {
-    const router = createBrowserRouter([
+    const element = useRoutes([
         {
             path: "/",
             element: <Header />,
@@ -43,11 +44,14 @@ function App(): JSX.Element | null {
         },
     ]);
 
+    const location = useLocation();
+    if (!element) return null;
+
     return (
         <>
             <AnimatePresence mode="wait" initial={false}>
                 <Toaster />
-                <RouterProvider router={router} />
+                {cloneElement(element, { key: location.pathname })}
             </AnimatePresence>
         </>
     );

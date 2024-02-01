@@ -16,7 +16,7 @@ export default function DefaultAvatar({
     return (
         <div
             className={twMerge(
-                "bg-gray-600 flex justify-center items-center",
+                "bg-gray-600 flex justify-center font-poppins items-center",
                 className,
                 isRounded ? "rounded-full" : ""
             )}

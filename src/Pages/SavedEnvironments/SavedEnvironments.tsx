@@ -49,6 +49,7 @@ export default function SavedEnvironments(): JSX.Element {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            key="savedEnvs"
             transition={{ duration: 0.4 }}
             className="flex-1 w-4/5 mx-auto flex flex-col px-16 overflow-y-auto my-4"
         >
