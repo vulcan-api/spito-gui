@@ -6,7 +6,7 @@ This repo contains all of the source code for spito-gui.
 
 ### Requirements
 - NodeJS (version 19.0.0 or later)
-- Rust
+- rustup
 - webkit2gtk (for Tauri)
 - pnpm
 
