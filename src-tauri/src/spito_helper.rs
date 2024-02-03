@@ -7,6 +7,7 @@ use tauri::{AppHandle, Manager};
 pub(crate) fn start_spito_cli(ruleset: &str, rule: &str) -> Result<(), String> {
     Command::new("spito")
         .arg("check")
+        .arg("--gui-child-mode")
         .arg(ruleset)
         .arg(rule)
         .spawn().map_err(|err| err.to_string())?;
@@ -30,7 +31,7 @@ pub(crate) fn start_spito_server(app: AppHandle) -> Result<(), String>{
         let mut cr = Crossroads::new();
         let token = cr.register(DBUS_ID, |b| {
             b.method("Echo", ("mess_type", "message"), (),move |_ctx, _cr, (mess_type, message, ): (String, String, )| {
-                app.emit_all("echo", Payload { mess_type, message}).unwrap();
+                app.emit_all("Echo", Payload { mess_type, message}).unwrap();
                 Ok(())
             });
         });
