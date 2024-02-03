@@ -4,7 +4,7 @@ use dbus::blocking::Connection;
 use tauri::{AppHandle, Manager};
 
 #[tauri::command]
-pub(crate) fn start_spito_cli(ruleset: &str, rule: &str) -> Result<(), String> {
+pub fn start_spito_cli(ruleset: &str, rule: &str) -> Result<(), String> {
     Command::new("spito")
         .arg("check")
         .arg("--gui-child-mode")
@@ -24,20 +24,28 @@ struct Payload {
 }
 
 #[tauri::command]
-pub(crate) fn start_spito_server(app: AppHandle) -> Result<(), String>{
-    std::thread::spawn(move || -> Result<(), String> {
-        let c = Connection::new_session().map_err(|err| err.to_string())?;
-        c.request_name(DBUS_ID, false, true, false).map_err(|err| err.to_string())?;
-        let mut cr = Crossroads::new();
-        let token = cr.register(DBUS_ID, |b| {
-            b.method("Echo", ("mess_type", "message"), (),move |_ctx, _cr, (mess_type, message, ): (String, String, )| {
-                app.emit_all("Echo", Payload { mess_type, message}).unwrap();
-                Ok(())
-            });
-        });
-        cr.insert(DBUS_OBJECT_PATH, &[token], ());
-        cr.serve(&c).map_err(|err| err.to_string())?;
-        unreachable!()
+pub fn start_spito_server(app: AppHandle) {
+    std::thread::spawn(move || -> anyhow::Result<()> {
+        _start_spito_server(app)
     });
-    Ok(())
+}
+
+fn _start_spito_server(app: AppHandle) -> anyhow::Result<()> {
+    let conn = Connection::new_session()?;
+    conn.request_name(DBUS_ID, false, true, false)?;
+
+    let mut cr = Crossroads::new();
+    let token = cr.register(DBUS_ID, |builder| {
+        builder.method("Echo", ("mess_type", "message"), (), move |_ctx, _cr, (mess_type, message, ): (String, String, )| {
+            app.emit_all("Echo", Payload { mess_type, message })
+                .map_err(|err| {
+                    dbus::MethodErr::no_arg() // TODO: here should be something more meaningful
+                })
+        });
+    });
+
+    cr.insert(DBUS_OBJECT_PATH, &[token], ());
+    cr.serve(&conn)?;
+
+    unreachable!()
 }
