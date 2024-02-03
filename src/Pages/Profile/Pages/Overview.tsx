@@ -47,7 +47,8 @@ export default function Overview(): JSX.Element {
                         id="from"
                         value={fromDate.toISOString().split("T")[0]}
                         onChange={(e) => setFromDate(new Date(e.target.value))}
-                        className="appearance-none bg-bgColor rounded-md p-2 text-gray-400"
+                        className="appearance-none bg-bgColor rounded-md p-2 text-gray-400 cursor-pointer"
+                        title="From date"
                     />
                     <label htmlFor="to" className="mb-2">
                         To:
@@ -58,83 +59,76 @@ export default function Overview(): JSX.Element {
                         id="to"
                         value={toDate.toISOString().split("T")[0]}
                         onChange={(e) => setToDate(new Date(e.target.value))}
-                        className="appearance-none bg-bgColor rounded-md p-2 text-gray-400"
+                        className="appearance-none bg-bgColor rounded-md p-2 text-gray-400 cursor-pointer"
+                        title="To date"
                     />
                 </div>
             </span>
             {activity && hasActivity ? (
-                <ul className="relative m-0 w-full list-none overflow-hidden p-0">
-                    {activity?.createdRulesets.length > 0 && (
-                        <li className="relative h-fit after:absolute after:left-[2.72rem] after:top-[3.6rem] after:h-[calc(100%-2.45rem)] after:w-px after:bg-borderGray after:content-[''] dark:after:bg-neutral-600">
-                            <div className="flex items-center p-6 leading-[1.3rem] no-underline focus:outline-none">
-                                <span className="mr-3 flex w-10 h-10 items-center justify-center rounded-full bg-borderGray text-md text-gray-200">
+                <>
+                    {activity.createdRulesets.length > 0 && (
+                        <div className="flex gap-2">
+                            <div className="flex flex-col items-center gap-2">
+                                <div className="flex bg-bgLight shadow-darkMain items-center justify-center w-10 h-10 p-2 rounded-full">
                                     <TbFolder />
-                                </span>
-                                <span>
-                                    Created {activity?.createdRulesets.length}{" "}
-                                    {activity?.createdRulesets.length === 1 ? (
-                                        <span>ruleset</span>
-                                    ) : (
-                                        <span>rulesets</span>
-                                    )}
-                                </span>
+                                </div>
+                                <div className="h-full w-1 bg-bgLight rounded-full shadow-darkMain" />
                             </div>
-                            <div className="overflow-hidden pb-6 pl-[3.75rem] pr-6 flex flex-col">
-                                {activity?.createdRulesets.map((ruleset) => (
-                                    <Link
-                                        to={`/ruleset/${ruleset.id}`}
-                                        className="hover:underline text-2xl text-gray-400 font-roboto mb-2"
-                                        key={ruleset.id}
-                                    >
-                                        <TbFolder className="inline mr-2" />
-                                        {ruleset.name}
-                                    </Link>
-                                ))}
+                            <div className="flex flex-col gap-2">
+                                <h2 className="text-2xl">Created Rulesets</h2>
+                                <ul className="flex flex-col gap-2 p-4 text-xl">
+                                    {activity.createdRulesets.map((ruleset) => (
+                                        <li key={ruleset.id}>
+                                            <Link
+                                                to={`/ruleset/${ruleset.id}`}
+                                                className="flex items-center gap-2 text-gray-400 w-fit rounded-full hover:bg-bgLight shadow-darkMain px-4 transition-all duration-300 ease-in-out"
+                                            >
+                                                <TbFolder />
+                                                <span>{ruleset.name}</span>
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
-                        </li>
+                        </div>
                     )}
-                    {activity?.createdEnvironments.length > 0 && (
-                        <li className="relative h-fit after:absolute after:left-[2.72rem] after:top-[3.6rem] after:h-[calc(100%-2.45rem)] after:w-px after:bg-borderGray after:content-[''] dark:after:bg-neutral-600">
-                            <div className="flex items-center p-6 leading-[1.3rem] no-underline focus:outline-none">
-                                <span className="mr-3 flex text-gray-200 h-10 w-10 items-center justify-center rounded-full bg-borderGray text-md font-medium">
+                    {activity.createdEnvironments.length > 0 && (
+                        <div className="flex gap-2">
+                            <div className="flex flex-col items-center gap-2">
+                                <div className="flex bg-bgLight shadow-darkMain items-center justify-center w-10 h-10 p-2 rounded-full">
                                     <TbBriefcase />
-                                </span>
-                                <span className="after:absolute after:flex after:text-[0.8rem] after:content-[data-content]">
-                                    Created{" "}
-                                    {activity?.createdEnvironments.length}{" "}
-                                    {activity?.createdEnvironments.length ===
-                                    1 ? (
-                                        <span>environment</span>
-                                    ) : (
-                                        <span>environments</span>
-                                    )}
-                                </span>
+                                </div>
+                                <div className="h-full w-1 bg-bgLight rounded-full shadow-darkMain" />
                             </div>
-                            <div className="overflow-hidden pb-6 pl-[3.75rem] pr-6 flex flex-col">
-                                {activity?.createdEnvironments.map(
-                                    (environment) => (
-                                        <Link
-                                            to={`/environments/${environment.id}`}
-                                            className="hover:underline text-2xl text-gray-400 font-roboto mb-2"
-                                            key={environment.id}
-                                        >
-                                            {environment.isPrivate ? (
-                                                <TbLock className="inline mr-2" />
-                                            ) : (
-                                                <TbBriefcase className="inline mr-2" />
-                                            )}
-                                            {environment.name}
-                                        </Link>
-                                    )
-                                )}
+                            <div className="flex flex-col gap-2">
+                                <h2 className="text-xl">
+                                    Created Environments
+                                </h2>
+                                <ul className="flex flex-col gap-2 p-4">
+                                    {activity.createdEnvironments.map((env) => (
+                                        <li key={env.id}>
+                                            <Link
+                                                to={`/environments/${env.id}`}
+                                                className="flex items-center gap-2 text-gray-400 w-fit rounded-full hover:bg-bgLight shadow-darkMain px-4 transition-all duration-300 ease-in-out"
+                                            >
+                                                {env.isPrivate ? (
+                                                    <TbLock />
+                                                ) : (
+                                                    <TbBriefcase />
+                                                )}
+                                                <span>{env.name}</span>
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
-                        </li>
+                        </div>
                     )}
-                </ul>
+                </>
             ) : isFetching ? (
                 <Loader />
             ) : (
-                <p className="text-gray-400">
+                <p className="text-borderGray text-center font-poppins">
                     This user has no activity during this period
                 </p>
             )}

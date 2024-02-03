@@ -61,7 +61,7 @@ export default function ChangePassword(): JSX.Element {
             key="main"
             className="flex justify-center items-center flex-1"
         >
-            <div className="flex items-center flex-col gap-4">
+            <div className="flex items-center flex-col gap-4 w-1/4">
                 <p className="text-4xl text-gray-400 font-roboto mb-8">
                     Change password
                 </p>
@@ -72,23 +72,26 @@ export default function ChangePassword(): JSX.Element {
                     placeholder="Current password"
                     ref={currentPasswordRef}
                     type="password"
+                    containerClassName="!w-full"
                 />
-                <p className="text-xl text-bgLighter font-roboto text-left w-full mt-8">
+                <p className="text-xl text-bgLighter font-roboto text-left w-full mt-2">
                     Enter new password:
                 </p>
                 <Input
                     placeholder="New password"
                     ref={newPasswordRef}
                     type="password"
+                    containerClassName="!w-full"
                 />
                 <Input
                     placeholder="Repeat new password"
                     ref={repeatNewPasswordRef}
                     type="password"
+                    containerClassName="!w-full"
                 />
                 <Button
                     theme="default"
-                    className="!w-full mt-8"
+                    className="!w-full mt-2"
                     onClick={handleSubmit}
                 >
                     Save

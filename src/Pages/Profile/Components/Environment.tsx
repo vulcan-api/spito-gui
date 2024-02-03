@@ -26,6 +26,7 @@ import {
     tagInterface,
     environment as tEnvironment,
 } from "../../../lib/interfaces";
+import AvatarComponent from "../../../Components/AvatarComponent";
 
 export default function Environment({
     environment,
@@ -204,6 +205,17 @@ export default function Environment({
                         </p>
                     )}
                     <span className="flex flex-col items-end gap-2 text-gray-500 font-poppins text-lg">
+                        <Link
+                            to={`/profile/${environment.user.id}`}
+                            className="flex items-center gap-2"
+                        >
+                            <span>{environment.user.username}</span>
+                            <AvatarComponent
+                                userId={environment.user.id}
+                                username={environment.user.username}
+                                size="small"
+                            />
+                        </Link>
                         <p className="text-sm">
                             Created:{" "}
                             {formatDistanceToNow(environment.createdAt, {
@@ -364,31 +376,46 @@ export default function Environment({
                             />
                         )}
                 </span>
-                <div className="flex items-center justify-center flex-wrap w-full gap-2 mt-4 group-hover:opacity-100 opacity-0 transition-all duration-500">
-                    {environment.tags.length > 0 &&
-                        environment.tags
-                            .slice(0, 5)
-                            .map((tag: tagInterface, i: number) => {
-                                return (
-                                    <Tag
-                                        key={tag.id}
-                                        tag={tag}
-                                        animation={true}
-                                        i={i}
-                                    />
-                                );
-                            })}
-                    {environment.tags.length > 5 && (
-                        <span
-                            className="text-gray-500"
-                            title={environment.tags
-                                .slice(5)
-                                .map((tag: tagInterface) => tag.name)
-                                .join(", ")}
-                        >
-                            +{environment.tags.length - 5} more
-                        </span>
-                    )}
+                <div className="flex flex-col justify-center flex-wrap w-full gap-2 mt-4 group-hover:opacity-100 opacity-0 transition-all duration-500">
+                    <Link
+                        to={`/profile/${environment.user.id}`}
+                        className="flex items-center gap-2"
+                    >
+                        <AvatarComponent
+                            userId={environment.user.id}
+                            username={environment.user.username}
+                            size="small"
+                        />
+                        <p className="text-gray-400 font-roboto text-sm">
+                            {environment.user.username}
+                        </p>
+                    </Link>
+                    <div className="flex flex-wrap gap-2 justify-center">
+                        {environment.tags.length > 0 &&
+                            environment.tags
+                                .slice(0, 5)
+                                .map((tag: tagInterface, i: number) => {
+                                    return (
+                                        <Tag
+                                            key={tag.id}
+                                            tag={tag}
+                                            animation={true}
+                                            i={i}
+                                        />
+                                    );
+                                })}
+                        {environment.tags.length > 5 && (
+                            <span
+                                className="text-gray-500"
+                                title={environment.tags
+                                    .slice(5)
+                                    .map((tag: tagInterface) => tag.name)
+                                    .join(", ")}
+                            >
+                                +{environment.tags.length - 5} more
+                            </span>
+                        )}
+                    </div>
                 </div>
             </div>
             <span className="group-hover:bottom-0 -bottom-36 relative transition-all duration-500 bg-bgLight/90 border-t-1 border-bgLight p-4">

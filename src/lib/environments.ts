@@ -125,6 +125,24 @@ export const getTrendingEnvironments = async (
     };
 };
 
+export const getEnvironments = async (
+    skip = 0,
+    take = 10,
+    tags?: string[],
+    search?: string,
+    orderBy?: "downloads" | "likes" | "saves",
+    descending?: boolean
+): Promise<backendResponse<environment[]>> => {
+    const response = await backendRequest(
+        `environment?skip=${skip}&take=${take}${tags ? `&tags=${tags.join(",")}` : ""}${search ? `&search=${search}` : ""}${orderBy ? `&orderBy=${orderBy}` : ""}${descending ? `&descending=${descending}` : ""}`,
+        "GET"
+    );
+    return {
+        status: response.status,
+        data: await response.json(),
+    };
+};
+
 export const saveEnvironment = async (
     environmentId: number
 ): Promise<boolean> => {

@@ -1,10 +1,16 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { getTrendingEnvironments } from "../../lib/environments";
-import { environment } from "../../lib/interfaces";
-import { useState, useEffect } from "react";
+import {
+    getEnvironments,
+    getTrendingEnvironments,
+} from "../../lib/environments";
+import { environment, tagInterface } from "../../lib/interfaces";
+import { useState, useEffect, useRef } from "react";
 import Environment from "../Profile/Components/Environment";
 import toast from "react-hot-toast";
 import Loader from "../../Layout/Loader";
+import TagInput from "../Profile/Components/TagInput";
+import { TbArrowDown, TbArrowUp, TbX } from "react-icons/tb";
+import Input from "../../Layout/Input";
 
 export default function Home(): JSX.Element {
     const [trendingEnvironments, setTrendingEnvironments] = useState<
@@ -13,9 +19,21 @@ export default function Home(): JSX.Element {
     const [
         isTrendingEnvironmentBeingFetched,
         setIsTrendingEnvironmentBeingFetched,
-    ] = useState<boolean>(false);
+    ] = useState<boolean>(true);
+    const [environments, setEnvironments] = useState<environment[]>([]);
+    const [isEnvironmentBeingFetched, setIsEnvironmentBeingFetched] =
+        useState<boolean>(true);
+    const [searchedTags, setSearchedTags] = useState<tagInterface[]>([]);
+    const [isUserSearchingTags, setIsUserSearchingTags] =
+        useState<boolean>(false);
+    const [orderBy, setOrderBy] = useState<"downloads" | "likes" | "saves">(
+        "likes"
+    );
+    const [isDescending, setIsDescending] = useState<boolean>(true);
 
-    const fetchData = async () => {
+    const searchRef = useRef<HTMLInputElement>(null);
+
+    const fetchTrendingEnvironments = async () => {
         setIsTrendingEnvironmentBeingFetched(true);
         const res = await getTrendingEnvironments(0, 10);
         if (res.status !== 200) {
@@ -27,8 +45,28 @@ export default function Home(): JSX.Element {
         }
     };
 
+    const fetchEnvironments = async () => {
+        setIsEnvironmentBeingFetched(true);
+        const res = await getEnvironments(
+            0,
+            10,
+            searchedTags.map((t) => t.name),
+            searchRef.current?.value,
+            orderBy,
+            isDescending
+        );
+        if (res.status !== 200) {
+            toast.error("Failed to fetch environments!");
+            return;
+        } else {
+            setEnvironments(res.data);
+            setIsEnvironmentBeingFetched(false);
+        }
+    };
+
     useEffect(() => {
-        fetchData();
+        fetchTrendingEnvironments();
+        fetchEnvironments();
     }, []);
 
     return (
@@ -40,15 +78,14 @@ export default function Home(): JSX.Element {
             key="home"
             className="flex-1 w-4/5 mx-auto flex flex-col px-16 overflow-y-auto my-4 text-white"
         >
-            <h1 className="text-2xl font-poppins text-center my-8 text-gray-500">
-                Most downloaded environments in last week
+            <h1 className="text-3xl font-roboto text-center my-8 text-gray-500">
+                Trending Environments
             </h1>
-            <div className="flex flex-row gap-4 flex-wrap mt-8">
+            <div className="flex flex-row gap-4 flex-wrap my-8">
                 <AnimatePresence>
                     {isTrendingEnvironmentBeingFetched ? (
                         <Loader />
-                    ) : (
-                        trendingEnvironments.length > 0 &&
+                    ) : trendingEnvironments.length > 0 ? (
                         trendingEnvironments.map((environment, i) => (
                             <Environment
                                 key={environment.id}
@@ -58,9 +95,126 @@ export default function Home(): JSX.Element {
                                 view="compact"
                             />
                         ))
+                    ) : (
+                        <p className="text-center w-full text-bgLighter font-poppins text-xl">
+                            No trending environments found!
+                        </p>
                     )}
                 </AnimatePresence>
             </div>
+            <h1 className="text-3xl font-roboto text-center my-8 text-gray-500">
+                All Environments
+            </h1>
+            <div className="flex items-center gap-4 w-full">
+                <Input
+                    placeholder="Search for environment"
+                    className="shadow-darkMain"
+                    containerClassName="w-80"
+                    ref={searchRef}
+                />
+                <div className="relative ml-auto">
+                    <AnimatePresence>
+                        {isUserSearchingTags && (
+                            <motion.div
+                                initial={{ opacity: 0, top: "130%" }}
+                                animate={{
+                                    opacity: 1,
+                                    top: "110%",
+                                    transition: { duration: 0.2 },
+                                }}
+                                exit={{
+                                    opacity: 0,
+                                    transition: { duration: 0.1 },
+                                }}
+                                className="absolute w-72 h-fit bg-bgColor border-1 border-bgLight shadow-darkMain rounded-lg p-4 z-20 pt-8 top-full"
+                            >
+                                <TbX
+                                    className="absolute cursor-pointer inset-2 z-50"
+                                    onClick={() => {
+                                        setIsUserSearchingTags(false);
+                                        fetchEnvironments();
+                                    }}
+                                />
+                                <TagInput
+                                    placeholder="Search for tags"
+                                    tags={searchedTags}
+                                    setTags={setSearchedTags}
+                                />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                    <div
+                        className="w-fit shadow-darkMain border-1 border-bgLight px-4 py-2 font-poppins text-gray-400 cursor-pointer rounded-full"
+                        onClick={() => {
+                            isUserSearchingTags ? fetchEnvironments() : "";
+                            setIsUserSearchingTags((prev) => !prev);
+                        }}
+                    >
+                        Tags: {searchedTags.length}
+                    </div>
+                </div>
+                <div
+                    className={`w-24 flex items-center justify-between transition-colors duration-300 shadow-darkMain border-1 border-bgLight px-4 py-2 font-poppins text-gray-400 cursor-pointer rounded-full`}
+                    onClick={() => {
+                        setIsDescending((prev) => !prev);
+                        fetchEnvironments();
+                    }}
+                >
+                    {isDescending ? "Most" : "Least"}
+                    {isDescending ? <TbArrowDown /> : <TbArrowUp />}
+                </div>
+                <p className="font-poppins text-gray-400">Order by:</p>
+                <div
+                    className={`${orderBy === "likes" ? "bg-sky-500 hover:bg-sky-600 text-white" : ""} transition-colors duration-300 w-fit shadow-darkMain border-1 border-bgLight px-4 py-2 font-poppins text-gray-400 cursor-pointer rounded-full`}
+                    onClick={() => {
+                        setOrderBy("likes");
+                        fetchEnvironments();
+                    }}
+                >
+                    Likes
+                </div>
+                <div
+                    className={`${orderBy === "downloads" ? "bg-sky-500 hover:bg-sky-600 text-white" : ""} transition-colors duration-300 w-fit shadow-darkMain border-1 border-bgLight px-4 py-2 font-poppins text-gray-400 cursor-pointer rounded-full`}
+                    onClick={() => {
+                        setOrderBy("downloads");
+                        fetchEnvironments();
+                    }}
+                >
+                    Downloads
+                </div>
+                <div
+                    className={`${orderBy === "saves" ? "bg-sky-500 hover:bg-sky-600 text-white" : ""} transition-colors duration-300 w-fit shadow-darkMain border-1 border-bgLight px-4 py-2 font-poppins text-gray-400 cursor-pointer rounded-full`}
+                    onClick={() => {
+                        setOrderBy("saves");
+                        fetchEnvironments();
+                    }}
+                >
+                    Saves
+                </div>
+            </div>
+            {isEnvironmentBeingFetched ? (
+                <Loader />
+            ) : environments.length > 0 ? (
+                <div className="flex flex-col gap-4 mt-8">
+                    <div className="flex flex-row gap-4 flex-wrap">
+                        <AnimatePresence>
+                            {environments.map((environment, i) => (
+                                <Environment
+                                    key={environment.id}
+                                    environment={environment}
+                                    index={i + 1}
+                                    canChangeLogo={false}
+                                    view="compact"
+                                />
+                            ))}
+                        </AnimatePresence>
+                    </div>
+                </div>
+            ) : (
+                <p className="text-center w-full text-bgLighter font-poppins text-xl">
+                    No environments found!
+                </p>
+            )}
         </motion.div>
     );
 }

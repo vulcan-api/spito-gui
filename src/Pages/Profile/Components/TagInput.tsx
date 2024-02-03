@@ -112,7 +112,7 @@ export default function TagInput({
                     className={twMerge(
                         `${className} font-poppins block pl-2.5 pb-2.5 pt-4 pr-12 w-full text-lg text-white bg-transparent ${
                             isUserSearching ? "rounded-t-lg" : "rounded-lg"
-                        } border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-gray-500`,
+                        } border-2 appearance-none focus:outline-none focus:ring-0 peer transition-all focus:border-sky-500 border-gray-500`,
                         className
                     )}
                     readOnly={readonly}
@@ -132,7 +132,7 @@ export default function TagInput({
                 </label>
                 <div
                     className={twMerge(
-                        "absolute w-full max-h-32 overflow-y-auto rounded-b-lg border-2 border-t-0 border-sky-500",
+                        "absolute w-full max-h-32 overflow-y-auto !rounded-b-lg border-2 !border-t-transparent border-sky-500",
                         isUserSearching ? "block" : "hidden"
                     )}
                 >
