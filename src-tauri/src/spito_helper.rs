@@ -4,7 +4,7 @@ use dbus::blocking::Connection;
 use tauri::{AppHandle, Manager};
 
 #[tauri::command]
-pub fn start_spito_cli(ruleset: &str, rule: &str) -> Result<(), String> {
+pub(crate) fn start_spito_cli(ruleset: &str, rule: &str) -> Result<(), String> {
     Command::new("spito")
         .arg("check")
         .arg("--gui-child-mode")
@@ -18,7 +18,7 @@ const DBUS_ID: &str = "org.avorty.spito.gui";
 const DBUS_OBJECT_PATH: &str = "/org/avorty/spito/gui";
 
 #[derive(Clone, serde::Serialize)]
-struct Payload {
+struct DBusEchoPayload {
     mess_type: String,
     message: String,
 }
@@ -37,7 +37,7 @@ fn _start_spito_server(app: AppHandle) -> anyhow::Result<()> {
     let mut cr = Crossroads::new();
     let token = cr.register(DBUS_ID, |builder| {
         builder.method("Echo", ("mess_type", "message"), (), move |_ctx, _cr, (mess_type, message, ): (String, String, )| {
-            app.emit_all("Echo", Payload { mess_type, message })
+            app.emit_all("Echo", DBusEchoPayload { mess_type, message })
                 .map_err(|err| {
                     dbus::MethodErr::no_arg() // TODO: here should be something more meaningful
                 })

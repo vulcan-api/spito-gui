@@ -11,5 +11,5 @@ fn main() {
         })
         .invoke_handler(tauri::generate_handler![spito_helper::start_spito_cli])
         .run(tauri::generate_context!())
-        .expect("error while running tauri application");
+        .expect("error while running spito-gui");
 }
