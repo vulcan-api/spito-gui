@@ -4,13 +4,15 @@ import {
     getTrendingEnvironments,
 } from "../../lib/environments";
 import { environment, tagInterface } from "../../lib/interfaces";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Environment from "../Profile/Components/Environment";
 import toast from "react-hot-toast";
 import Loader from "../../Layout/Loader";
 import TagInput from "../Profile/Components/TagInput";
 import { TbArrowDown, TbArrowUp, TbX } from "react-icons/tb";
 import Input from "../../Layout/Input";
+import { calculateSkipAndTake, calculateTotalPages } from "../../lib/utils";
+import Pagination from "../../Components/Pagination";
 
 export default function Home(): JSX.Element {
     const [trendingEnvironments, setTrendingEnvironments] = useState<
@@ -30,8 +32,11 @@ export default function Home(): JSX.Element {
         "likes"
     );
     const [isDescending, setIsDescending] = useState<boolean>(true);
-
-    const searchRef = useRef<HTMLInputElement>(null);
+    const [page, setPage] = useState<number>(1);
+    const [perPage, setPerPage] = useState<number>(10);
+    const [totalPages, setTotalPages] = useState<number>(0);
+    const [total, setTotal] = useState<number>(0);
+    const [search, setSearch] = useState<string>("");
 
     const fetchTrendingEnvironments = async () => {
         setIsTrendingEnvironmentBeingFetched(true);
@@ -45,13 +50,23 @@ export default function Home(): JSX.Element {
         }
     };
 
-    const fetchEnvironments = async () => {
+    const fetchEnvironments = async (
+        searchParam?: string,
+        pageParam?: number,
+        perPageParam?: number
+    ) => {
         setIsEnvironmentBeingFetched(true);
+        const pageData = calculateSkipAndTake(
+            pageParam || page,
+            perPageParam || perPage
+        );
+        //eslint-disable-next-line
+        console.log(searchParam);
         const res = await getEnvironments(
-            0,
-            10,
+            pageData.skip,
+            pageData.take,
             searchedTags.map((t) => t.name),
-            searchRef.current?.value,
+            searchParam || search,
             orderBy,
             isDescending
         );
@@ -59,10 +74,27 @@ export default function Home(): JSX.Element {
             toast.error("Failed to fetch environments!");
             return;
         } else {
-            setEnvironments(res.data);
+            setEnvironments(res.data.data);
+            setTotal(res.data.count);
+            setTotalPages(calculateTotalPages(res.data.count, perPage));
             setIsEnvironmentBeingFetched(false);
         }
     };
+
+    function handlePageChange(pageParam: number): void {
+        setPage(pageParam);
+        fetchEnvironments(search, pageParam, perPage);
+    }
+
+    function handlePerPageChange(perPageParam: number): void {
+        setPerPage(perPageParam);
+        fetchEnvironments(search, 1, perPageParam);
+    }
+
+    function handleSearch(event: React.ChangeEvent<HTMLInputElement>): void {
+        setSearch(event.target.value);
+        fetchEnvironments(event.target.value, 1, perPage);
+    }
 
     useEffect(() => {
         fetchTrendingEnvironments();
@@ -110,7 +142,8 @@ export default function Home(): JSX.Element {
                     placeholder="Search for environment"
                     className="shadow-darkMain"
                     containerClassName="w-80"
-                    ref={searchRef}
+                    onChange={handleSearch}
+                    value={search}
                 />
                 <div className="relative ml-auto">
                     <AnimatePresence>
@@ -209,6 +242,14 @@ export default function Home(): JSX.Element {
                             ))}
                         </AnimatePresence>
                     </div>
+                    <Pagination
+                        total={total}
+                        perPage={perPage}
+                        page={page}
+                        totalPages={totalPages}
+                        handlePageChange={handlePageChange}
+                        handlePerPageChange={handlePerPageChange}
+                    />
                 </div>
             ) : (
                 <p className="text-center w-full text-bgLighter font-poppins text-xl">

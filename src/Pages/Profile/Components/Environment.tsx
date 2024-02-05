@@ -13,7 +13,8 @@ import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import {
-    TbDownload,
+    TbBookmark,
+    TbBookmarkFilled,
     TbEdit,
     TbStar,
     TbStarFilled,
@@ -57,6 +58,9 @@ export default function Environment({
     const [isSaved, setIsSaved] = useState<boolean>(
         environment.isSaved || false
     );
+    const [savesCount, setSavesCount] = useState<number>(
+        environment.saves || 0
+    );
 
     const loggedUserData = useAtomValue(userAtom);
     const navigate = useNavigate();
@@ -92,6 +96,28 @@ export default function Environment({
             if (!res) {
                 setLikesCount((prev) => prev - 1);
                 setIsLiked(false);
+                toast.error("Something went wrong");
+            }
+        }
+    }
+
+    async function changeEnvironmentSaveStatus(): Promise<void> {
+        if (isSaved) {
+            setSavesCount((prev) => prev - 1);
+            setIsSaved(false);
+            const res = await saveEnvironment(environment.id);
+            if (!res) {
+                setSavesCount((prev) => prev + 1);
+                setIsSaved(true);
+                toast.error("Something went wrong");
+            }
+        } else {
+            setSavesCount((prev) => prev + 1);
+            setIsSaved(true);
+            const res = await saveEnvironment(environment.id);
+            if (!res) {
+                setSavesCount((prev) => prev - 1);
+                setIsSaved(false);
                 toast.error("Something went wrong");
             }
         }
@@ -133,21 +159,6 @@ export default function Environment({
         } else {
             toast.error("Something went wrong");
             setEnvironmentLogo("");
-        }
-    }
-
-    async function saveEnv(): Promise<void> {
-        const toastId = toast.loading("Saving environment...");
-        const status = await saveEnvironment(environment.id);
-        if (status) {
-            toast.success("Succesfully saved environment", {
-                id: toastId,
-            });
-            setIsSaved(true);
-        } else {
-            toast.error("Something went wrong", {
-                id: toastId,
-            });
         }
     }
 
@@ -247,6 +258,23 @@ export default function Environment({
                                 <TbStar className="text-yellow-500 cursor-pointer" />
                             )}
                         </span>
+                        <span
+                            className={twMerge(
+                                isSaved ? "text-white" : "text-gray-400",
+                                "flex items-center justify-end gap-2 cursor-pointer"
+                            )}
+                            onClick={changeEnvironmentSaveStatus}
+                        >
+                            {savesCount}
+                            {isSaved ? (
+                                <span className="relative">
+                                    <TbBookmarkFilled className="text-white cursor-pointer" />
+                                    <TbBookmarkFilled className="text-white cursor-pointer animate-ping-once absolute inset-0" />
+                                </span>
+                            ) : (
+                                <TbBookmark className="text-gray-500 cursor-pointer" />
+                            )}
+                        </span>
                     </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -291,20 +319,22 @@ export default function Environment({
                                             );
                                             setIsUserEditingEnvironment(true);
                                         }}
-                                        title="Edit ruleset"
+                                        title="Edit environment"
                                         className="cursor-pointer text-borderGray hover:text-gray-500 transition-colors"
                                     />
                                     <TbTrash
                                         onClick={deleteEnv}
-                                        title="Delete ruleset"
+                                        title="Delete environment"
                                         className="cursor-pointer text-borderGray hover:text-gray-500 transition-colors"
                                     />
                                     {where !== "saved" &&
                                         !isSaved &&
                                         loggedUserData.username && (
-                                            <TbDownload
+                                            <TbBookmark
                                                 className="cursor-pointer text-borderGray hover:text-gray-500 transition-colors"
-                                                onClick={saveEnv}
+                                                onClick={
+                                                    changeEnvironmentSaveStatus
+                                                }
                                                 title="Save environment"
                                             />
                                         )}
@@ -369,9 +399,9 @@ export default function Environment({
                     {where !== "saved" &&
                         !isSaved &&
                         loggedUserData.username && (
-                            <TbDownload
+                            <TbBookmark
                                 className="cursor-pointer text-gray-400 hover:text-gray-100 transition-colors"
-                                onClick={saveEnv}
+                                onClick={changeEnvironmentSaveStatus}
                                 title="Save environment"
                             />
                         )}

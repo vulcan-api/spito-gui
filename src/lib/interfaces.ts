@@ -131,6 +131,7 @@ interface environment {
     updatedAt: Date;
     isLiked: boolean;
     likes: number;
+    saves: number;
     user: UserInfo;
     isPrivate?: boolean;
     isSaved?: boolean;

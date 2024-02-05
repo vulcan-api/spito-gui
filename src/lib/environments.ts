@@ -132,7 +132,7 @@ export const getEnvironments = async (
     search?: string,
     orderBy?: "downloads" | "likes" | "saves",
     descending?: boolean
-): Promise<backendResponse<environment[]>> => {
+) => {
     const response = await backendRequest(
         `environment?skip=${skip}&take=${take}${tags ? `&tags=${tags.join(",")}` : ""}${search ? `&search=${search}` : ""}${orderBy ? `&orderBy=${orderBy}` : ""}${descending ? `&descending=${descending}` : ""}`,
         "GET"

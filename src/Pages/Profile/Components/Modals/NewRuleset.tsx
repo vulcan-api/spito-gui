@@ -100,6 +100,12 @@ export default function NewRuleset({
                                 placeholder="Ruleset git repository URL address"
                                 name="address"
                                 onChange={(e) => setAddress(e.target.value)}
+                                onKeyDown={(e) => {
+                                    e.preventDefault();
+                                    if (e.key === "Enter") {
+                                        setStage((prev) => prev + 1);
+                                    }
+                                }}
                                 value={address}
                             />
                             <span className="my-4 text-center font-poppins text-borderGray">

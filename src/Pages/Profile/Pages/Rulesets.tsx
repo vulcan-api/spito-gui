@@ -78,31 +78,33 @@ export default function Rulesets(): JSX.Element {
             ) : (
                 <AnimatePresence>
                     {rulesets.length > 0 ? (
-                        rulesets.map((ruleset, i) => (
-                            <Ruleset
-                                ruleset={ruleset}
-                                setEditedRulesetId={setEditedRulesetId}
-                                setIsUserEditingRuleset={
-                                    setIsUserEditingRuleset
-                                }
-                                index={i}
-                                where="profile"
-                                key={ruleset.id}
+                        <>
+                            {rulesets.map((ruleset, i) => (
+                                <Ruleset
+                                    ruleset={ruleset}
+                                    setEditedRulesetId={setEditedRulesetId}
+                                    setIsUserEditingRuleset={
+                                        setIsUserEditingRuleset
+                                    }
+                                    index={i}
+                                    where="profile"
+                                    key={ruleset.id}
+                                />
+                            ))}
+                            <Pagination
+                                total={total}
+                                perPage={perPage}
+                                page={page}
+                                totalPages={totalPages}
+                                handlePageChange={handlePageChange}
+                                handlePerPageChange={handlePerPageChange}
                             />
-                        ))
+                        </>
                     ) : (
                         <p className="text-center text-gray-500 text-2xl font-poppins mt-10">
                             This user has no rulesets!
                         </p>
                     )}
-                    <Pagination
-                        total={total}
-                        perPage={perPage}
-                        page={page}
-                        totalPages={totalPages}
-                        handlePageChange={handlePageChange}
-                        handlePerPageChange={handlePerPageChange}
-                    />
                 </AnimatePresence>
             )}
         </>
