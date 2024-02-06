@@ -147,6 +147,9 @@ export default function EnvironmentPage(): JSX.Element {
                         }
                         setEditedEnvironmentId={setEditedEnvironmentId}
                         index={0}
+                        canChangeLogo={
+                            environment.user.id === loggedUserData.id
+                        }
                         where="page"
                     />
                 )

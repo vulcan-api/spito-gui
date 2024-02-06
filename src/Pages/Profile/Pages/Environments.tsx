@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Environment from "../Components/Environment";
 import ManageContentModal from "../Components/Modals/ManageContentModal";
+import { useAtomValue } from "jotai";
+import { userAtom } from "../../../lib/atoms";
 
 export default function Environments(): JSX.Element {
     const [environments, setEnvironments] = useState<environment[]>([]);
@@ -14,6 +16,7 @@ export default function Environments(): JSX.Element {
         useState<boolean>(false);
     const [editedEnvironmentId, setEditedEnvironmentId] = useState<number>(0);
     const { userId = 0 } = useParams<{ userId: string }>();
+    const loggedUserData = useAtomValue(userAtom);
 
     async function getEnvironments() {
         setIsLoading(true);
@@ -52,6 +55,9 @@ export default function Environments(): JSX.Element {
                             <Environment
                                 key={environment.id}
                                 environment={environment}
+                                canChangeLogo={
+                                    environment.user.id === loggedUserData.id
+                                }
                                 index={i}
                                 setIsUserEditingEnvironment={
                                     setIsUserEditingEnvironment

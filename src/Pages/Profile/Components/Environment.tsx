@@ -36,7 +36,7 @@ export default function Environment({
     index,
     className = "",
     where = "profile",
-    canChangeLogo = true,
+    canChangeLogo = false,
     view = "normal",
 }: {
     environment: tEnvironment;
