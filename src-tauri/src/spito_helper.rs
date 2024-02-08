@@ -18,8 +18,9 @@ const DBUS_ID: &str = "org.avorty.spito.gui";
 const DBUS_OBJECT_PATH: &str = "/org/avorty/spito/gui";
 
 #[derive(Clone, serde::Serialize)]
+#[serde(rename_all = "camelCase")]
 struct DBusEchoPayload {
-    mess_type: String,
+    message_type: String,
     message: String,
 }
 
@@ -36,8 +37,8 @@ fn _start_spito_server(app: AppHandle) -> anyhow::Result<()> {
 
     let mut cr = Crossroads::new();
     let token = cr.register(DBUS_ID, |builder| {
-        builder.method("Echo", ("mess_type", "message"), (), move |_ctx, _cr, (mess_type, message, ): (String, String, )| {
-            app.emit_all("Echo", DBusEchoPayload { mess_type, message })
+        builder.method("Info", ("message_type", "message"), (), move |_ctx, _cr, (message_type, message, ): (String, String, )| {
+            app.emit_all("Info", DBusEchoPayload { message_type, message })
                 .map_err(|err| {
                     dbus::MethodErr::no_arg() // TODO: here should be something more meaningful
                 })
