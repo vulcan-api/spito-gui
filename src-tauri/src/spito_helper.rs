@@ -4,7 +4,7 @@ use dbus::blocking::Connection;
 use tauri::{AppHandle, Manager};
 
 #[tauri::command]
-pub(crate) fn start_spito_cli(ruleset: &str, rule: &str) -> Result<(), String> {
+pub fn start_spito_cli(ruleset: &str, rule: &str) -> Result<(), String> {
     Command::new("spito")
         .arg("check")
         .arg("--gui-child-mode")
