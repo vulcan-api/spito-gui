@@ -11,6 +11,7 @@ pub fn start_spito_cli(ruleset: &str, rule: &str) -> Result<(), String> {
         .arg(ruleset)
         .arg(rule)
         .spawn().map_err(|err| err.to_string())?;
+    // TODO: handle y/N question
     Ok(())
 }
 
