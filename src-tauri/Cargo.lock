@@ -69,6 +69,8 @@ dependencies = [
  "anyhow",
  "dbus",
  "dbus-crossroads",
+ "log",
+ "once_cell",
  "serde",
  "serde_json",
  "tauri",
