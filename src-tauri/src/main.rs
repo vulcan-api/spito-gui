@@ -11,7 +11,9 @@ fn main() {
     tauri::Builder::default()
         .setup(|app| {
             APP.set(app.handle()).expect("Could not setup app properly");
-            start_spito_server();
+            tauri::async_runtime::spawn(async {
+                let _ = start_spito_server().await;
+            });
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![spito_helper::start_spito_cli])
