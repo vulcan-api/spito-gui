@@ -183,9 +183,9 @@ export default function AuthModal({
                     </>
                 ) : (
                     <>
-                        <h2 className="text-center text-6xl font-roboto mb-8">
-                            Login
-                        </h2>
+                        <DialogHeader>
+                            <DialogTitle>Login</DialogTitle>
+                        </DialogHeader>
                         <Input
                             placeholder="Email"
                             type="email"

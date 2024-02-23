@@ -1,6 +1,6 @@
 import AvatarComponent from "../../../Components/AvatarComponent";
-import Button from "../../../Layout/Button";
-import Input from "../../../Layout/Input";
+import { Input } from "@/Components/ui/input";
+import { Button } from "@/Components/ui/button";
 import Loader from "../../../Layout/Loader";
 import AvatarEditModal from "../../../Pages/Profile/Components/Modals/AvatarEditModal";
 import { userAtom } from "../../../lib/atoms";
@@ -16,6 +16,7 @@ import { useState, useRef, useEffect } from "react";
 import toast from "react-hot-toast";
 import { TbEdit } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
+import { Textarea } from "@/Components/ui/textarea";
 
 export default function MainSettings(): JSX.Element {
     const loggedUserData = useAtomValue(userAtom);
@@ -175,10 +176,10 @@ export default function MainSettings(): JSX.Element {
                             onChange={(e) => setUsername(e.currentTarget.value)}
                             max={16}
                         />
-                        <textarea
+                        <Textarea
                             placeholder="Description"
                             defaultValue={userData?.description}
-                            className="font-poppins h-72 block resize-none p-2 w-full text-lg duration-300 text-white bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-gray-500"
+                            className="!h-40"
                             onChange={(e) =>
                                 setDescription(e.currentTarget.value)
                             }
@@ -188,7 +189,7 @@ export default function MainSettings(): JSX.Element {
                             will be deleted!
                         </p>
                         <Button
-                            theme="default"
+                            variant="default"
                             className="!w-full"
                             onClick={handleSaveSettings}
                         >

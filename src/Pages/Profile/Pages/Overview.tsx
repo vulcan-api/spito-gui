@@ -4,6 +4,7 @@ import { UserActivity } from "../../../lib/interfaces";
 import { getUserActivity } from "../../../lib/user";
 import { Link, useParams } from "react-router-dom";
 import Loader from "../../../Layout/Loader";
+import { DatePicker } from "@/Components/ui/date-picker";
 
 export default function Overview(): JSX.Element {
     const { userId = 0 } = useParams<{ userId: string }>();
@@ -41,27 +42,11 @@ export default function Overview(): JSX.Element {
                     <label htmlFor="from" className="mb-2">
                         From:
                     </label>
-                    <input
-                        placeholder="From"
-                        type="date"
-                        id="from"
-                        value={fromDate.toISOString().split("T")[0]}
-                        onChange={(e) => setFromDate(new Date(e.target.value))}
-                        className="appearance-none bg-bgColor rounded-md p-2 text-gray-400 cursor-pointer"
-                        title="From date"
-                    />
+                    <DatePicker value={fromDate} onChange={setFromDate} />
                     <label htmlFor="to" className="mb-2">
                         To:
                     </label>
-                    <input
-                        placeholder="To"
-                        type="date"
-                        id="to"
-                        value={toDate.toISOString().split("T")[0]}
-                        onChange={(e) => setToDate(new Date(e.target.value))}
-                        className="appearance-none bg-bgColor rounded-md p-2 text-gray-400 cursor-pointer"
-                        title="To date"
-                    />
+                    <DatePicker value={toDate} onChange={setToDate} />
                 </div>
             </span>
             {activity && hasActivity ? (

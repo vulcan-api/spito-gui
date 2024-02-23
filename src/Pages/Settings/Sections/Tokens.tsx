@@ -100,15 +100,15 @@ export default function Tokens(): JSX.Element {
                             </p>
                         )}
                     </div>
-                    {isCreateTokenModalOpen && (
-                        <CreateToken closeModal={handleCloseCreateModal} />
-                    )}
-                    {isDisplayTokenModalOpen && (
-                        <DisplayToken
-                            closeModal={displayTokenModalCloseHandler}
-                            token={newToken}
-                        />
-                    )}
+                    <CreateToken
+                        closeModal={handleCloseCreateModal}
+                        open={isCreateTokenModalOpen}
+                    />
+                    <DisplayToken
+                        closeModal={displayTokenModalCloseHandler}
+                        token={newToken}
+                        open={isDisplayTokenModalOpen}
+                    />
                     <Button
                         variant="default"
                         onClick={() => setIsCreateTokenModalOpen(true)}
