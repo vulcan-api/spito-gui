@@ -5,7 +5,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 222.2 84% 4.9%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -48,66 +48,13 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 224.3 76.3% 48%;
   }
-} 
-
-body {
-  font-family:
-    Roboto,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Helvetica Neue",
-    "Segoe UI",
-    "Oxygen",
-    "Ubuntu",
-    "Cantarell",
-    "Open Sans",
-    sans-serif;
-  background-color: #242424;
-  min-height: 100vh;
 }
 
-#root {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-@font-face {
-  font-family: "Roboto Slab";
-  src: url("./fonts/RobotoSlab-Regular.ttf");
-}
-
-@font-face {
-  font-family: "Poppins";
-  src: url("./fonts/Poppins-Regular.ttf");
-}
-
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-
-.privacy-screen {
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(45deg, #14a1e7 20%, #242424df 100%);
-}
-
-::-webkit-calendar-picker-indicator {
-  filter: invert(1);
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-
-*::selection {
-  background-color: transparent;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }

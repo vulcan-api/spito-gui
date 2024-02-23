@@ -6,7 +6,7 @@ import { deleteToken, getUserTokens } from "../../../lib/tokens";
 import toast from "react-hot-toast";
 import CreateToken from "../Components/Modals/CreateToken";
 import DisplayToken from "../Components/Modals/DisplayToken";
-import Button from "../../../Layout/Button";
+import { Button } from "@/Components/ui/button";
 import Loader from "../../../Layout/Loader";
 
 export default function Tokens(): JSX.Element {
@@ -110,7 +110,7 @@ export default function Tokens(): JSX.Element {
                         />
                     )}
                     <Button
-                        theme="alt"
+                        variant="default"
                         onClick={() => setIsCreateTokenModalOpen(true)}
                         className="!w-fit mx-auto mt-10"
                     >

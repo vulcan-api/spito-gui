@@ -1,5 +1,5 @@
 import { Link, NavLink, Outlet } from "react-router-dom";
-import Button from "./Button";
+import { Button } from "@/Components/ui/button";
 import Searchbar from "../Components/Searchbar";
 import { useState } from "react";
 import AuthModal from "./AuthModal";
@@ -63,6 +63,7 @@ export default function Header(): JSX.Element {
                     <AuthModal
                         closeModal={handleLoginModalClose}
                         updateUser={updateUser}
+                        open={isUserLoggingIn}
                     />
                 )}
             </AnimatePresence>
@@ -111,7 +112,10 @@ export default function Header(): JSX.Element {
                                 </span>
                             </>
                         ) : (
-                            <Button theme="alt" onClick={handleLoginModalOpen}>
+                            <Button
+                                variant="outline"
+                                onClick={handleLoginModalOpen}
+                            >
                                 Login
                             </Button>
                         )}
@@ -211,7 +215,7 @@ export default function Header(): JSX.Element {
                                 </>
                             ) : (
                                 <Button
-                                    theme="default"
+                                    variant="default"
                                     onClick={handleLoginModalOpen}
                                 >
                                     Login
