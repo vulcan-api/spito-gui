@@ -8,6 +8,7 @@ import AuthCode from "react-auth-code-input";
 import {
     Dialog,
     DialogContent,
+    DialogDescription,
     DialogHeader,
     DialogTitle,
 } from "@/Components/ui/dialog";
@@ -144,6 +145,9 @@ export default function AuthModal({
                         <DialogHeader>
                             <DialogTitle>Register</DialogTitle>
                         </DialogHeader>
+                        <DialogDescription>
+                            Create an account to start using spito
+                        </DialogDescription>
                         <Input placeholder="Username" ref={usernameRef} />
                         <Input
                             placeholder="Email"
@@ -164,19 +168,14 @@ export default function AuthModal({
                                 e.key === "Enter" && handleLogin()
                             }
                         />
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center justify-between gap-2">
                             <Button
                                 variant="outline"
-                                className="!w-full"
                                 onClick={changeAuthMethodHandler}
                             >
                                 Back to Login
                             </Button>
-                            <Button
-                                variant="default"
-                                className="!w-full"
-                                onClick={handleRegister}
-                            >
+                            <Button variant="default" onClick={handleRegister}>
                                 Register
                             </Button>
                         </div>
@@ -186,6 +185,9 @@ export default function AuthModal({
                         <DialogHeader>
                             <DialogTitle>Login</DialogTitle>
                         </DialogHeader>
+                        <DialogDescription>
+                            Create an account to start using spito
+                        </DialogDescription>
                         <Input
                             placeholder="Email"
                             type="email"
@@ -203,19 +205,14 @@ export default function AuthModal({
                         <p className="text-center cursor-pointer">
                             Forgot password?
                         </p>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center justify-between gap-2">
                             <Button
                                 variant="outline"
-                                className="!w-full"
                                 onClick={changeAuthMethodHandler}
                             >
                                 New? Register
                             </Button>
-                            <Button
-                                variant="default"
-                                className="!w-full"
-                                onClick={handleLogin}
-                            >
+                            <Button variant="default" onClick={handleLogin}>
                                 Login
                             </Button>
                         </div>

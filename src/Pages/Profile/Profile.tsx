@@ -20,6 +20,7 @@ import Environments from "./Pages/Environments";
 import ManageContentModal from "./Components/Modals/ManageContentModal";
 import AvatarComponent from "../../Components/AvatarComponent";
 import { twMerge } from "tailwind-merge";
+import { Separator } from "@/Components/ui/separator";
 
 type site = "Main" | "Rules" | "Rulesets" | "Environments";
 
@@ -102,13 +103,13 @@ export default function Profile(): JSX.Element {
                         <h1 className="text-gray-100 text-3xl font-roboto text-center">
                             {userData?.username}
                         </h1>
-                        <p className="text-gray-400 text-lg font-poppins w-[260px] line-clamp-4 break-word overflow-hidden text-center">
+                        <p className="text-gray-400 text-lg font-poppins line-clamp-4 break-word overflow-hidden text-center">
                             {userData?.description ||
                                 "This user has no description yet!"}
                         </p>
                     </div>
                 </div>
-                <div className="h-full w-[2px] bg-bgLight rounded-full" />
+                <Separator orientation="vertical" />
                 <div className="flex-1 gap-8 h-fit duration-300 text-xl text-gray-100 font-roboto bg-bgColor">
                     <div className="flex items-center justify-between relative">
                         <p

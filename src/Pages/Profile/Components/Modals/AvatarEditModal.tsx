@@ -1,20 +1,28 @@
-import { TbArrowBackUp, TbArrowForwardUp, TbX } from "react-icons/tb";
+import { TbArrowBackUp, TbArrowForwardUp } from "react-icons/tb";
 import AvatarEditor from "react-avatar-editor";
-import Button from "../../../../Layout/Button";
+import { Button } from "@/Components/ui/button";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import {
+    DialogDescription,
+    DialogHeader,
+    DialogContent,
+    Dialog,
+} from "@/Components/ui/dialog";
+import { Slider } from "@/Components/ui/slider";
 
 export default function AvatarEditModal({
     closeModal,
     newAvatarRef,
     avatarUrl,
     saveAvatarImage,
+    isOpen,
 }: {
     closeModal: () => void;
     //eslint-disable-next-line @typescript-eslint/no-explicit-any
     newAvatarRef: any;
     avatarUrl: string;
     saveAvatarImage: () => void;
+    isOpen: boolean;
 }): JSX.Element {
     const [avatarEditingOptions, setAvatarEditingOptions] = useState<{
         scale: number;
@@ -34,45 +42,35 @@ export default function AvatarEditModal({
         });
     }
 
-    function setScale(event: React.ChangeEvent<HTMLInputElement>): void {
+    function setScale(value: number[]): void {
         setAvatarEditingOptions({
             ...avatarEditingOptions,
-            scale: Number(event.target.value),
+            scale: value[0],
         });
     }
 
     return (
-        <div className="flex items-center justify-center absolute left-0 top-0 w-screen h-screen z-40">
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="absolute w-screen h-screen backdrop-blur-sm supports-backdrop-blur:bg-black/60"
-                onClick={closeModal}
-            />
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="2xl:w-1/4 xl:w-1/3 md:w-1/2 w-full bg-bgColor md:border-2 md:rounded-xl md:border-bgLight text-gray-100 shadow-darkMain relative p-8 pt-20 flex flex-col items-center gap-8"
-            >
-                <TbX
-                    onClick={closeModal}
-                    className="absolute left-4 top-4 text-3xl hover:text-sky-500 transition-colors cursor-pointer"
-                />
+        <Dialog open={isOpen} onOpenChange={() => closeModal()}>
+            <DialogContent>
+                <DialogHeader>Edit avatar</DialogHeader>
+                <DialogDescription>
+                    Use the controls to edit your avatar
+                </DialogDescription>
                 <AvatarEditor
                     image={avatarUrl}
-                    width={288}
-                    height={288}
-                    borderRadius={150}
+                    width={400}
+                    height={400}
+                    borderRadius={9999}
                     color={[173, 181, 189, 0.6]}
                     scale={avatarEditingOptions?.scale || 1}
                     rotate={avatarEditingOptions?.rotate || 0}
+                    className="mx-auto"
                     ref={newAvatarRef}
                 />
-                <div className="flex items-center gap-2 px-2">
+                <div className="flex items-center gap-2 px-2 w-full">
                     <Button
-                        theme="alt"
+                        variant="outline"
+                        className="w-full"
                         onClick={() => {
                             setRotate("left");
                         }}
@@ -80,7 +78,8 @@ export default function AvatarEditModal({
                         <TbArrowBackUp />
                     </Button>
                     <Button
-                        theme="alt"
+                        variant="outline"
+                        className="w-full"
                         onClick={() => {
                             setRotate("right");
                         }}
@@ -88,24 +87,22 @@ export default function AvatarEditModal({
                         <TbArrowForwardUp />
                     </Button>
                 </div>
-                <input
-                    type="range"
+                <Slider
                     min={1}
                     max={3}
-                    onChange={setScale}
+                    onValueChange={setScale}
                     step={0.01}
-                    defaultValue={1}
-                    className="2xl:w-full xl:w-4/5 md:w-3/5 w-full"
+                    defaultValue={[1]}
                 />
-                <div className="flex items-center gap-2">
-                    <Button theme="alt" onClick={closeModal}>
+                <div className="flex items-center justify-end gap-2">
+                    <Button variant="outline" onClick={closeModal}>
                         Cancel
                     </Button>
-                    <Button theme="default" onClick={saveAvatarImage}>
+                    <Button variant="default" onClick={saveAvatarImage}>
                         Save
                     </Button>
                 </div>
-            </motion.div>
-        </div>
+            </DialogContent>
+        </Dialog>
     );
 }

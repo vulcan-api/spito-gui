@@ -161,14 +161,13 @@ export default function MainSettings(): JSX.Element {
                 <Loader />
             ) : (
                 <>
-                    {isUserChangingAvatar && (
-                        <AvatarEditModal
-                            closeModal={handleUserChaningAvatar}
-                            newAvatarRef={newAvatarRef}
-                            avatarUrl={avatarUrl}
-                            saveAvatarImage={saveAvatarImage}
-                        />
-                    )}
+                    <AvatarEditModal
+                        isOpen={isUserChangingAvatar}
+                        closeModal={handleUserChaningAvatar}
+                        newAvatarRef={newAvatarRef}
+                        avatarUrl={avatarUrl}
+                        saveAvatarImage={saveAvatarImage}
+                    />
                     <div className="w-fit flex flex-col gap-4">
                         <Input
                             placeholder="Username"
@@ -197,9 +196,6 @@ export default function MainSettings(): JSX.Element {
                         </Button>
                     </div>
                     <div className="h-fit border-1 rounded-xl border-borderGray shadow-darkMain p-16 relative">
-                        <p className="text-2xl text-center absolute -top-12 left-40 font-roboto text-gray-400">
-                            Previev:
-                        </p>
                         <div className="relative shadow-darkMain rounded-full">
                             {avatarBlob ? (
                                 <img
@@ -233,7 +229,7 @@ export default function MainSettings(): JSX.Element {
                         <h1 className="text-gray-100 text-3xl font-roboto mt-8 mb-4 text-center">
                             {username}
                         </h1>
-                        <p className="text-gray-400 text-lg font-poppins w-[260px] line-clamp-4 break-word overflow-hidden text-center">
+                        <p className="text-gray-400 text-lg font-poppins line-clamp-4 break-word overflow-hidden text-center">
                             {description || "This user has no description yet!"}
                         </p>
                     </div>

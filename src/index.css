@@ -57,4 +57,9 @@
   body {
     @apply bg-background text-foreground;
   }
+  #root {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
 }

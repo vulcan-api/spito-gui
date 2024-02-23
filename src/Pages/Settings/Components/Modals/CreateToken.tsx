@@ -1,6 +1,7 @@
 import {
     Dialog,
     DialogContent,
+    DialogDescription,
     DialogHeader,
     DialogTitle,
 } from "@/Components/ui/dialog";
@@ -38,11 +39,11 @@ export default function CreateToken({
                 <DialogHeader>
                     <DialogTitle>Create new token</DialogTitle>
                 </DialogHeader>
+                <DialogDescription>
+                    The names are illustrative, set one that will easily remind
+                    you what the token is used for
+                </DialogDescription>
                 <form className="flex flex-col w-full gap-4 relative">
-                    <p className="text-center text-borderGray font-poppins">
-                        The names are illustrative, set one that will easily
-                        remind you what the token is used for
-                    </p>
                     <Input
                         placeholder="Name"
                         name="name"

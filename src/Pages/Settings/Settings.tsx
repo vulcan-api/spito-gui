@@ -9,6 +9,7 @@ import { useAtomValue } from "jotai";
 import { useNavigate } from "react-router-dom";
 import TwoFa from "./Sections/TwoFA";
 import ChangePassword from "./Sections/ChangePassword";
+import { Separator } from "@/Components/ui/separator";
 
 export default function Settings(): JSX.Element {
     const [currentPage, setCurrentPage] = useState<currentPageType>("about");
@@ -44,13 +45,14 @@ export default function Settings(): JSX.Element {
             exit={{ opacity: 0 }}
             key="settings"
             transition={{ duration: 0.4 }}
-            className="flex-1 flex flex-row gap-4 w-full overflow-y-hidden"
+            className="flex-1 flex gap-4 overflow-y-hidden"
         >
             <SettingsSidebar
                 page={currentPage}
                 setPage={setCurrentPage}
                 loggedUserData={loggedUserData}
             />
+            <Separator orientation="vertical" />
             <AnimatePresence mode="wait">
                 {displayCurrentPage()}
             </AnimatePresence>
