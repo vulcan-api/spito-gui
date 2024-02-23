@@ -128,14 +128,13 @@ export default function EnvironmentPage(): JSX.Element {
             transition={{ duration: 0.4 }}
             className="flex flex-col gap-8 p-8 w-2/3 mx-auto"
         >
-            {isUserEditingEnvironment && (
-                <ManageContentModal
-                    isUserEditing={true}
-                    closeModal={closeEditModal}
-                    environmentId={editedEnvironmentId}
-                    isUserEditingEnvironment={true}
-                />
-            )}
+            <ManageContentModal
+                isUserEditing={true}
+                closeModal={closeEditModal}
+                environmentId={editedEnvironmentId}
+                isUserEditingEnvironment={true}
+                open={isUserEditingEnvironment}
+            />
             {isFetching ? (
                 <Loader />
             ) : (

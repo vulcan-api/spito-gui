@@ -65,14 +65,13 @@ export default function Rulesets(): JSX.Element {
 
     return (
         <>
-            {isUserEditingRuleset && (
-                <ManageContentModal
-                    isUserEditing={true}
-                    closeModal={closeEditModal}
-                    rulesetId={editedRulesetId}
-                    isUserEditingEnvironment={false}
-                />
-            )}
+            <ManageContentModal
+                isUserEditing={true}
+                closeModal={closeEditModal}
+                rulesetId={editedRulesetId}
+                isUserEditingEnvironment={false}
+                open={isUserEditingRuleset}
+            />
             {isFetching ? (
                 <Loader size="w-16 h-16 mt-8" />
             ) : (

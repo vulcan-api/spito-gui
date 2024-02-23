@@ -60,13 +60,12 @@ export default function RulesetPage(): JSX.Element {
             transition={{ duration: 0.4 }}
             className="w-3/5 mx-auto mt-10"
         >
-            {isUserEditingRuleset && (
-                <ManageContentModal
-                    isUserEditing={true}
-                    closeModal={closeEditModal}
-                    rulesetId={editedRulesetId}
-                />
-            )}
+            <ManageContentModal
+                isUserEditing={true}
+                closeModal={closeEditModal}
+                rulesetId={editedRulesetId}
+                open={isUserEditingRuleset}
+            />
             {isFetching ? (
                 <Loader size="w-16 h-16 mt-8" />
             ) : (
