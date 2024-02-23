@@ -38,14 +38,13 @@ export default function Environments(): JSX.Element {
 
     return (
         <>
-            {isUserEditingEnvironment && (
-                <ManageContentModal
-                    isUserEditing={true}
-                    closeModal={closeEditModal}
-                    environmentId={editedEnvironmentId}
-                    isUserEditingEnvironment={true}
-                />
-            )}
+            <ManageContentModal
+                isUserEditing={true}
+                closeModal={closeEditModal}
+                environmentId={editedEnvironmentId}
+                isUserEditingEnvironment={true}
+                open={isUserEditingEnvironment}
+            />
             {isLoading ? (
                 <Loader size="w-16 h-16 mt-8" />
             ) : (

@@ -81,9 +81,10 @@ export default function Profile(): JSX.Element {
             transition={{ duration: 0.4 }}
             className="flex-1 w-4/5 mx-auto flex flex-col px-16 overflow-y-auto my-4"
         >
-            {isUserAddingContent && (
-                <ManageContentModal closeModal={handleAddingContent} />
-            )}
+            <ManageContentModal
+                closeModal={handleAddingContent}
+                open={isUserAddingContent}
+            />
             <div className="w-full pb-8 flex gap-8 py-8">
                 <div className="h-fit w-1/4 flex flex-col gap-4 px-8 py-8 duration-300 relative bg-bgColor">
                     {loggedUserData?.id === +userId && (
