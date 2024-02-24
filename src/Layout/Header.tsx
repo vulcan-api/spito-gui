@@ -58,15 +58,11 @@ export default function Header(): JSX.Element {
 
     return (
         <>
-            <AnimatePresence>
-                {isUserLoggingIn && (
-                    <AuthModal
-                        closeModal={handleLoginModalClose}
-                        updateUser={updateUser}
-                        open={isUserLoggingIn}
-                    />
-                )}
-            </AnimatePresence>
+            <AuthModal
+                closeModal={handleLoginModalClose}
+                updateUser={updateUser}
+                open={isUserLoggingIn}
+            />
             <header className="w-screen py-4 px-8 flex items-center justify-between lg:gap-16 gap-8">
                 <Link
                     to="/"

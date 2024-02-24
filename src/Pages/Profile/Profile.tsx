@@ -1,6 +1,5 @@
 import { ProfileInterface } from "../../lib/interfaces";
 import { getUserProfile } from "../../lib/user";
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -74,89 +73,87 @@ export default function Profile(): JSX.Element {
     }
 
     return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            key="profile"
-            transition={{ duration: 0.4 }}
-            className="flex-1 w-4/5 mx-auto flex flex-col px-16 overflow-y-auto my-4"
-        >
+        <>
+            <div className="flex-1 w-4/5 mx-auto flex flex-col px-16 overflow-y-auto my-4">
+                <div className="w-full pb-8 flex gap-8 py-8">
+                    <div className="h-fit w-1/4 flex flex-col gap-4 px-8 py-8 duration-300 relative bg-bgColor">
+                        {loggedUserData?.id === +userId && (
+                            <TbSettingsFilled
+                                onClick={() => navigate("/settings")}
+                                className="absolute right-4 top-4 text-2xl text-gray-400 transition-all hover:text-sky-500 hover:rotate-45 cursor-pointer duration-300"
+                            />
+                        )}
+                        <AvatarComponent
+                            className="shadow-darkMain"
+                            username={userData?.username || ""}
+                            size="big"
+                            userId={+userId}
+                        />
+                        <div className="flex flex-col gap-4 w-full">
+                            <h1 className="text-gray-100 text-3xl font-roboto text-center">
+                                {userData?.username}
+                            </h1>
+                            <p className="text-gray-400 text-lg font-poppins line-clamp-4 break-word overflow-hidden text-center">
+                                {userData?.description ||
+                                    "This user has no description yet!"}
+                            </p>
+                        </div>
+                    </div>
+                    <Separator orientation="vertical" />
+                    <div className="flex-1 gap-8 h-fit duration-300 text-xl text-gray-100 font-roboto bg-bgColor">
+                        <div className="flex items-center justify-between relative">
+                            <p
+                                onClick={() => setSite("Main")}
+                                className={
+                                    tabClasses("Main") + " rounded-tl-lg"
+                                }
+                            >
+                                <TbBook />
+                                OVERVIEW
+                            </p>
+                            <p
+                                onClick={() => setSite("Rules")}
+                                className={tabClasses("Rules")}
+                            >
+                                <TbFile />
+                                RULES
+                            </p>
+                            <p
+                                onClick={() => setSite("Rulesets")}
+                                className={tabClasses("Rulesets")}
+                            >
+                                <TbFolder />
+                                RULESETS
+                            </p>
+                            <p
+                                onClick={() => setSite("Environments")}
+                                className={
+                                    tabClasses("Environments") +
+                                    " rounded-tr-lg"
+                                }
+                            >
+                                <TbBriefcase />
+                                ENVIRONMENTS
+                            </p>
+                            {loggedUserData?.id === +userId && (
+                                <p
+                                    onClick={handleAddingContent}
+                                    className="absolute w-8 h-8 transition-colors duration-300 text-white bg-sky-500 hover:bg-sky-700 -right-10 rounded-full flex items-center justify-center cursor-pointer"
+                                >
+                                    <TbPlus />
+                                </p>
+                            )}
+                        </div>
+                        <div className="flex flex-col gap-8 p-4 text-gray-400">
+                            {displayCorrectSite()}
+                        </div>
+                    </div>
+                </div>
+            </div>
             <ManageContentModal
                 closeModal={handleAddingContent}
                 open={isUserAddingContent}
             />
-            <div className="w-full pb-8 flex gap-8 py-8">
-                <div className="h-fit w-1/4 flex flex-col gap-4 px-8 py-8 duration-300 relative bg-bgColor">
-                    {loggedUserData?.id === +userId && (
-                        <TbSettingsFilled
-                            onClick={() => navigate("/settings")}
-                            className="absolute right-4 top-4 text-2xl text-gray-400 transition-all hover:text-sky-500 hover:rotate-45 cursor-pointer duration-300"
-                        />
-                    )}
-                    <AvatarComponent
-                        className="shadow-darkMain"
-                        username={userData?.username || ""}
-                        size="big"
-                        userId={+userId}
-                    />
-                    <div className="flex flex-col gap-4 w-full">
-                        <h1 className="text-gray-100 text-3xl font-roboto text-center">
-                            {userData?.username}
-                        </h1>
-                        <p className="text-gray-400 text-lg font-poppins line-clamp-4 break-word overflow-hidden text-center">
-                            {userData?.description ||
-                                "This user has no description yet!"}
-                        </p>
-                    </div>
-                </div>
-                <Separator orientation="vertical" />
-                <div className="flex-1 gap-8 h-fit duration-300 text-xl text-gray-100 font-roboto bg-bgColor">
-                    <div className="flex items-center justify-between relative">
-                        <p
-                            onClick={() => setSite("Main")}
-                            className={tabClasses("Main") + " rounded-tl-lg"}
-                        >
-                            <TbBook />
-                            OVERVIEW
-                        </p>
-                        <p
-                            onClick={() => setSite("Rules")}
-                            className={tabClasses("Rules")}
-                        >
-                            <TbFile />
-                            RULES
-                        </p>
-                        <p
-                            onClick={() => setSite("Rulesets")}
-                            className={tabClasses("Rulesets")}
-                        >
-                            <TbFolder />
-                            RULESETS
-                        </p>
-                        <p
-                            onClick={() => setSite("Environments")}
-                            className={
-                                tabClasses("Environments") + " rounded-tr-lg"
-                            }
-                        >
-                            <TbBriefcase />
-                            ENVIRONMENTS
-                        </p>
-                        {loggedUserData?.id === +userId && (
-                            <p
-                                onClick={handleAddingContent}
-                                className="absolute w-8 h-8 transition-colors duration-300 text-white bg-sky-500 hover:bg-sky-700 -right-10 rounded-full flex items-center justify-center cursor-pointer"
-                            >
-                                <TbPlus />
-                            </p>
-                        )}
-                    </div>
-                    <div className="flex flex-col gap-8 p-4 text-gray-400">
-                        {displayCorrectSite()}
-                    </div>
-                </div>
-            </div>
-        </motion.div>
+        </>
     );
 }

@@ -1,8 +1,6 @@
-import NewRuleset from "./NewRuleset";
-import NewEnviroment from "./NewEnviroment";
 import EditRulesetModal from "./EditRulesetModal";
 import EditEnvironmentModal from "./EditEnvironmentModal";
-import { Dialog } from "@/Components/ui/dialog";
+import { Dialog, DialogHeader } from "@/Components/ui/dialog";
 import { DialogContent, DialogTitle } from "@radix-ui/react-dialog";
 import { Tabs, TabsList, TabsTrigger } from "@/Components/ui/tabs";
 import { TabsContent } from "@radix-ui/react-tabs";
@@ -67,6 +65,9 @@ export default function ManageContentModal({
         return (
             <Dialog open={open} onOpenChange={closeModalHandler}>
                 <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Create</DialogTitle>
+                    </DialogHeader>
                     <Tabs defaultValue="ruleset" className="w-[400px]">
                         <TabsList>
                             <TabsTrigger value="ruleset">Ruleset</TabsTrigger>
@@ -74,10 +75,12 @@ export default function ManageContentModal({
                                 Environment
                             </TabsTrigger>
                             <TabsContent value="ruleset">
-                                <NewRuleset closeModal={closeModal} />
+                                ruleset
+                                {/* <NewRuleset closeModal={closeModal} /> */}
                             </TabsContent>
                             <TabsContent value="environment">
-                                <NewEnviroment closeModal={closeModal} />
+                                environment
+                                {/* <NewEnviroment closeModal={closeModal} /> */}
                             </TabsContent>
                         </TabsList>
                     </Tabs>
