@@ -1,9 +1,14 @@
 import EditRulesetModal from "./EditRulesetModal";
 import EditEnvironmentModal from "./EditEnvironmentModal";
-import { Dialog, DialogHeader } from "@/Components/ui/dialog";
-import { DialogContent, DialogTitle } from "@radix-ui/react-dialog";
-import { Tabs, TabsList, TabsTrigger } from "@/Components/ui/tabs";
-import { TabsContent } from "@radix-ui/react-tabs";
+import {
+    Dialog,
+    DialogHeader,
+    DialogContent,
+    DialogTitle,
+} from "@/Components/ui/dialog";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/Components/ui/tabs";
+import NewRuleset from "./NewRuleset";
+import NewEnviroment from "./NewEnviroment";
 
 export default function ManageContentModal({
     closeModal,
@@ -36,28 +41,19 @@ export default function ManageContentModal({
                 <DialogContent>
                     <DialogTitle>
                         Edit{" "}
-                        {isUserEditingEnvironment ? "Environment" : "Ruleset"}
+                        {isUserEditingEnvironment ? "environment" : "ruleset"}
                     </DialogTitle>
-                    <Tabs defaultValue="ruleset" className="w-[400px]">
-                        <TabsList>
-                            <TabsTrigger value="ruleset">Ruleset</TabsTrigger>
-                            <TabsTrigger value="environment">
-                                Environment
-                            </TabsTrigger>
-                            <TabsContent value="ruleset">
-                                <EditRulesetModal
-                                    closeModal={closeModal}
-                                    rulesetId={rulesetId}
-                                />
-                            </TabsContent>
-                            <TabsContent value="environment">
-                                <EditEnvironmentModal
-                                    closeModal={closeModal}
-                                    environmentId={environmentId}
-                                />
-                            </TabsContent>
-                        </TabsList>
-                    </Tabs>
+                    {isUserEditingEnvironment ? (
+                        <EditEnvironmentModal
+                            closeModal={closeModal}
+                            environmentId={environmentId}
+                        />
+                    ) : (
+                        <EditRulesetModal
+                            closeModal={closeModal}
+                            rulesetId={rulesetId}
+                        />
+                    )}
                 </DialogContent>
             </Dialog>
         );
@@ -66,23 +62,21 @@ export default function ManageContentModal({
             <Dialog open={open} onOpenChange={closeModalHandler}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Create</DialogTitle>
+                        <DialogTitle>New</DialogTitle>
                     </DialogHeader>
-                    <Tabs defaultValue="ruleset" className="w-[400px]">
-                        <TabsList>
+                    <Tabs defaultValue="ruleset">
+                        <TabsList className="w-full *:w-full">
                             <TabsTrigger value="ruleset">Ruleset</TabsTrigger>
                             <TabsTrigger value="environment">
                                 Environment
                             </TabsTrigger>
-                            <TabsContent value="ruleset">
-                                ruleset
-                                {/* <NewRuleset closeModal={closeModal} /> */}
-                            </TabsContent>
-                            <TabsContent value="environment">
-                                environment
-                                {/* <NewEnviroment closeModal={closeModal} /> */}
-                            </TabsContent>
                         </TabsList>
+                        <TabsContent value="ruleset">
+                            <NewRuleset closeModal={closeModal} />
+                        </TabsContent>
+                        <TabsContent value="environment">
+                            <NewEnviroment closeModal={closeModal} />
+                        </TabsContent>
                     </Tabs>
                 </DialogContent>
             </Dialog>

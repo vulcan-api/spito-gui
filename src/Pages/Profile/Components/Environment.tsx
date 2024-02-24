@@ -215,7 +215,7 @@ export default function Environment({
                             {environment.name}
                         </p>
                     )}
-                    <span className="flex flex-col items-end gap-2 text-gray-500 font-poppins text-lg">
+                    <span className="flex flex-col items-end gap-px text-gray-500 font-poppins text-lg">
                         <Link
                             to={`/profile/${environment.user.id}`}
                             className="flex items-center gap-2"
@@ -241,39 +241,41 @@ export default function Environment({
                                 })}
                             </p>
                         )}
-                        <span
-                            className={twMerge(
-                                isLiked ? "text-white" : "text-gray-400",
-                                "flex items-center justify-end gap-2 cursor-pointer"
-                            )}
-                            onClick={changeEnvironmentLikeStatus}
-                        >
-                            {likesCount}
-                            {isLiked ? (
-                                <span className="relative">
-                                    <TbStarFilled className="text-yellow-500 cursor-pointer" />
-                                    <TbStarFilled className="text-yellow-500 cursor-pointer animate-ping-once absolute inset-0" />
-                                </span>
-                            ) : (
-                                <TbStar className="text-yellow-500 cursor-pointer" />
-                            )}
-                        </span>
-                        <span
-                            className={twMerge(
-                                isSaved ? "text-white" : "text-gray-400",
-                                "flex items-center justify-end gap-2 cursor-pointer"
-                            )}
-                            onClick={changeEnvironmentSaveStatus}
-                        >
-                            {savesCount}
-                            {isSaved ? (
-                                <span className="relative">
-                                    <TbBookmarkFilled className="text-white cursor-pointer" />
-                                    <TbBookmarkFilled className="text-white cursor-pointer animate-ping-once absolute inset-0" />
-                                </span>
-                            ) : (
-                                <TbBookmark className="text-gray-500 cursor-pointer" />
-                            )}
+                        <span className="flex items-center gap-4">
+                            <span
+                                className={twMerge(
+                                    isLiked ? "text-white" : "text-gray-400",
+                                    "flex items-center justify-end gap-2 cursor-pointer"
+                                )}
+                                onClick={changeEnvironmentLikeStatus}
+                            >
+                                {likesCount}
+                                {isLiked ? (
+                                    <span className="relative">
+                                        <TbStarFilled className="text-yellow-500 cursor-pointer" />
+                                        <TbStarFilled className="text-yellow-500 cursor-pointer animate-ping-once absolute inset-0" />
+                                    </span>
+                                ) : (
+                                    <TbStar className="text-yellow-500 cursor-pointer" />
+                                )}
+                            </span>
+                            <span
+                                className={twMerge(
+                                    isSaved ? "text-white" : "text-gray-400",
+                                    "flex items-center justify-end gap-2 cursor-pointer"
+                                )}
+                                onClick={changeEnvironmentSaveStatus}
+                            >
+                                {savesCount}
+                                {isSaved ? (
+                                    <span className="relative">
+                                        <TbBookmarkFilled className="text-white cursor-pointer" />
+                                        <TbBookmarkFilled className="text-white cursor-pointer animate-ping-once absolute inset-0" />
+                                    </span>
+                                ) : (
+                                    <TbBookmark className="text-gray-500 cursor-pointer" />
+                                )}
+                            </span>
                         </span>
                     </span>
                 </div>
@@ -303,8 +305,8 @@ export default function Environment({
                         </span>
                     )}
                 </div>
-                <span className="flex justify-between items-start text-xl">
-                    <p className="font-poppins text-gray-500 line-clamp-4">
+                <span className="flex justify-between items-start gap-4 text-base mb-2">
+                    <p className="font-poppins text-gray-500 line-clamp-2 leading-5">
                         {environment.description || "No description"}
                     </p>
                     <p className="flex items-center gap-2">
