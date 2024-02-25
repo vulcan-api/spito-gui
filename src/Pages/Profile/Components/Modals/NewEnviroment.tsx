@@ -137,7 +137,7 @@ export default function NewEnviroment({
                             <Textarea
                                 placeholder="Description (optional)"
                                 className="h-44"
-                                maxLength={161}
+                                maxLength={230}
                                 name="description"
                                 defaultValue={description}
                                 onChange={(e) =>

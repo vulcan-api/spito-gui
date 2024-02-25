@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 export default function RuleResult({ rule }: { rule: rule }): JSX.Element {
     return (
         <Link
-            to={`/ruleset/${rule.rulesetId}`}
-            className="w-full flex items-center gap-4 text-2xl"
+            to={`/ruleset/${rule.ruleset.id}`}
+            className="w-full flex items-center gap-4 text-base text-muted-foreground"
         >
             <TbFile />
             <p>{rule.name}</p>

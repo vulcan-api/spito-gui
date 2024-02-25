@@ -1,13 +1,22 @@
 import Loader from "../Layout/Loader";
 import { searchBackend } from "../lib/search";
 import { RefObject, useEffect, useRef, useState } from "react";
-import { BsSearch } from "react-icons/bs";
 import { searchBackend as searchBackendInterface } from "../lib/interfaces";
-import SearchResults from "./SearchbarComponents/SearchResults";
-import { twMerge } from "tailwind-merge";
+import {
+    Command,
+    CommandInput,
+    CommandList,
+    CommandItem,
+    CommandGroup,
+    CommandEmpty,
+} from "./ui/command";
+import { CommandLoading } from "cmdk";
+import UserResult from "./SearchbarComponents/UserResult";
+import RuleResult from "./SearchbarComponents/RuleResult";
+import RulesetResult from "./SearchbarComponents/RulesetResult";
+import EnvironmentResult from "./SearchbarComponents/EnvironmentResults";
 
 export default function Searchbar(): JSX.Element {
-    const [isUserSearching, setIsUserSearching] = useState<boolean>(false);
     const [results, setResults] = useState<searchBackendInterface>({
         rules: [],
         rulesets: [],
@@ -15,10 +24,25 @@ export default function Searchbar(): JSX.Element {
         topResults: [],
         environments: [],
     });
+    const [isUserSearching, setIsUserSearching] = useState<boolean>(false);
     const [isFetching, setIsFetching] = useState<boolean>(false);
-    const searchInputRef = useRef<HTMLInputElement>(null);
+    const [searchQuery, setSearchQuery] = useState<string>("");
     const wrapperRef = useRef<HTMLDivElement>(null);
     detectOnAbortingSearch(wrapperRef);
+
+    async function fetchResults(): Promise<void> {
+        setIsFetching(true);
+        const res = await searchBackend(searchQuery);
+        setResults(res.data);
+        console.log(res.data);
+        setIsFetching(false);
+    }
+
+    useEffect(() => {
+        if (searchQuery.length > 0) {
+            fetchResults();
+        }
+    }, [searchQuery]);
 
     function detectOnAbortingSearch(ref: RefObject<HTMLDivElement>): void {
         useEffect(() => {
@@ -37,18 +61,6 @@ export default function Searchbar(): JSX.Element {
         }, [ref]);
     }
 
-    async function fetchResults(): Promise<void> {
-        if (!searchInputRef.current?.value) {
-            return;
-        }
-        setIsFetching(true);
-        const res = await searchBackend(
-            searchInputRef.current?.value as string
-        );
-        setResults(res.data);
-        setIsFetching(false);
-    }
-
     function checkIfResultsExists(): boolean {
         for (const key in results) {
             if (results[key as keyof searchBackendInterface].length > 0) {
@@ -59,46 +71,105 @@ export default function Searchbar(): JSX.Element {
     }
 
     return (
-        <div
-            className={twMerge(
-                "flex items-center justify-between relative xl:w-1/4 lg:w-1/3 w-full border-b-[1px] after:absolute after:content-[''] after:w-full after:h-[1px] after:bottom-0 after:left-0",
-                isUserSearching
-                    ? "after:scale-x-100 border-transparent"
-                    : "after:scale-x-0 border-borderGray",
-                "transition-all duration-500 after:duration-500 after:transition-all after:bg-sky-400 after:origin-left"
-            )}
-            ref={wrapperRef}
-        >
-            <input
-                type="text"
-                placeholder="Search"
-                ref={searchInputRef}
-                className={twMerge(
-                    "text-xl p-2 appearance-none bg-transparent w-full font-poppins active:outline-none focus:outline-none transition-colors duration-300 placeholder:transition-colors placeholder:duration-300",
-                    isUserSearching
-                        ? "text-gray-100 placeholder:text-gray-500"
-                        : "text-borderGray placeholder:text-borderGray"
+        <div className="xl:w-1/4 lg:w-1/3 w-full" ref={wrapperRef}>
+            <Command
+                className={`border shadow-md w-full relative bg-background overflow-visible ${results || isFetching ? "rounded-t-lg" : "rounded-lg"}`}
+            >
+                <CommandInput
+                    placeholder="Search"
+                    onValueChange={(search) => setSearchQuery(search)}
+                    onFocus={() => setIsUserSearching(true)}
+                />
+                {isUserSearching && (
+                    <CommandList className="absolute top-full z-20 w-full left-0 border border-t-0 rounded-b-lg bg-background">
+                        {isFetching && (
+                            <CommandLoading className="py-4">
+                                <Loader size="w-8 h-8" />
+                            </CommandLoading>
+                        )}
+                        {!isFetching && !checkIfResultsExists() && (
+                            <CommandEmpty>No results</CommandEmpty>
+                        )}
+                        {results.topResults.length > 0 && (
+                            <CommandGroup heading="Top Results">
+                                {results.topResults.length > 0 &&
+                                    //eslint-disable-next-line
+                                    results.topResults.map((result: any) => {
+                                        return (
+                                            <CommandItem key={result?.id}>
+                                                {result.type === "user" ? (
+                                                    <UserResult
+                                                        id={result.id}
+                                                        username={
+                                                            result.username
+                                                        }
+                                                    />
+                                                ) : result.type === "rule" ? (
+                                                    <RuleResult
+                                                        rule={result}
+                                                        key={result.id}
+                                                    />
+                                                ) : result.type ===
+                                                  "ruleset" ? (
+                                                    <RulesetResult
+                                                        ruleset={result}
+                                                        key={result.id}
+                                                    />
+                                                ) : (
+                                                    <EnvironmentResult
+                                                        environment={result}
+                                                        key={result.id}
+                                                    />
+                                                )}
+                                            </CommandItem>
+                                        );
+                                    })}
+                            </CommandGroup>
+                        )}
+                        {results.users.length > 0 && (
+                            <CommandGroup heading="Users">
+                                {results.users.map((user) => (
+                                    <CommandItem key={user.id}>
+                                        <UserResult
+                                            id={user.id}
+                                            username={user.username}
+                                        />
+                                    </CommandItem>
+                                ))}
+                            </CommandGroup>
+                        )}
+                        {results.rules.length > 0 && (
+                            <CommandGroup heading="Rules">
+                                {results.rules.map((rule) => (
+                                    <CommandItem key={rule.id}>
+                                        <RuleResult rule={rule} />
+                                    </CommandItem>
+                                ))}
+                            </CommandGroup>
+                        )}
+                        {results.rulesets.length > 0 && (
+                            <CommandGroup heading="Rulesets">
+                                {results.rulesets.map((ruleset) => (
+                                    <CommandItem key={ruleset.id}>
+                                        <RulesetResult ruleset={ruleset} />
+                                    </CommandItem>
+                                ))}
+                            </CommandGroup>
+                        )}
+                        {results.environments.length > 0 && (
+                            <CommandGroup heading="Environments">
+                                {results.environments.map((environment) => (
+                                    <CommandItem key={environment.id}>
+                                        <EnvironmentResult
+                                            environment={environment}
+                                        />
+                                    </CommandItem>
+                                ))}
+                            </CommandGroup>
+                        )}
+                    </CommandList>
                 )}
-                onFocus={() => setIsUserSearching(true)}
-                onChange={fetchResults}
-            />
-            <BsSearch
-                className={twMerge(
-                    "absolute right-2 top-2 transition-all duration-300",
-                    isUserSearching ? "text-sky-400" : "text-borderGray"
-                )}
-            />
-            {searchInputRef.current?.value && isUserSearching && (
-                <div className="absolute left-0 top-full w-full p-2 h-fit bg-bgLight rounded-b-lg shadow-darkMain text-gray-400 flex flex-col gap-4 border-1 border-t-0 border-borderGray items-center z-50">
-                    {isFetching ? (
-                        <Loader size="w-8 h-8" />
-                    ) : checkIfResultsExists() ? (
-                        <SearchResults results={results} />
-                    ) : (
-                        <p className="text-xl">No results found</p>
-                    )}
-                </div>
-            )}
+            </Command>
         </div>
     );
 }

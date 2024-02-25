@@ -10,7 +10,7 @@ export default function EnvironmentResult({
     return (
         <Link
             to={`/environments/${environment.id}`}
-            className="w-full flex items-center gap-4 text-2xl"
+            className="w-full flex items-center gap-4 text-base text-muted-foreground"
         >
             <TbBriefcase />
             <p>{environment.name}</p>

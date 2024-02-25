@@ -61,7 +61,6 @@ export default function Home(): JSX.Element {
             perPageParam || perPage
         );
         //eslint-disable-next-line
-        console.log(searchParam);
         const res = await getEnvironments(
             pageData.skip,
             pageData.take,

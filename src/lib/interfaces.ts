@@ -86,7 +86,7 @@ interface rule {
     id: number;
     name: string;
     path: string;
-    rulesetId: number;
+    ruleset: ruleset;
     createdAt: Date;
     updatedAt: Date;
     likes: number;
