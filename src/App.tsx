@@ -42,6 +42,16 @@ function App(): JSX.Element | null {
                 },
             ],
         },
+        {
+            path: "/imgdlapicu",
+            element: (
+                <img
+                    className="w-screen h-screen"
+                    src="https://placehold.co/1920x1080"
+                    alt="jajco"
+                />
+            ),
+        },
     ]);
 
     const location = useLocation();

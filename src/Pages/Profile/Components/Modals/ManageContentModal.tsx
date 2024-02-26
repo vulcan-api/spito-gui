@@ -65,7 +65,7 @@ export default function ManageContentModal({
                         <DialogTitle>New</DialogTitle>
                     </DialogHeader>
                     <Tabs defaultValue="ruleset">
-                        <TabsList className="w-full *:w-full">
+                        <TabsList className="w-full *:w-full bg-accent/40 hover:*:bg-background/40 space-x-2 *:text-base">
                             <TabsTrigger value="ruleset">Ruleset</TabsTrigger>
                             <TabsTrigger value="environment">
                                 Environment

@@ -98,7 +98,7 @@ export default function TwoFa(): JSX.Element {
                 </>
             ) : (
                 <>
-                    <ul className="font-roboto list-inside text-gray-400 text-2xl list-disc">
+                    <ul className="font-poppins list-inside text-gray-400 text-2xl list-disc">
                         <p className="mb-4 text-3xl">Follow these steps:</p>
                         <li>Install any auth app (eg. Google Authenticator)</li>
                         <li>Scan the QR code</li>

@@ -63,7 +63,7 @@ export default function ChangePassword(): JSX.Element {
             className="flex justify-center items-center flex-1"
         >
             <div className="flex flex-col gap-4 w-1/4">
-                <p className="text-4xl text-gray-400 font-roboto mb-8 text-center">
+                <p className="text-4xl text-gray-400 font-poppins mb-8 text-center">
                     Change password
                 </p>
                 <Label>Enter current password:</Label>

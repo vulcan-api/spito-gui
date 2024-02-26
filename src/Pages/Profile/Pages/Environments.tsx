@@ -50,7 +50,7 @@ export default function Environments(): JSX.Element {
             ) : (
                 <AnimatePresence>
                     {environments.length > 0 ? (
-                        <div className="flex gap-4 mt-4">
+                        <div className="flex flex-col gap-4 mt-4">
                             {environments.map((environment, i) => (
                                 <Environment
                                     key={environment.id}
@@ -70,7 +70,7 @@ export default function Environments(): JSX.Element {
                             ))}
                         </div>
                     ) : (
-                        <p className="text-center text-gray-500 text-2xl font-poppins mt-10">
+                        <p className="text-center text-muted-foreground text-xl font-poppins mt-10">
                             This user has no environments!
                         </p>
                     )}

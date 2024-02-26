@@ -46,10 +46,12 @@ export default function Rule({
                 y: 0,
                 transition: { delay: 0.2 + 0.1 * i, duration: 0.2 },
             }}
-            className="text-xl font-poppins p-4 flex flex-col gap-4 rounded-xl border bg-card text-card-foreground shadow"
+            className="text-xl font-poppins p-4 flex flex-col gap-4 rounded-xl border bg-background text-card-foreground shadow"
         >
             <span className="flex items-center justify-between">
-                <span className="text-2xl font-roboto">{rule.name}</span>
+                <span className="text-xl font-rubik text-foreground">
+                    {rule.name}
+                </span>
                 <span className="flex items-center gap-2 cursor-pointer">
                     {likesCount}
                     {isLiked ? (
@@ -80,12 +82,12 @@ export default function Rule({
                     )}
                 </span>
             </span>
-            <p className="text-sm">
+            <p className="text-sm text-muted-foreground">
                 Created:{" "}
                 {formatDistanceToNow(rule.createdAt, { addSuffix: true })}
             </p>
             {rule.updatedAt !== rule.createdAt && rule.updatedAt && (
-                <p className="text-sm">
+                <p className="text-sm text-muted-foreground">
                     Updated:{" "}
                     {formatDistanceToNow(rule.updatedAt, { addSuffix: true })}
                 </p>

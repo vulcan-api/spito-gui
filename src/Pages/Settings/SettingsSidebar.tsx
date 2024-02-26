@@ -13,7 +13,7 @@ const SettingsSidebar = ({
     loggedUserData: UserInfo;
 }): JSX.Element => {
     function tabClasses(tab: currentPageType): string {
-        return `text-2xl h-full font-roboto flex items-center justify-center transition-colors duration-300 gap-2 w-full rounded-lg px-2 py-1 cursor-pointer ${
+        return `text-2xl h-full font-poppins flex items-center justify-center transition-colors duration-300 gap-2 w-full rounded-lg px-2 py-1 cursor-pointer ${
             page === tab
                 ? "bg-foreground/10 text-primary"
                 : "bg-transparent text-muted-foreground hover:bg-foreground/10"
@@ -29,7 +29,7 @@ const SettingsSidebar = ({
                     username={loggedUserData.username}
                     className="shadow-darkMain"
                 />
-                <span className="text-center font-roboto text-xl text-gray-400">
+                <span className="text-center font-poppins text-xl text-gray-400">
                     {loggedUserData.username}
                 </span>
             </p>

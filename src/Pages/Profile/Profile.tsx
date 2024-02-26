@@ -51,7 +51,7 @@ export default function Profile(): JSX.Element {
         <>
             <div className="flex-1 w-4/5 mx-auto flex flex-col px-16 overflow-y-auto my-4">
                 <div className="w-full pb-8 flex gap-8 py-8">
-                    <div className="h-fit flex flex-col gap-4 px-8 py-8 duration-300 bg-bgColor">
+                    <div className="h-fit flex flex-col gap-4 px-8 py-8 duration-300 w-[480px]">
                         {loggedUserData?.id === +userId && (
                             <TbSettingsFilled
                                 onClick={() => navigate("/settings")}
@@ -65,7 +65,7 @@ export default function Profile(): JSX.Element {
                             userId={+userId}
                         />
                         <div className="flex flex-col gap-4 w-full">
-                            <h1 className="text-gray-100 text-3xl font-roboto text-center">
+                            <h1 className="text-gray-100 text-3xl font-poppins text-center">
                                 {userData?.username}
                             </h1>
                             <p className="text-gray-400 text-lg font-poppins line-clamp-4 break-word overflow-hidden text-center">

@@ -3,6 +3,16 @@
 @tailwind utilities;
  
 
+@font-face {
+  font-family: "Poppins";
+  src: url("./fonts/Poppins-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Rubik";
+  src: url("./fonts/Rubik-Regular.ttf");
+}
+
 @layer base {
   :root {
     --background: 20 14.3% 4.1%;

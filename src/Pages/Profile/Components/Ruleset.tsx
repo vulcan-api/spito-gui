@@ -8,6 +8,7 @@ import { useAtomValue } from "jotai";
 import { TbEdit, TbLayoutBottombarExpand } from "react-icons/tb";
 import { Link, useParams } from "react-router-dom";
 import Rule from "./Rule";
+import { Separator } from "@/Components/ui/separator";
 
 export default function Ruleset({
     ruleset,
@@ -36,7 +37,7 @@ export default function Ruleset({
                 transition: { delay: 0.1 * index, duration: 0.2 },
             }}
             key={ruleset.id}
-            className="text-xl w-full font-poppins p-4 flex flex-col gap-4 rounded-xl border bg-card text-card-foreground shadow"
+            className="text-xl w-full font-poppins p-4 flex flex-col gap-4 rounded-xl border bg-background text-card-foreground shadow"
         >
             <div className="flex justify-between">
                 <div className="flex flex-col gap-4">
@@ -44,7 +45,7 @@ export default function Ruleset({
                         <a
                             href={ruleset.url}
                             target="_blank"
-                            className="hover:underline text-2xl text-gray-400 font-roboto"
+                            className="hover:underline text-2xl text-gray-400 font-poppins"
                             title={ruleset.url}
                             rel="noreferrer"
                         >
@@ -54,7 +55,7 @@ export default function Ruleset({
                         <Link
                             to={`/ruleset/${ruleset.id}`}
                             title={ruleset.url}
-                            className="hover:underline text-2xl text-gray-400 font-roboto"
+                            className="hover:underline text-2xl text-gray-400 font-poppins"
                         >
                             {ruleset.name}
                         </Link>
@@ -63,12 +64,17 @@ export default function Ruleset({
                         {ruleset.tags.length > 0 &&
                             ruleset.tags.slice(0, 5).map((tag, i) => {
                                 return (
-                                    <Tag
-                                        key={tag.id}
-                                        tag={tag}
-                                        animation={true}
-                                        i={i}
-                                    />
+                                    <>
+                                        <Tag
+                                            key={tag.id}
+                                            tag={tag}
+                                            animation={true}
+                                            i={i}
+                                        />
+                                        {i !== ruleset.tags.length - 1 && (
+                                            <Separator orientation="vertical" />
+                                        )}
+                                    </>
                                 );
                             })}
                         {ruleset.tags.length > 5 && (
@@ -84,7 +90,7 @@ export default function Ruleset({
                         )}
                     </div>
                 </div>
-                <div className="flex flex-col items-end font-poppins text-gray-500">
+                <div className="flex flex-col items-end text-base font-poppins text-gray-500">
                     <p>
                         Created:{" "}
                         {formatDistanceToNow(ruleset.createdAt, {
@@ -121,7 +127,7 @@ export default function Ruleset({
                             openDrawer={
                                 <TbLayoutBottombarExpand
                                     title="Show rules"
-                                    className="text-borderGray hover:text-gray-500  transition-all cursor-pointer"
+                                    className="text-borderGray hover:text-gray-500 transition-all cursor-pointer"
                                 />
                             }
                         >

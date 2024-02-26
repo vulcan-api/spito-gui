@@ -100,7 +100,7 @@ export default function Rulesets(): JSX.Element {
                             />
                         </div>
                     ) : (
-                        <p className="text-center text-gray-500 text-2xl font-poppins mt-10">
+                        <p className="text-center text-muted-foreground text-xl font-poppins mt-10">
                             This user has no rulesets!
                         </p>
                     )}

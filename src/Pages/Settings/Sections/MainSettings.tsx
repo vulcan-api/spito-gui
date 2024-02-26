@@ -183,7 +183,7 @@ export default function MainSettings(): JSX.Element {
                                 setDescription(e.currentTarget.value)
                             }
                         />
-                        <p className="text-sm text-center font-roboto text-gray-400">
+                        <p className="text-sm text-center font-poppins text-gray-400">
                             Be causious while editing profile, offensive content
                             will be deleted!
                         </p>
@@ -226,7 +226,7 @@ export default function MainSettings(): JSX.Element {
                                 <TbEdit />
                             </label>
                         </div>
-                        <h1 className="text-gray-100 text-3xl font-roboto mt-8 mb-4 text-center">
+                        <h1 className="text-gray-100 text-3xl font-poppins mt-8 mb-4 text-center">
                             {username}
                         </h1>
                         <p className="text-gray-400 text-lg font-poppins line-clamp-4 break-word overflow-hidden text-center">

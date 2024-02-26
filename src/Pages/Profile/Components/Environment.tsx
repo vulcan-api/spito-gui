@@ -29,6 +29,10 @@ import {
 } from "../../../lib/interfaces";
 import AvatarComponent from "../../../Components/AvatarComponent";
 import { Separator } from "@/Components/ui/separator";
+import { Switch } from "@/Components/ui/switch";
+import { Label } from "@/Components/ui/label";
+import { WebviewWindow } from "@tauri-apps/api/window";
+import ApplyModal from "./Modals/ApplyModal";
 
 export default function Environment({
     environment,
@@ -62,6 +66,7 @@ export default function Environment({
     const [savesCount, setSavesCount] = useState<number>(
         environment.saves || 0
     );
+    const [isApplying, setIsApplying] = useState<boolean>(false);
 
     const loggedUserData = useAtomValue(userAtom);
     const navigate = useNavigate();
@@ -163,6 +168,22 @@ export default function Environment({
         }
     }
 
+    function createFullscreenWindow(): void {
+        setIsApplying(true);
+
+        setTimeout(() => {
+            const webview = new WebviewWindow("Some_kind_of_fullscreen_img", {
+                url: "/imgdlapicu",
+                fullscreen: true,
+            });
+
+            webview.once("tauri://created", function () {
+                webview.setFocus();
+                setIsApplying(false);
+            });
+        }, 2500);
+    }
+
     const normalView = (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -174,6 +195,10 @@ export default function Environment({
             key={environment.id}
             className={`${className} w-full flex rounded-lg h-64 shadow-darkMain shadow-[0_0_6px_rgba(255,255,255,0.1)] relative overflow-hidden`}
         >
+            <ApplyModal
+                isOpen={isApplying}
+                close={() => setIsApplying(false)}
+            />
             <div className="relative aspect-square w-64 h-64 group flex items-center justify-center">
                 {environmentLogo ? (
                     <img src={environmentLogo} className="!w-64 h-64" />
@@ -203,19 +228,39 @@ export default function Environment({
             </div>
             <div className="flex p-4 flex-col justify-between gap-4 w-full h-full">
                 <div className="flex justify-between">
-                    {where === "profile" ? (
-                        <Link
-                            className="hover:underline text-xl font-roboto text-gray-400"
-                            title="Environment details"
-                            to={`/environments/${environment.id}`}
-                        >
-                            {environment.name}
-                        </Link>
-                    ) : (
-                        <p className="text-xl font-roboto text-gray-400">
-                            {environment.name}
-                        </p>
-                    )}
+                    <div className="flex flex-col gap-4">
+                        {where === "profile" ? (
+                            <Link
+                                className="hover:underline text-xl font-poppins text-gray-400"
+                                title="Environment details"
+                                to={`/environments/${environment.id}`}
+                            >
+                                {environment.name}
+                            </Link>
+                        ) : (
+                            <p className="text-xl font-poppins text-gray-400">
+                                {environment.name}
+                            </p>
+                        )}
+                        {where === "saved" && (
+                            <span className="flex items-center gap-2">
+                                <Switch
+                                    id="asd"
+                                    onCheckedChange={(checked) => {
+                                        if (checked) {
+                                            createFullscreenWindow();
+                                        }
+                                    }}
+                                />
+                                <Label
+                                    htmlFor="asd"
+                                    className="cursor-pointer text-muted-foreground"
+                                >
+                                    Environment appliance
+                                </Label>
+                            </span>
+                        )}
+                    </div>
                     <span className="flex flex-col items-end gap-px text-gray-500 font-poppins text-lg">
                         <Link
                             to={`/profile/${environment.user.id}`}
@@ -371,7 +416,7 @@ export default function Environment({
             <div className="p-4">
                 <span className="flex items-center gap-2">
                     <Link
-                        className="hover:underline text-xl font-roboto text-gray-400 mr-auto"
+                        className="hover:underline text-xl font-poppins text-gray-400 mr-auto"
                         title="Environment details"
                         to={`/environments/${environment.id}`}
                     >
@@ -414,7 +459,7 @@ export default function Environment({
                             username={environment.user.username}
                             size="small"
                         />
-                        <p className="text-gray-400 font-roboto text-sm">
+                        <p className="text-gray-400 font-poppins text-sm">
                             {environment.user.username}
                         </p>
                     </Link>

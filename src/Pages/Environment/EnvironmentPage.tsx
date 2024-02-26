@@ -156,7 +156,7 @@ export default function EnvironmentPage(): JSX.Element {
             {!isFetching &&
                 (rules && rules.length > 0 ? (
                     <>
-                        <p className="text-xl text-gray-400 font-roboto mx-4">
+                        <p className="text-xl text-gray-400 font-poppins mx-4">
                             Environment rules
                         </p>
                         <div className="grid grid-cols-3 gap-8 mx-4">
@@ -173,13 +173,13 @@ export default function EnvironmentPage(): JSX.Element {
                         </div>
                     </>
                 ) : (
-                    <p className="text-2xl text-borderGray font-roboto mx-auto">
+                    <p className="text-2xl text-borderGray font-poppins mx-auto">
                         This environment has no rules!
                     </p>
                 ))}
             {!isFetching && loggedUserData.id === environment?.user.id && (
                 <div className="flex flex-col gap-4 mx-4">
-                    <p className="text-xl text-gray-400 font-roboto">
+                    <p className="text-xl text-gray-400 font-poppins">
                         Search for rules
                     </p>
                     <Input
@@ -205,12 +205,12 @@ export default function EnvironmentPage(): JSX.Element {
                                 ))}
                             </div>
                         ) : (
-                            <p className="text-2xl text-muted-foreground font-roboto mx-auto mt-10">
+                            <p className="text-xl text-muted-foreground font-poppins mx-auto mt-10">
                                 Start searching for rules!
                             </p>
                         )
                     ) : (
-                        <p className="text-2xl text-muted-foreground font-roboto mx-auto">
+                        <p className="text-xl text-muted-foreground font-poppins mx-auto">
                             No rules found!
                         </p>
                     )}

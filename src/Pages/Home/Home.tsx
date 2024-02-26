@@ -109,7 +109,7 @@ export default function Home(): JSX.Element {
             key="home"
             className="flex-1 w-4/5 mx-auto flex flex-col px-16 overflow-y-auto my-4 text-white"
         >
-            <h1 className="text-3xl font-roboto text-center my-8 text-gray-500">
+            <h1 className="text-3xl font-poppins text-center my-8 text-gray-500">
                 Trending Environments
             </h1>
             <div className="flex flex-row gap-4 flex-wrap my-8">
@@ -133,7 +133,7 @@ export default function Home(): JSX.Element {
                     )}
                 </AnimatePresence>
             </div>
-            <h1 className="text-3xl font-roboto text-center my-8 text-gray-500">
+            <h1 className="text-3xl font-poppins text-center my-8 text-gray-500">
                 All Environments
             </h1>
             <div className="flex items-center gap-4 w-full">
