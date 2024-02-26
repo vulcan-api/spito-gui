@@ -34,7 +34,6 @@ export default function Searchbar(): JSX.Element {
         setIsFetching(true);
         const res = await searchBackend(searchQuery);
         setResults(res.data);
-        console.log(res.data);
         setIsFetching(false);
     }
 
@@ -81,7 +80,7 @@ export default function Searchbar(): JSX.Element {
                     onFocus={() => setIsUserSearching(true)}
                 />
                 {isUserSearching && (
-                    <CommandList className="absolute top-full z-20 w-full left-0 border border-t-0 rounded-b-lg bg-background">
+                    <CommandList className="absolute top-full w-full left-0 border border-t-0 rounded-b-lg bg-background">
                         {isFetching && (
                             <CommandLoading className="py-4">
                                 <Loader size="w-8 h-8" />

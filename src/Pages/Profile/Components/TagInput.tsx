@@ -1,8 +1,10 @@
+import { Input } from "@/Components/ui/input";
 import Tag from "../../../Layout/Tag";
 import { TagInputProps, tagInterface } from "../../../lib/interfaces";
 import { getTagHints } from "../../../lib/user";
 import { RefObject, useEffect, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
+import { Separator } from "@/Components/ui/separator";
 
 export default function TagInput({
     id,
@@ -90,12 +92,20 @@ export default function TagInput({
                 )}
             >
                 {tags.length ? (
-                    tags.map((tag) => (
-                        <Tag
-                            key={tag.name}
-                            tag={tag}
-                            onDelete={() => deleteTag(tag)}
-                        />
+                    tags.map((tag, i) => (
+                        <>
+                            <Tag
+                                key={tag.name}
+                                tag={tag}
+                                onDelete={() => deleteTag(tag)}
+                            />
+                            {i !== tags.length - 1 && (
+                                <Separator
+                                    orientation="vertical"
+                                    className="h-6"
+                                />
+                            )}
+                        </>
                     ))
                 ) : (
                     <p className="text-center text-gray-500 w-full">
@@ -107,40 +117,28 @@ export default function TagInput({
                 className={twMerge("relative", containerClassName)}
                 ref={wrapperRef}
             >
-                <input
-                    type="text"
-                    className={twMerge(
-                        `${className} font-poppins block pl-2.5 pb-2.5 pt-4 pr-12 w-full text-lg text-white bg-transparent ${
-                            isUserSearching ? "rounded-t-lg" : "rounded-lg"
-                        } border-2 appearance-none focus:outline-none focus:ring-0 peer transition-all focus:border-sky-500 border-gray-500`,
-                        className
-                    )}
-                    readOnly={readonly}
-                    name={name}
-                    id={id || placeholder}
-                    placeholder=" "
-                    disabled={disabled}
+                <Input
                     ref={inputRef}
                     onChange={(e) => fetchTagHints(e.target.value)}
                     onFocus={() => setIsUserSearching(true)}
+                    className={className}
+                    disabled={disabled}
+                    readOnly={readonly}
+                    name={name}
+                    id={id}
+                    placeholder={placeholder}
                 />
-                <label
-                    htmlFor={id || placeholder}
-                    className="absolute font-poppins text-lg cursor-text duration-300 transform -translate-y-4 scale-75 top-1 z-10 origin-[0] bg-bgColor px-2 peer-focus:px-2 text-gray-500 peer-focus:text-sky-600 peer-placeholder-shown:text-gray-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
-                >
-                    {placeholder}
-                </label>
                 <div
                     className={twMerge(
-                        "absolute w-full max-h-32 overflow-y-auto !rounded-b-lg border-2 !border-t-transparent border-sky-500",
+                        "absolute w-full max-h-32 overflow-y-auto !rounded-b-lg border !border-t-transparent border-primary",
                         isUserSearching ? "block" : "hidden"
                     )}
                 >
-                    {tagHints.length ? (
+                    {tagHints.length > 0 ? (
                         tagHints.map((tag) => (
                             <p
                                 key={tag.id}
-                                className="text-lg flex items-center justify-between gap-2 px-2 bg-bgColor hover:bg-sky-600 transition-colors text-gray-100 cursor-pointer"
+                                className="text-lg flex items-center justify-between gap-2 px-2 bg-bgColor hover:bg-primary/20 text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
                                 onClick={() => {
                                     addTag(tag);
                                     inputRef.current?.focus();
@@ -148,21 +146,17 @@ export default function TagInput({
                                 }}
                             >
                                 <span>{tag.name}</span>
-                                <span className="opacity-70">
-                                    {tag.usageCount}
-                                </span>
+                                <span>{tag.usageCount}</span>
                             </p>
                         ))
                     ) : (
                         <p
-                            className="text-lg flex items-center gap-2 px-2 bg-bgColor transition-colors text-white"
+                            className="text-base flex items-center gap-2 p-2 bg-bgColor text-center transition-colors text-foreground/40"
                             onClick={() => {
                                 inputRef.current?.focus();
                             }}
                         >
-                            <span className="opacity-70">
-                                No existing tags found
-                            </span>
+                            <span>No existing tags found</span>
                         </p>
                     )}
                 </div>

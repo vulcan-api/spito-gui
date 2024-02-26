@@ -68,13 +68,13 @@ export default function Rule({
                     )}
                     {addRuleToEnvironment && (
                         <TbPlus
-                            className="text-gray-400 cursor-pointer hover:text-sky-400 transition-colors"
+                            className="text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
                             onClick={() => addRuleToEnvironment(rule.id)}
                         />
                     )}
                     {deleteRuleFronEnvironment && (
                         <TbTrash
-                            className="text-gray-400 cursor-pointer hover:text-sky-400 transition-colors"
+                            className="text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
                             onClick={() => deleteRuleFronEnvironment(rule.id)}
                         />
                     )}

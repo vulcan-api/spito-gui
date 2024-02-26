@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import Loader from "../../Layout/Loader";
 import TagInput from "../Profile/Components/TagInput";
 import { TbArrowDown, TbArrowUp, TbX } from "react-icons/tb";
-import Input from "../../Layout/Input";
+import { Input } from "@/Components/ui/input";
 import { calculateSkipAndTake, calculateTotalPages } from "../../lib/utils";
 import Pagination from "../../Components/Pagination";
 
@@ -138,11 +138,10 @@ export default function Home(): JSX.Element {
             </h1>
             <div className="flex items-center gap-4 w-full">
                 <Input
-                    placeholder="Search for environment"
-                    className="shadow-darkMain"
-                    containerClassName="w-80"
+                    placeholder="Search for environments"
+                    className="w-80"
                     onChange={handleSearch}
-                    value={search}
+                    defaultValue={search}
                 />
                 <div className="relative ml-auto">
                     <AnimatePresence>

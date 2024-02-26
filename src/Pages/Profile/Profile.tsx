@@ -76,11 +76,11 @@ export default function Profile(): JSX.Element {
         <>
             <div className="flex-1 w-4/5 mx-auto flex flex-col px-16 overflow-y-auto my-4">
                 <div className="w-full pb-8 flex gap-8 py-8">
-                    <div className="h-fit w-1/4 flex flex-col gap-4 px-8 py-8 duration-300 relative bg-bgColor">
+                    <div className="h-fit w-1/4 flex flex-col gap-4 px-8 py-8 duration-300 bg-bgColor">
                         {loggedUserData?.id === +userId && (
                             <TbSettingsFilled
                                 onClick={() => navigate("/settings")}
-                                className="absolute right-4 top-4 text-2xl text-gray-400 transition-all hover:text-sky-500 hover:rotate-45 cursor-pointer duration-300"
+                                className="ml-auto text-2xl text-gray-400 transition-all hover:text-sky-500 hover:rotate-45 cursor-pointer duration-300"
                             />
                         )}
                         <AvatarComponent

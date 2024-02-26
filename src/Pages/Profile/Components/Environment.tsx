@@ -28,6 +28,7 @@ import {
     environment as tEnvironment,
 } from "../../../lib/interfaces";
 import AvatarComponent from "../../../Components/AvatarComponent";
+import { Separator } from "@/Components/ui/separator";
 
 export default function Environment({
     environment,
@@ -171,7 +172,7 @@ export default function Environment({
                 transition: { delay: 0.1 * index, duration: 0.2 },
             }}
             key={environment.id}
-            className={`${className} w-full flex rounded-lg h-64 shadow-darkMain border-2 border-bgLight relative overflow-hidden`}
+            className={`${className} w-full flex rounded-lg h-64 shadow-darkMain shadow-[0_0_6px_rgba(255,255,255,0.1)] relative overflow-hidden`}
         >
             <div className="relative aspect-square w-64 h-64 group flex items-center justify-center">
                 {environmentLogo ? (
@@ -244,36 +245,34 @@ export default function Environment({
                         <span className="flex items-center gap-4">
                             <span
                                 className={twMerge(
-                                    isLiked ? "text-white" : "text-gray-400",
+                                    isLiked
+                                        ? "text-foreground"
+                                        : "text-muted-foreground",
                                     "flex items-center justify-end gap-2 cursor-pointer"
                                 )}
                                 onClick={changeEnvironmentLikeStatus}
                             >
                                 {likesCount}
                                 {isLiked ? (
-                                    <span className="relative">
-                                        <TbStarFilled className="text-yellow-500 cursor-pointer" />
-                                        <TbStarFilled className="text-yellow-500 cursor-pointer animate-ping-once absolute inset-0" />
-                                    </span>
+                                    <TbStarFilled className="text-yellow-500 cursor-pointer" />
                                 ) : (
                                     <TbStar className="text-yellow-500 cursor-pointer" />
                                 )}
                             </span>
                             <span
                                 className={twMerge(
-                                    isSaved ? "text-white" : "text-gray-400",
+                                    isSaved
+                                        ? "text-foreground"
+                                        : "text-muted-foreground",
                                     "flex items-center justify-end gap-2 cursor-pointer"
                                 )}
                                 onClick={changeEnvironmentSaveStatus}
                             >
                                 {savesCount}
                                 {isSaved ? (
-                                    <span className="relative">
-                                        <TbBookmarkFilled className="text-white cursor-pointer" />
-                                        <TbBookmarkFilled className="text-white cursor-pointer animate-ping-once absolute inset-0" />
-                                    </span>
+                                    <TbBookmarkFilled className="text-foreground cursor-pointer" />
                                 ) : (
-                                    <TbBookmark className="text-gray-500 cursor-pointer" />
+                                    <TbBookmark className="text-muted-foreground cursor-pointer" />
                                 )}
                             </span>
                         </span>
@@ -285,12 +284,20 @@ export default function Environment({
                             .slice(0, 5)
                             .map((tag: tagInterface, i: number) => {
                                 return (
-                                    <Tag
-                                        key={tag.id}
-                                        tag={tag}
-                                        animation={true}
-                                        i={i}
-                                    />
+                                    <>
+                                        <Tag
+                                            key={tag.id}
+                                            tag={tag}
+                                            animation={true}
+                                            i={i}
+                                        />
+                                        {i !== environment.tags.length - 1 && (
+                                            <Separator
+                                                orientation="vertical"
+                                                className="h-6"
+                                            />
+                                        )}
+                                    </>
                                 );
                             })}
                     {environment.tags.length > 5 && (
@@ -322,24 +329,13 @@ export default function Environment({
                                             setIsUserEditingEnvironment(true);
                                         }}
                                         title="Edit environment"
-                                        className="cursor-pointer text-borderGray hover:text-gray-500 transition-colors"
+                                        className="cursor-pointer text-muted-foreground hover:text-gray-500 transition-colors"
                                     />
                                     <TbTrash
                                         onClick={deleteEnv}
                                         title="Delete environment"
-                                        className="cursor-pointer text-borderGray hover:text-gray-500 transition-colors"
+                                        className="cursor-pointer text-muted-foreground hover:text-gray-500 transition-colors"
                                     />
-                                    {where !== "saved" &&
-                                        !isSaved &&
-                                        loggedUserData.username && (
-                                            <TbBookmark
-                                                className="cursor-pointer text-borderGray hover:text-gray-500 transition-colors"
-                                                onClick={
-                                                    changeEnvironmentSaveStatus
-                                                }
-                                                title="Save environment"
-                                            />
-                                        )}
                                 </>
                             )}
                     </p>
@@ -357,7 +353,7 @@ export default function Environment({
                 transition: { delay: 0.1 * index, duration: 0.2 },
             }}
             key={environment.id}
-            className={`${className} flex flex-col group justify-between rounded-lg w-80 h-96 shadow-darkMain border-2 border-bgLight relative overflow-hidden bg-gradient-to-t from-transparent to-zinc-900 to-90%`}
+            className={`${className} flex flex-col group justify-between rounded-lg w-80 h-96 shadow-[0_0_6px_rgba(255,255,255,0.1)] relative overflow-hidden bg-gradient-to-t from-transparent to-zinc-900 to-90%`}
         >
             {environmentLogo ? (
                 <img
@@ -428,12 +424,21 @@ export default function Environment({
                                 .slice(0, 5)
                                 .map((tag: tagInterface, i: number) => {
                                     return (
-                                        <Tag
-                                            key={tag.id}
-                                            tag={tag}
-                                            animation={true}
-                                            i={i}
-                                        />
+                                        <>
+                                            <Tag
+                                                key={tag.id}
+                                                tag={tag}
+                                                animation={true}
+                                                i={i}
+                                            />
+                                            {i !==
+                                                environment.tags.length - 1 && (
+                                                <Separator
+                                                    orientation="vertical"
+                                                    className="h-6"
+                                                />
+                                            )}
+                                        </>
                                     );
                                 })}
                         {environment.tags.length > 5 && (

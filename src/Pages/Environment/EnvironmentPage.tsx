@@ -12,7 +12,7 @@ import Environment from "../Profile/Components/Environment";
 import ManageContentModal from "../Profile/Components/Modals/ManageContentModal";
 import { motion } from "framer-motion";
 import Rule from "../Profile/Components/Rule";
-import Input from "../../Layout/Input";
+import { Input } from "@/Components/ui/input";
 import { searchBackendForRules } from "../../lib/search";
 import { useAtomValue } from "jotai";
 import { userAtom } from "../../lib/atoms";
@@ -184,9 +184,9 @@ export default function EnvironmentPage(): JSX.Element {
                     </p>
                     <Input
                         placeholder="Search for rules..."
-                        className="shadow-darkMain !w-1/2"
                         ref={searchRef}
                         onChange={searchForRules}
+                        className="w-80"
                     />
                     {isUserWaitingForRules ? (
                         <Loader size="w-16 mt-4" />
@@ -205,12 +205,12 @@ export default function EnvironmentPage(): JSX.Element {
                                 ))}
                             </div>
                         ) : (
-                            <p className="text-2xl text-borderGray font-roboto mx-auto mt-10">
+                            <p className="text-2xl text-muted-foreground font-roboto mx-auto mt-10">
                                 Start searching for rules!
                             </p>
                         )
                     ) : (
-                        <p className="text-2xl text-borderGray font-roboto mx-auto">
+                        <p className="text-2xl text-muted-foreground font-roboto mx-auto">
                             No rules found!
                         </p>
                     )}
