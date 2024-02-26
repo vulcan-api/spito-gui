@@ -40,7 +40,7 @@ struct DBusCheckFinishedPayload {
 #[derive(Clone, serde::Serialize)]
 #[serde(rename_all = "camelCase")]
 struct DBusSuccessPayload {
-    revert_number: i32,
+    revert_number: u32,
 }
 
 static CONFIRM_LISTENER: Mutex<Option<EventHandler>> = Mutex::new(None);
@@ -56,7 +56,7 @@ fn register_iface(cr: &Arc<Mutex<Crossroads>>, conn: Arc<SyncConnection>) -> Ifa
 
             Ok(())
         });
-        b.method("Success", ("revert_number", ), (), move |_, _, (revert_number, ): (i32, )| {
+        b.method("Success", ("revert_number", ), (), move |_, _, (revert_number, ): (u32, )| {
             let app = APP.get().expect("cannot obtain app");// TODO: implement something better
             app.emit_all("Success", DBusSuccessPayload { revert_number })
                 .map_err(|_err| {
