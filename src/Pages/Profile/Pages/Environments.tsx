@@ -50,20 +50,25 @@ export default function Environments(): JSX.Element {
             ) : (
                 <AnimatePresence>
                     {environments.length > 0 ? (
-                        environments.map((environment, i) => (
-                            <Environment
-                                key={environment.id}
-                                environment={environment}
-                                canChangeLogo={
-                                    environment.user.id === loggedUserData.id
-                                }
-                                index={i}
-                                setIsUserEditingEnvironment={
-                                    setIsUserEditingEnvironment
-                                }
-                                setEditedEnvironmentId={setEditedEnvironmentId}
-                            />
-                        ))
+                        <div className="flex gap-4 mt-4">
+                            {environments.map((environment, i) => (
+                                <Environment
+                                    key={environment.id}
+                                    environment={environment}
+                                    canChangeLogo={
+                                        environment.user.id ===
+                                        loggedUserData.id
+                                    }
+                                    index={i}
+                                    setIsUserEditingEnvironment={
+                                        setIsUserEditingEnvironment
+                                    }
+                                    setEditedEnvironmentId={
+                                        setEditedEnvironmentId
+                                    }
+                                />
+                            ))}
+                        </div>
                     ) : (
                         <p className="text-center text-gray-500 text-2xl font-poppins mt-10">
                             This user has no environments!

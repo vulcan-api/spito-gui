@@ -51,7 +51,7 @@ export default function Profile(): JSX.Element {
         <>
             <div className="flex-1 w-4/5 mx-auto flex flex-col px-16 overflow-y-auto my-4">
                 <div className="w-full pb-8 flex gap-8 py-8">
-                    <div className="h-fit w-1/4 flex flex-col gap-4 px-8 py-8 duration-300 bg-bgColor">
+                    <div className="h-fit flex flex-col gap-4 px-8 py-8 duration-300 bg-bgColor">
                         {loggedUserData?.id === +userId && (
                             <TbSettingsFilled
                                 onClick={() => navigate("/settings")}
@@ -93,6 +93,15 @@ export default function Profile(): JSX.Element {
                                 <TbBriefcase />
                                 Environments
                             </TabsTrigger>
+                            {loggedUserData?.id === +userId && (
+                                <div
+                                    onClick={handleAddingContent}
+                                    className="cursor-pointer inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow"
+                                >
+                                    <TbPlus />
+                                    Add Content
+                                </div>
+                            )}
                         </TabsList>
                         <TabsContent value="overview">
                             <Overview />
@@ -107,14 +116,6 @@ export default function Profile(): JSX.Element {
                             <Environments />
                         </TabsContent>
                     </Tabs>
-                    {loggedUserData?.id === +userId && (
-                        <p
-                            onClick={handleAddingContent}
-                            className="absolute w-8 h-8 transition-colors duration-300 text-white bg-sky-500 hover:bg-sky-700 -right-10 rounded-full flex items-center justify-center cursor-pointer"
-                        >
-                            <TbPlus />
-                        </p>
-                    )}
                 </div>
             </div>
             <ManageContentModal

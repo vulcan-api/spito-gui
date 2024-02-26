@@ -77,7 +77,7 @@ export default function Rulesets(): JSX.Element {
             ) : (
                 <AnimatePresence>
                     {rulesets.length > 0 ? (
-                        <>
+                        <div className="flex flex-col gap-4 mt-4">
                             {rulesets.map((ruleset, i) => (
                                 <Ruleset
                                     ruleset={ruleset}
@@ -98,7 +98,7 @@ export default function Rulesets(): JSX.Element {
                                 handlePageChange={handlePageChange}
                                 handlePerPageChange={handlePerPageChange}
                             />
-                        </>
+                        </div>
                     ) : (
                         <p className="text-center text-gray-500 text-2xl font-poppins mt-10">
                             This user has no rulesets!

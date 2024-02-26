@@ -46,7 +46,7 @@ export default function Rule({
                 y: 0,
                 transition: { delay: 0.2 + 0.1 * i, duration: 0.2 },
             }}
-            className="text-xl font-poppins shadow-darkMain border-2 border-bgLight rounded-lg p-4 flex flex-col gap-4 text-gray-400"
+            className="text-xl font-poppins p-4 flex flex-col gap-4 rounded-xl border bg-card text-card-foreground shadow"
         >
             <span className="flex items-center justify-between">
                 <span className="text-2xl font-roboto">{rule.name}</span>

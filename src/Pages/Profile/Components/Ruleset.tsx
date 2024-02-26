@@ -36,7 +36,7 @@ export default function Ruleset({
                 transition: { delay: 0.1 * index, duration: 0.2 },
             }}
             key={ruleset.id}
-            className="w-full rounded-lg p-4 flex flex-col gap-8 shadow-darkMain border-2 border-bgLight relative"
+            className="text-xl w-full font-poppins p-4 flex flex-col gap-4 rounded-xl border bg-card text-card-foreground shadow"
         >
             <div className="flex justify-between">
                 <div className="flex flex-col gap-4">
