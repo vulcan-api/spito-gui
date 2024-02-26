@@ -18,14 +18,11 @@ import Rulesets from "./Pages/Rulesets";
 import Environments from "./Pages/Environments";
 import ManageContentModal from "./Components/Modals/ManageContentModal";
 import AvatarComponent from "../../Components/AvatarComponent";
-import { twMerge } from "tailwind-merge";
 import { Separator } from "@/Components/ui/separator";
-
-type site = "Main" | "Rules" | "Rulesets" | "Environments";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/Components/ui/tabs";
 
 export default function Profile(): JSX.Element {
     const [userData, setUserData] = useState<ProfileInterface>();
-    const [site, setSite] = useState<site>("Main");
     const [isUserAddingContent, setIsUserAddingContent] =
         useState<boolean>(false);
     const loggedUserData = useAtomValue(userAtom);
@@ -48,28 +45,6 @@ export default function Profile(): JSX.Element {
 
     function handleAddingContent(): void {
         setIsUserAddingContent(!isUserAddingContent);
-    }
-
-    function tabClasses(tab: site): string {
-        return twMerge(
-            "font-roboto transition-all px-8 py-2 w-full border-b-2 flex items-center gap-2 justify-center",
-            site === tab
-                ? "text-gray-300 border-sky-400"
-                : "text-gray-400 cursor-pointer hover:border-sky-700 border-bgLight hover:bg-bgLight"
-        );
-    }
-
-    function displayCorrectSite(): JSX.Element {
-        switch (site) {
-            case "Main":
-                return <Overview />;
-            case "Rules":
-                return <Rules />;
-            case "Rulesets":
-                return <Rulesets />;
-            case "Environments":
-                return <Environments />;
-        }
     }
 
     return (
@@ -100,54 +75,46 @@ export default function Profile(): JSX.Element {
                         </div>
                     </div>
                     <Separator orientation="vertical" />
-                    <div className="flex-1 gap-8 h-fit duration-300 text-xl text-gray-100 font-roboto bg-bgColor">
-                        <div className="flex items-center justify-between relative">
-                            <p
-                                onClick={() => setSite("Main")}
-                                className={
-                                    tabClasses("Main") + " rounded-tl-lg"
-                                }
-                            >
+                    <Tabs defaultValue="overview" className="w-full">
+                        <TabsList className="w-full *:w-full bg-accent/40 hover:*:bg-background/40 space-x-2 *:text-base *:flex *:gap-2">
+                            <TabsTrigger value="overview">
                                 <TbBook />
-                                OVERVIEW
-                            </p>
-                            <p
-                                onClick={() => setSite("Rules")}
-                                className={tabClasses("Rules")}
-                            >
+                                Overview
+                            </TabsTrigger>
+                            <TabsTrigger value="rules">
                                 <TbFile />
-                                RULES
-                            </p>
-                            <p
-                                onClick={() => setSite("Rulesets")}
-                                className={tabClasses("Rulesets")}
-                            >
+                                Rules
+                            </TabsTrigger>
+                            <TabsTrigger value="rulesets">
                                 <TbFolder />
-                                RULESETS
-                            </p>
-                            <p
-                                onClick={() => setSite("Environments")}
-                                className={
-                                    tabClasses("Environments") +
-                                    " rounded-tr-lg"
-                                }
-                            >
+                                Rulesets
+                            </TabsTrigger>
+                            <TabsTrigger value="environments">
                                 <TbBriefcase />
-                                ENVIRONMENTS
-                            </p>
-                            {loggedUserData?.id === +userId && (
-                                <p
-                                    onClick={handleAddingContent}
-                                    className="absolute w-8 h-8 transition-colors duration-300 text-white bg-sky-500 hover:bg-sky-700 -right-10 rounded-full flex items-center justify-center cursor-pointer"
-                                >
-                                    <TbPlus />
-                                </p>
-                            )}
-                        </div>
-                        <div className="flex flex-col gap-8 p-4 text-gray-400">
-                            {displayCorrectSite()}
-                        </div>
-                    </div>
+                                Environments
+                            </TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="overview">
+                            <Overview />
+                        </TabsContent>
+                        <TabsContent value="rules">
+                            <Rules />
+                        </TabsContent>
+                        <TabsContent value="rulesets">
+                            <Rulesets />
+                        </TabsContent>
+                        <TabsContent value="environments">
+                            <Environments />
+                        </TabsContent>
+                    </Tabs>
+                    {loggedUserData?.id === +userId && (
+                        <p
+                            onClick={handleAddingContent}
+                            className="absolute w-8 h-8 transition-colors duration-300 text-white bg-sky-500 hover:bg-sky-700 -right-10 rounded-full flex items-center justify-center cursor-pointer"
+                        >
+                            <TbPlus />
+                        </p>
+                    )}
                 </div>
             </div>
             <ManageContentModal
