@@ -14,9 +14,9 @@ use crate::APP;
 pub fn start_spito_cli(ruleset: &str, rule: &str) -> Result<(), String> {
     Command::new("spito")
         .arg("check")
-        .arg("--gui-child-mode")
         .arg(ruleset)
         .arg(rule)
+        .arg("--gui-child-mode")
         .spawn().map_err(|err| err.to_string())?;
     Ok(())
 }
@@ -26,15 +26,21 @@ const DBUS_OBJECT_PATH: &str = "/org/avorty/spito/gui";
 
 #[derive(Clone, serde::Serialize)]
 #[serde(rename_all = "camelCase")]
-struct DBusEchoPayload {
+struct DBusInfoPayload {
     message_type: String,
     message: String,
 }
 
 #[derive(Clone, serde::Serialize)]
 #[serde(rename_all = "camelCase")]
-struct DBusConfirmPayload {
-    rule_name: String,
+struct DBusCheckFinishedPayload {
+    does_rule_pass: bool,
+}
+
+#[derive(Clone, serde::Serialize)]
+#[serde(rename_all = "camelCase")]
+struct DBusSuccessPayload {
+    revert_number: u32,
 }
 
 static CONFIRM_LISTENER: Mutex<Option<EventHandler>> = Mutex::new(None);
@@ -43,16 +49,25 @@ fn register_iface(cr: &Arc<Mutex<Crossroads>>, conn: Arc<SyncConnection>) -> Ifa
     cr_lock.register(DBUS_ID, |b: &mut IfaceBuilder<()>| {
         b.method("Info", ("message_type", "message"), (), move |_, _, (message_type, message, ): (String, String, )| {
             let app = APP.get().expect("cannot obtain app");// TODO: implement something better
-            app.emit_all("Info", DBusEchoPayload { message_type, message })
+            app.emit_all("Info", DBusInfoPayload { message_type, message })
                 .map_err(|_err| {
                     dbus::MethodErr::no_arg() // TODO: here should be something more meaningful
                 })?;
 
             Ok(())
         });
-        b.method("AskForConfirmation", ("rule_name", ), (), move |_, _, (rule_name, ): (String, )| {
+        b.method("Success", ("revert_number", ), (), move |_, _, (revert_number, ): (u32, )| {
+            let app = APP.get().expect("cannot obtain app");// TODO: implement something better
+            app.emit_all("Success", DBusSuccessPayload { revert_number })
+                .map_err(|_err| {
+                    dbus::MethodErr::no_arg() // TODO: here should be something more meaningful
+                })?;
+
+            Ok(())
+        });
+        b.method("CheckFinished", ("does_rule_pass", ), (), move |_, _, (does_rule_pass, ): (bool, )| {
             let app = APP.get().expect("cannot obtain app");
-            let _ = app.emit_all("AskForConfirmation", DBusConfirmPayload { rule_name })
+            let _ = app.emit_all("CheckFinished", DBusCheckFinishedPayload { does_rule_pass })
                 .map_err(|_err| {
                     dbus::MethodErr::no_arg() // TODO: here should be something more meaningful
                 });
@@ -65,7 +80,7 @@ fn register_iface(cr: &Arc<Mutex<Crossroads>>, conn: Arc<SyncConnection>) -> Ifa
             let conn_clone = conn.clone();
 
             // it's a hideous way to achieve a reply
-            let listener = app.listen_global("ReplyForConfirmation", move |event| {
+            let listener = app.listen_global("ReplyChecker", move |event| {
                 let msg_type= match event.payload() {
                     None => "Decline",
                     _ => "Confirm"
