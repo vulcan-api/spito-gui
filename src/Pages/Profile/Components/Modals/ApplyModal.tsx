@@ -40,14 +40,16 @@ export default function ApplyModal({
             <DialogContent className="sm:max-w-[425px] p-4">
                 <DialogHeader title="Applying environment" />
                 <div className="flex flex-col gap-4 max-w-[395px]">
-                    <p
-                        className="text-base text-muted-foreground"
-                        style={{ width: `${(currentIndex / 15) * 100}%` }}
-                    >
+                    <p className="text-base text-muted-foreground">
                         Applying...
                     </p>
                     <div className="w-full h-1 bg-accent rounded-full">
-                        <div className="bg-primary h-full rounded-full" />
+                        <div
+                            className="bg-primary h-full rounded-full"
+                            style={{
+                                width: `${(currentIndex / logs.length) * 100}%`,
+                            }}
+                        />
                     </div>
                     <div className="w-full h-32 bg-accent rounded-xl border overflow-y-auto p-4">
                         {logs
