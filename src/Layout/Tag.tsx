@@ -21,7 +21,7 @@ export default function Tag({
                 y: 0,
                 transition: { delay: 0.3 + 0.1 * i, duration: 0.3 },
             }}
-            className="text-lg w-fit rounded-full flex items-center gap-2 px-2 bg-background hover:bg-accent transition-colors text-foreground/60 selection:bg-transparent"
+            className="text-lg w-fit rounded-full flex items-center gap-2 px-2 border bg-background hover:bg-accent transition-colors text-foreground/60 selection:bg-transparent"
         >
             <span>{tag.name}</span>
         </motion.p>

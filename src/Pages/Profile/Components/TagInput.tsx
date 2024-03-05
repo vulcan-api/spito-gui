@@ -121,7 +121,11 @@ export default function TagInput({
                     ref={inputRef}
                     onChange={(e) => fetchTagHints(e.target.value)}
                     onFocus={() => setIsUserSearching(true)}
-                    className={className}
+                    className={
+                        isUserSearching
+                            ? "rounded-b-none" + className
+                            : "" + className
+                    }
                     disabled={disabled}
                     readOnly={readonly}
                     name={name}
@@ -130,7 +134,7 @@ export default function TagInput({
                 />
                 <div
                     className={twMerge(
-                        "absolute w-full max-h-32 overflow-y-auto !rounded-b-lg border !border-t-transparent border-primary",
+                        "absolute w-full max-h-32 overflow-y-auto !rounded-b-lg border bg-background !border-t-transparent border-primary",
                         isUserSearching ? "block" : "hidden"
                     )}
                 >

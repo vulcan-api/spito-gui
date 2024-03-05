@@ -19,6 +19,7 @@ import {
     SheetTrigger,
 } from "@/Components/ui/sheet";
 import { TbBookmark, TbHome } from "react-icons/tb";
+import spitoLogo from "../../public/icon.svg";
 
 export default function Header(): JSX.Element {
     const [isUserLoggingIn, setIsUserLoggingIn] = useState<boolean>(false);
@@ -62,6 +63,7 @@ export default function Header(): JSX.Element {
             <header className="w-full border-b border-border/40 bg-background/60 backdrop-blur-sm supports-[backdrop-filter]:bg-background/60">
                 <div className="container flex h-16 max-w-screen-2xl gap-8 items-center">
                     <Link to="/" className="flex items-center space-x-2">
+                        <img src={spitoLogo} alt="" className="w-6 h-6" />
                         <span className="inline-block font-bold text-2xl">
                             spito
                         </span>

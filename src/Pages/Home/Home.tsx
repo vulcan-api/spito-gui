@@ -9,10 +9,44 @@ import Environment from "../Profile/Components/Environment";
 import toast from "react-hot-toast";
 import Loader from "../../Layout/Loader";
 import TagInput from "../Profile/Components/TagInput";
-import { TbArrowDown, TbArrowUp, TbX } from "react-icons/tb";
+import {
+    TbArrowDown,
+    TbArrowUp,
+    TbCaretUpDown,
+    TbCheck,
+    TbX,
+} from "react-icons/tb";
 import { Input } from "@/Components/ui/input";
-import { calculateSkipAndTake, calculateTotalPages } from "../../lib/utils";
+import { calculateSkipAndTake, calculateTotalPages, cn } from "../../lib/utils";
 import Pagination from "../../Components/Pagination";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/Components/ui/popover";
+import { Button } from "@/Components/ui/button";
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+} from "@/Components/ui/command";
+
+const filters = [
+    {
+        value: "likes",
+        label: "Likes",
+    },
+    {
+        value: "downloads",
+        label: "Downloads",
+    },
+    {
+        value: "saves",
+        label: "Saves",
+    },
+];
 
 export default function Home(): JSX.Element {
     const [trendingEnvironments, setTrendingEnvironments] = useState<
@@ -28,15 +62,16 @@ export default function Home(): JSX.Element {
     const [searchedTags, setSearchedTags] = useState<tagInterface[]>([]);
     const [isUserSearchingTags, setIsUserSearchingTags] =
         useState<boolean>(false);
-    const [orderBy, setOrderBy] = useState<"downloads" | "likes" | "saves">(
-        "likes"
-    );
+    const [orderBy, setOrderBy] = useState<
+        "downloads" | "likes" | "saves" | ""
+    >("likes");
     const [isDescending, setIsDescending] = useState<boolean>(true);
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(10);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [total, setTotal] = useState<number>(0);
     const [search, setSearch] = useState<string>("");
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const fetchTrendingEnvironments = async () => {
         setIsTrendingEnvironmentBeingFetched(true);
@@ -66,7 +101,7 @@ export default function Home(): JSX.Element {
             pageData.take,
             searchedTags.map((t) => t.name),
             searchParam || search,
-            orderBy,
+            orderBy === "" ? undefined : orderBy,
             isDescending
         );
         if (res.status !== 200) {
@@ -109,30 +144,35 @@ export default function Home(): JSX.Element {
             key="home"
             className="flex-1 w-4/5 mx-auto flex flex-col px-16 overflow-y-auto my-4 text-white"
         >
-            <h1 className="text-3xl font-poppins text-center my-8 text-gray-500">
-                Trending Environments
-            </h1>
-            <div className="flex flex-row gap-4 flex-wrap my-8">
-                <AnimatePresence>
-                    {isTrendingEnvironmentBeingFetched ? (
-                        <Loader />
-                    ) : trendingEnvironments.length > 0 ? (
-                        trendingEnvironments.map((environment, i) => (
-                            <Environment
-                                key={environment.id}
-                                environment={environment}
-                                index={i + 1}
-                                canChangeLogo={false}
-                                view="compact"
-                            />
-                        ))
-                    ) : (
-                        <p className="text-center w-full text-bgLighter font-poppins text-xl">
-                            No trending environments found!
-                        </p>
-                    )}
-                </AnimatePresence>
-            </div>
+            {(isTrendingEnvironmentBeingFetched ||
+                trendingEnvironments.length !== 0) && (
+                <>
+                    <h1 className="text-3xl font-poppins text-center my-8 text-gray-500">
+                        Trending Environments
+                    </h1>
+                    <div className="flex flex-row gap-4 flex-wrap my-8">
+                        <AnimatePresence>
+                            {isTrendingEnvironmentBeingFetched ? (
+                                <Loader />
+                            ) : trendingEnvironments.length > 0 ? (
+                                trendingEnvironments.map((environment, i) => (
+                                    <Environment
+                                        key={environment.id}
+                                        environment={environment}
+                                        index={i + 1}
+                                        canChangeLogo={false}
+                                        view="compact"
+                                    />
+                                ))
+                            ) : (
+                                <p className="text-center w-full text-muted-foreground font-poppins text-xl">
+                                    No trending environments found!
+                                </p>
+                            )}
+                        </AnimatePresence>
+                    </div>
+                </>
+            )}
             <h1 className="text-3xl font-poppins text-center my-8 text-gray-500">
                 All Environments
             </h1>
@@ -157,7 +197,7 @@ export default function Home(): JSX.Element {
                                     opacity: 0,
                                     transition: { duration: 0.1 },
                                 }}
-                                className="absolute w-72 h-fit bg-bgColor border-1 border-bgLight shadow-darkMain rounded-lg p-4 z-20 pt-8 top-full"
+                                className="absolute w-72 h-fit bg-background border rounded-lg p-4 z-20 pt-8 top-full"
                             >
                                 <TbX
                                     className="absolute cursor-pointer inset-2 z-50"
@@ -174,18 +214,18 @@ export default function Home(): JSX.Element {
                             </motion.div>
                         )}
                     </AnimatePresence>
-                    <div
-                        className="w-fit shadow-darkMain border-1 border-bgLight px-4 py-2 font-poppins text-gray-400 cursor-pointer rounded-full"
+                    <Button
+                        variant="outline"
                         onClick={() => {
                             isUserSearchingTags ? fetchEnvironments() : "";
                             setIsUserSearchingTags((prev) => !prev);
                         }}
                     >
                         Tags: {searchedTags.length}
-                    </div>
+                    </Button>
                 </div>
-                <div
-                    className={`w-24 flex items-center justify-between transition-colors duration-300 shadow-darkMain border-1 border-bgLight px-4 py-2 font-poppins text-gray-400 cursor-pointer rounded-full`}
+                <Button
+                    variant="outline"
                     onClick={() => {
                         setIsDescending((prev) => !prev);
                         fetchEnvironments();
@@ -193,35 +233,57 @@ export default function Home(): JSX.Element {
                 >
                     {isDescending ? "Most" : "Least"}
                     {isDescending ? <TbArrowDown /> : <TbArrowUp />}
-                </div>
+                </Button>
                 <p className="font-poppins text-gray-400">Order by:</p>
-                <div
-                    className={`${orderBy === "likes" ? "bg-sky-500 hover:bg-sky-600 text-white" : ""} transition-colors duration-300 w-fit shadow-darkMain border-1 border-bgLight px-4 py-2 font-poppins text-gray-400 cursor-pointer rounded-full`}
-                    onClick={() => {
-                        setOrderBy("likes");
-                        fetchEnvironments();
-                    }}
-                >
-                    Likes
-                </div>
-                <div
-                    className={`${orderBy === "downloads" ? "bg-sky-500 hover:bg-sky-600 text-white" : ""} transition-colors duration-300 w-fit shadow-darkMain border-1 border-bgLight px-4 py-2 font-poppins text-gray-400 cursor-pointer rounded-full`}
-                    onClick={() => {
-                        setOrderBy("downloads");
-                        fetchEnvironments();
-                    }}
-                >
-                    Downloads
-                </div>
-                <div
-                    className={`${orderBy === "saves" ? "bg-sky-500 hover:bg-sky-600 text-white" : ""} transition-colors duration-300 w-fit shadow-darkMain border-1 border-bgLight px-4 py-2 font-poppins text-gray-400 cursor-pointer rounded-full`}
-                    onClick={() => {
-                        setOrderBy("saves");
-                        fetchEnvironments();
-                    }}
-                >
-                    Saves
-                </div>
+                <Popover open={isOpen} onOpenChange={setIsOpen}>
+                    <PopoverTrigger asChild>
+                        <Button
+                            variant="outline"
+                            role="combobox"
+                            className="w-[200px] justify-between"
+                        >
+                            {orderBy
+                                ? filters.find(
+                                      (filter) => filter.value === orderBy
+                                  )?.label
+                                : "Select filter..."}
+                            <TbCaretUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0">
+                        <Command>
+                            <CommandInput placeholder="Search filters..." />
+                            <CommandEmpty>No filter found.</CommandEmpty>
+                            <CommandGroup>
+                                {filters.map((filter) => (
+                                    <CommandItem
+                                        key={filter.value}
+                                        value={filter.value}
+                                        onSelect={(currentValue) => {
+                                            setOrderBy(
+                                                currentValue === filter.value
+                                                    ? (filter.value as any)
+                                                    : currentValue
+                                            );
+                                            setIsOpen(false);
+                                            fetchEnvironments();
+                                        }}
+                                    >
+                                        <TbCheck
+                                            className={cn(
+                                                "mr-2 h-4 w-4",
+                                                orderBy === filter.value
+                                                    ? "opacity-100"
+                                                    : "opacity-0"
+                                            )}
+                                        />
+                                        {filter.label}
+                                    </CommandItem>
+                                ))}
+                            </CommandGroup>
+                        </Command>
+                    </PopoverContent>
+                </Popover>
             </div>
             {isEnvironmentBeingFetched ? (
                 <Loader />

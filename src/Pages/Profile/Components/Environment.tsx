@@ -476,13 +476,6 @@ export default function Environment({
                                                 animation={true}
                                                 i={i}
                                             />
-                                            {i !==
-                                                environment.tags.length - 1 && (
-                                                <Separator
-                                                    orientation="vertical"
-                                                    className="h-6"
-                                                />
-                                            )}
                                         </>
                                     );
                                 })}
@@ -500,18 +493,18 @@ export default function Environment({
                     </div>
                 </div>
             </div>
-            <span className="group-hover:bottom-0 -bottom-36 relative transition-all duration-500 bg-bgLight/90 border-t-1 border-bgLight p-4">
-                <p className="font-poppins text-xl text-gray-400 line-clamp-2 drop-shadow-lg">
+            <span className="group-hover:bottom-0 -bottom-36 relative transition-all duration-500 bg-background/70 border-t border-muted-foreground p-4">
+                <p className="font-poppins text-lg text-muted-foreground line-clamp-2 drop-shadow-xl">
                     {environment.description || "No description"}
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-400">
                     Created:{" "}
                     {formatDistanceToNow(environment.createdAt, {
                         addSuffix: true,
                     })}
                 </p>
                 {environment.updatedAt !== environment.createdAt && (
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-400">
                         Updated:{" "}
                         {formatDistanceToNow(environment.updatedAt, {
                             addSuffix: true,
