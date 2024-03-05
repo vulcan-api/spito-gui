@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Ruleset from "../Profile/Components/Ruleset";
 import { fetchRuleset } from "../../lib/user";
 import Rule from "../Profile/Components/Rule";
-import Input from "../../Layout/Input";
+import { Input } from "@/Components/ui/input";
 
 export default function RulesetPage(): JSX.Element {
     const [isFetching, setIsFetching] = useState<boolean>(true);
@@ -60,13 +60,12 @@ export default function RulesetPage(): JSX.Element {
             transition={{ duration: 0.4 }}
             className="w-3/5 mx-auto mt-10"
         >
-            {isUserEditingRuleset && (
-                <ManageContentModal
-                    isUserEditing={true}
-                    closeModal={closeEditModal}
-                    rulesetId={editedRulesetId}
-                />
-            )}
+            <ManageContentModal
+                isUserEditing={true}
+                closeModal={closeEditModal}
+                rulesetId={editedRulesetId}
+                open={isUserEditingRuleset}
+            />
             {isFetching ? (
                 <Loader size="w-16 h-16 mt-8" />
             ) : (
@@ -103,13 +102,13 @@ export default function RulesetPage(): JSX.Element {
                                     })}
                                 </div>
                             ) : (
-                                <p className="text-center text-gray-500 text-2xl font-poppins mt-10">
+                                <p className="text-center text-muted-foreground text-xl font-poppins mt-10">
                                     There is no rules matching criteria.
                                 </p>
                             )}
                         </>
                     ) : (
-                        <p className="text-center text-gray-500 text-2xl font-poppins mt-10">
+                        <p className="text-center text-muted-foreground text-xl font-poppins mt-10">
                             Ruleset with id {rulesetId} does not exists!
                         </p>
                     )}

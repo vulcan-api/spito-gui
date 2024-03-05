@@ -1,9 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import TagInput from "../TagInput";
-import Button from "../../../../Layout/Button";
+import { Button } from "@/Components/ui/button";
 import { TbArrowLeft, TbArrowRight, TbDeviceFloppy } from "react-icons/tb";
-import Checkbox from "../../../../Layout/Checkbox";
-import Input from "../../../../Layout/Input";
+import { Input } from "@/Components/ui/input";
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { tagInterface } from "../../../../lib/interfaces";
@@ -12,6 +11,10 @@ import {
     updateEnvironment,
 } from "../../../../lib/environments";
 import Loader from "../../../../Layout/Loader";
+import { twMerge } from "tailwind-merge";
+import { Label } from "@/Components/ui/label";
+import { Switch } from "@/Components/ui/switch";
+import { Textarea } from "@/Components/ui/textarea";
 
 export default function EditEnvironmentModal({
     closeModal,
@@ -76,35 +79,39 @@ export default function EditEnvironmentModal({
 
     return (
         <>
-            <div className="flex items-center">
+            <div className="flex items-center justify-center my-4">
                 <div
-                    className="w-8 h-8 rounded-full bg-sky-600 flex items-center justify-center font-poppins cursor-pointer"
+                    className="w-8 h-8 rounded-full bg-primary flex items-center justify-center font-poppins cursor-pointer"
                     onClick={() => setStage(1)}
                 >
                     1
                 </div>
                 <div
-                    className={`w-16 ${
-                        stage >= 2 ? "bg-sky-600" : "bg-borderGray"
-                    } transition-colors duration-300 h-1`}
+                    className={twMerge(
+                        "w-16 transition-colors duration-300 h-1",
+                        stage >= 2 ? "bg-primary" : "bg-border"
+                    )}
                 />
                 <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 font-poppins cursor-pointer ${
-                        stage >= 2 ? "bg-sky-600" : "bg-borderGray"
-                    }`}
+                    className={twMerge(
+                        "w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 font-poppins cursor-pointer",
+                        stage >= 2 ? "bg-primary" : "bg-border"
+                    )}
                     onClick={() => setStage(2)}
                 >
                     2
                 </div>
                 <div
-                    className={`w-16 ${
-                        stage === 3 ? "bg-sky-600" : "bg-borderGray"
-                    } transition-colors duration-300 h-1`}
+                    className={twMerge(
+                        "w-16 transition-colors duration-300 h-1",
+                        stage === 3 ? "bg-primary" : "bg-border"
+                    )}
                 />
                 <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 font-poppins cursor-pointer ${
-                        stage === 3 ? "bg-sky-600" : "bg-borderGray"
-                    }`}
+                    className={twMerge(
+                        "w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 font-poppins cursor-pointer",
+                        stage === 3 ? "bg-primary" : "bg-border"
+                    )}
                     onClick={() => setStage(3)}
                 >
                     3
@@ -113,7 +120,7 @@ export default function EditEnvironmentModal({
             {isFetching ? (
                 <Loader />
             ) : (
-                <form className="flex flex-col w-full gap-4 relative">
+                <div className="flex flex-col w-full gap-4 relative">
                     <AnimatePresence mode="wait">
                         {stage === 1 && (
                             <motion.div
@@ -131,14 +138,21 @@ export default function EditEnvironmentModal({
                                     }
                                     value={enviromentName}
                                 />
-                                <Checkbox
-                                    id="publicity"
-                                    label="Make my enviroment private"
-                                    checked={isPrivate}
-                                    onChange={() =>
-                                        setIsPrivate((prev) => !prev)
-                                    }
-                                />
+                                <div className="flex items-center space-x-2">
+                                    <Switch
+                                        defaultChecked={isPrivate}
+                                        onCheckedChange={(checked) =>
+                                            setIsPrivate(checked)
+                                        }
+                                        id="isPrivate"
+                                    />
+                                    <Label
+                                        htmlFor="isPrivate"
+                                        className="cursor-pointer"
+                                    >
+                                        Make my environment private
+                                    </Label>
+                                </div>
                             </motion.div>
                         )}
                         {stage === 2 && (
@@ -149,13 +163,14 @@ export default function EditEnvironmentModal({
                                 key="b"
                                 className="w-full h-48 flex flex-col gap-4 p-4"
                             >
-                                <textarea
+                                <Textarea
                                     placeholder="Description (optional)"
-                                    className={`font-poppins h-44 resize-none block p-2 w-full text-lg text-white bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-gray-500 placeholder:text-gray-500 duration-300`}
+                                    className="h-44"
+                                    maxLength={230}
                                     name="description"
-                                    value={description}
+                                    defaultValue={description}
                                     onChange={(e) =>
-                                        setDescription(e.target.value)
+                                        setDescription(e.currentTarget.value)
                                     }
                                 />
                             </motion.div>
@@ -177,11 +192,10 @@ export default function EditEnvironmentModal({
                             </motion.div>
                         )}
                     </AnimatePresence>
-                    <div className="flex items-center w-full gap-4 px-4">
+                    <div className="flex items-center w-full justify-end gap-4 px-4">
                         {stage !== 1 && (
                             <Button
-                                theme="alt"
-                                className="!w-full text-xl"
+                                variant="outline"
                                 type="button"
                                 onClick={() => setStage((prev) => prev - 1)}
                             >
@@ -191,8 +205,7 @@ export default function EditEnvironmentModal({
                         )}
                         {stage !== 3 ? (
                             <Button
-                                theme="alt"
-                                className="!w-full text-xl"
+                                variant="default"
                                 type="button"
                                 onClick={() => setStage((prev) => prev + 1)}
                             >
@@ -201,16 +214,16 @@ export default function EditEnvironmentModal({
                             </Button>
                         ) : (
                             <Button
-                                theme="default"
+                                variant="default"
                                 onClick={formSubmitHandler}
-                                className="!w-full text-xl"
+                                type="submit"
                             >
                                 Save
                                 <TbDeviceFloppy />
                             </Button>
                         )}
                     </div>
-                </form>
+                </div>
             )}
         </>
     );

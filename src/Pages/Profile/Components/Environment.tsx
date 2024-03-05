@@ -28,6 +28,11 @@ import {
     environment as tEnvironment,
 } from "../../../lib/interfaces";
 import AvatarComponent from "../../../Components/AvatarComponent";
+import { Separator } from "@/Components/ui/separator";
+import { Switch } from "@/Components/ui/switch";
+import { Label } from "@/Components/ui/label";
+import { WebviewWindow } from "@tauri-apps/api/window";
+import ApplyModal from "./Modals/ApplyModal";
 
 export default function Environment({
     environment,
@@ -61,6 +66,7 @@ export default function Environment({
     const [savesCount, setSavesCount] = useState<number>(
         environment.saves || 0
     );
+    const [isApplying, setIsApplying] = useState<boolean>(false);
 
     const loggedUserData = useAtomValue(userAtom);
     const navigate = useNavigate();
@@ -162,6 +168,22 @@ export default function Environment({
         }
     }
 
+    function createFullscreenWindow(): void {
+        setIsApplying(true);
+
+        setTimeout(() => {
+            const webview = new WebviewWindow("Some_kind_of_fullscreen_img", {
+                url: "/imgdlapicu",
+                fullscreen: true,
+            });
+
+            webview.once("tauri://created", function () {
+                webview.setFocus();
+                setIsApplying(false);
+            });
+        }, 2500);
+    }
+
     const normalView = (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -171,8 +193,12 @@ export default function Environment({
                 transition: { delay: 0.1 * index, duration: 0.2 },
             }}
             key={environment.id}
-            className={`${className} w-full flex rounded-lg h-64 shadow-darkMain border-2 border-bgLight relative overflow-hidden`}
+            className={`${className} w-full flex rounded-lg h-64 shadow-darkMain shadow-[0_0_6px_rgba(255,255,255,0.1)] relative overflow-hidden`}
         >
+            <ApplyModal
+                isOpen={isApplying}
+                close={() => setIsApplying(false)}
+            />
             <div className="relative aspect-square w-64 h-64 group flex items-center justify-center">
                 {environmentLogo ? (
                     <img src={environmentLogo} className="!w-64 h-64" />
@@ -202,20 +228,40 @@ export default function Environment({
             </div>
             <div className="flex p-4 flex-col justify-between gap-4 w-full h-full">
                 <div className="flex justify-between">
-                    {where === "profile" ? (
-                        <Link
-                            className="hover:underline text-xl font-roboto text-gray-400"
-                            title="Environment details"
-                            to={`/environments/${environment.id}`}
-                        >
-                            {environment.name}
-                        </Link>
-                    ) : (
-                        <p className="text-xl font-roboto text-gray-400">
-                            {environment.name}
-                        </p>
-                    )}
-                    <span className="flex flex-col items-end gap-2 text-gray-500 font-poppins text-lg">
+                    <div className="flex flex-col gap-4">
+                        {where === "profile" ? (
+                            <Link
+                                className="hover:underline text-xl font-poppins text-gray-400"
+                                title="Environment details"
+                                to={`/environments/${environment.id}`}
+                            >
+                                {environment.name}
+                            </Link>
+                        ) : (
+                            <p className="text-xl font-poppins text-gray-400">
+                                {environment.name}
+                            </p>
+                        )}
+                        {where === "saved" && (
+                            <span className="flex items-center gap-2">
+                                <Switch
+                                    id="asd"
+                                    onCheckedChange={(checked) => {
+                                        if (checked) {
+                                            createFullscreenWindow();
+                                        }
+                                    }}
+                                />
+                                <Label
+                                    htmlFor="asd"
+                                    className="cursor-pointer text-muted-foreground"
+                                >
+                                    Environment appliance
+                                </Label>
+                            </span>
+                        )}
+                    </div>
+                    <span className="flex flex-col items-end gap-px text-gray-500 font-poppins text-lg">
                         <Link
                             to={`/profile/${environment.user.id}`}
                             className="flex items-center gap-2"
@@ -241,39 +287,39 @@ export default function Environment({
                                 })}
                             </p>
                         )}
-                        <span
-                            className={twMerge(
-                                isLiked ? "text-white" : "text-gray-400",
-                                "flex items-center justify-end gap-2 cursor-pointer"
-                            )}
-                            onClick={changeEnvironmentLikeStatus}
-                        >
-                            {likesCount}
-                            {isLiked ? (
-                                <span className="relative">
+                        <span className="flex items-center gap-4">
+                            <span
+                                className={twMerge(
+                                    isLiked
+                                        ? "text-foreground"
+                                        : "text-muted-foreground",
+                                    "flex items-center justify-end gap-2 cursor-pointer"
+                                )}
+                                onClick={changeEnvironmentLikeStatus}
+                            >
+                                {likesCount}
+                                {isLiked ? (
                                     <TbStarFilled className="text-yellow-500 cursor-pointer" />
-                                    <TbStarFilled className="text-yellow-500 cursor-pointer animate-ping-once absolute inset-0" />
-                                </span>
-                            ) : (
-                                <TbStar className="text-yellow-500 cursor-pointer" />
-                            )}
-                        </span>
-                        <span
-                            className={twMerge(
-                                isSaved ? "text-white" : "text-gray-400",
-                                "flex items-center justify-end gap-2 cursor-pointer"
-                            )}
-                            onClick={changeEnvironmentSaveStatus}
-                        >
-                            {savesCount}
-                            {isSaved ? (
-                                <span className="relative">
-                                    <TbBookmarkFilled className="text-white cursor-pointer" />
-                                    <TbBookmarkFilled className="text-white cursor-pointer animate-ping-once absolute inset-0" />
-                                </span>
-                            ) : (
-                                <TbBookmark className="text-gray-500 cursor-pointer" />
-                            )}
+                                ) : (
+                                    <TbStar className="text-yellow-500 cursor-pointer" />
+                                )}
+                            </span>
+                            <span
+                                className={twMerge(
+                                    isSaved
+                                        ? "text-foreground"
+                                        : "text-muted-foreground",
+                                    "flex items-center justify-end gap-2 cursor-pointer"
+                                )}
+                                onClick={changeEnvironmentSaveStatus}
+                            >
+                                {savesCount}
+                                {isSaved ? (
+                                    <TbBookmarkFilled className="text-foreground cursor-pointer" />
+                                ) : (
+                                    <TbBookmark className="text-muted-foreground cursor-pointer" />
+                                )}
+                            </span>
                         </span>
                     </span>
                 </div>
@@ -283,12 +329,20 @@ export default function Environment({
                             .slice(0, 5)
                             .map((tag: tagInterface, i: number) => {
                                 return (
-                                    <Tag
-                                        key={tag.id}
-                                        tag={tag}
-                                        animation={true}
-                                        i={i}
-                                    />
+                                    <>
+                                        <Tag
+                                            key={tag.id}
+                                            tag={tag}
+                                            animation={true}
+                                            i={i}
+                                        />
+                                        {i !== environment.tags.length - 1 && (
+                                            <Separator
+                                                orientation="vertical"
+                                                className="h-6"
+                                            />
+                                        )}
+                                    </>
                                 );
                             })}
                     {environment.tags.length > 5 && (
@@ -303,8 +357,8 @@ export default function Environment({
                         </span>
                     )}
                 </div>
-                <span className="flex justify-between items-start text-xl">
-                    <p className="font-poppins text-gray-500 line-clamp-4">
+                <span className="flex justify-between items-start gap-4 text-base mb-2">
+                    <p className="font-poppins text-gray-500 line-clamp-2 leading-5">
                         {environment.description || "No description"}
                     </p>
                     <p className="flex items-center gap-2">
@@ -320,24 +374,13 @@ export default function Environment({
                                             setIsUserEditingEnvironment(true);
                                         }}
                                         title="Edit environment"
-                                        className="cursor-pointer text-borderGray hover:text-gray-500 transition-colors"
+                                        className="cursor-pointer text-muted-foreground hover:text-gray-500 transition-colors"
                                     />
                                     <TbTrash
                                         onClick={deleteEnv}
                                         title="Delete environment"
-                                        className="cursor-pointer text-borderGray hover:text-gray-500 transition-colors"
+                                        className="cursor-pointer text-muted-foreground hover:text-gray-500 transition-colors"
                                     />
-                                    {where !== "saved" &&
-                                        !isSaved &&
-                                        loggedUserData.username && (
-                                            <TbBookmark
-                                                className="cursor-pointer text-borderGray hover:text-gray-500 transition-colors"
-                                                onClick={
-                                                    changeEnvironmentSaveStatus
-                                                }
-                                                title="Save environment"
-                                            />
-                                        )}
                                 </>
                             )}
                     </p>
@@ -355,7 +398,7 @@ export default function Environment({
                 transition: { delay: 0.1 * index, duration: 0.2 },
             }}
             key={environment.id}
-            className={`${className} flex flex-col group justify-between rounded-lg w-80 h-96 shadow-darkMain border-2 border-bgLight relative overflow-hidden bg-gradient-to-t from-transparent to-zinc-900 to-90%`}
+            className={`${className} flex flex-col group justify-between rounded-lg w-80 h-96 shadow-[0_0_6px_rgba(255,255,255,0.1)] relative overflow-hidden bg-gradient-to-t from-transparent to-zinc-900 to-90%`}
         >
             {environmentLogo ? (
                 <img
@@ -373,7 +416,7 @@ export default function Environment({
             <div className="p-4">
                 <span className="flex items-center gap-2">
                     <Link
-                        className="hover:underline text-xl font-roboto text-gray-400 mr-auto"
+                        className="hover:underline text-xl font-poppins text-gray-400 mr-auto"
                         title="Environment details"
                         to={`/environments/${environment.id}`}
                     >
@@ -416,7 +459,7 @@ export default function Environment({
                             username={environment.user.username}
                             size="small"
                         />
-                        <p className="text-gray-400 font-roboto text-sm">
+                        <p className="text-gray-400 font-poppins text-sm">
                             {environment.user.username}
                         </p>
                     </Link>
@@ -426,12 +469,14 @@ export default function Environment({
                                 .slice(0, 5)
                                 .map((tag: tagInterface, i: number) => {
                                     return (
-                                        <Tag
-                                            key={tag.id}
-                                            tag={tag}
-                                            animation={true}
-                                            i={i}
-                                        />
+                                        <>
+                                            <Tag
+                                                key={tag.id}
+                                                tag={tag}
+                                                animation={true}
+                                                i={i}
+                                            />
+                                        </>
                                     );
                                 })}
                         {environment.tags.length > 5 && (
@@ -448,18 +493,18 @@ export default function Environment({
                     </div>
                 </div>
             </div>
-            <span className="group-hover:bottom-0 -bottom-36 relative transition-all duration-500 bg-bgLight/90 border-t-1 border-bgLight p-4">
-                <p className="font-poppins text-xl text-gray-400 line-clamp-2 drop-shadow-lg">
+            <span className="group-hover:bottom-0 -bottom-36 relative transition-all duration-500 bg-background/70 border-t border-muted-foreground p-4">
+                <p className="font-poppins text-lg text-muted-foreground line-clamp-2 drop-shadow-xl">
                     {environment.description || "No description"}
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-400">
                     Created:{" "}
                     {formatDistanceToNow(environment.createdAt, {
                         addSuffix: true,
                     })}
                 </p>
                 {environment.updatedAt !== environment.createdAt && (
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-400">
                         Updated:{" "}
                         {formatDistanceToNow(environment.updatedAt, {
                             addSuffix: true,

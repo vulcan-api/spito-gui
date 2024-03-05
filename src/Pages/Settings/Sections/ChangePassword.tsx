@@ -1,9 +1,10 @@
-import Button from "../../../Layout/Button";
-import Input from "../../../Layout/Input";
+import { Input } from "@/Components/ui/input";
+import { Button } from "@/Components/ui/button";
 import { changePassword } from "../../../lib/auth";
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import toast from "react-hot-toast";
+import { Label } from "@/Components/ui/label";
 
 export default function ChangePassword(): JSX.Element {
     const currentPasswordRef: React.RefObject<HTMLInputElement> =
@@ -61,36 +62,29 @@ export default function ChangePassword(): JSX.Element {
             key="main"
             className="flex justify-center items-center flex-1"
         >
-            <div className="flex items-center flex-col gap-4 w-1/4">
-                <p className="text-4xl text-gray-400 font-roboto mb-8">
+            <div className="flex flex-col gap-4 w-1/4">
+                <p className="text-4xl text-gray-400 font-poppins mb-8 text-center">
                     Change password
                 </p>
-                <p className="text-xl text-bgLighter font-roboto text-left w-full">
-                    Enter current password:
-                </p>
+                <Label>Enter current password:</Label>
                 <Input
                     placeholder="Current password"
                     ref={currentPasswordRef}
                     type="password"
-                    containerClassName="!w-full"
                 />
-                <p className="text-xl text-bgLighter font-roboto text-left w-full mt-2">
-                    Enter new password:
-                </p>
+                <Label>Enter new password:</Label>
                 <Input
                     placeholder="New password"
                     ref={newPasswordRef}
                     type="password"
-                    containerClassName="!w-full"
                 />
                 <Input
                     placeholder="Repeat new password"
                     ref={repeatNewPasswordRef}
                     type="password"
-                    containerClassName="!w-full"
                 />
                 <Button
-                    theme="default"
+                    variant="default"
                     className="!w-full mt-2"
                     onClick={handleSubmit}
                 >

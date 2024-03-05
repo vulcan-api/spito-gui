@@ -1,4 +1,4 @@
-import Button from "../../../Layout/Button";
+import { Button } from "@/Components/ui/button";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import AuthCode from "react-auth-code-input";
@@ -83,7 +83,7 @@ export default function TwoFa(): JSX.Element {
             animate={{ opacity: 1, transition: { duration: 0.5 } }}
             exit={{ opacity: 0 }}
             key="2fa"
-            className="flex-1 flex flex-col gap-16 items-center justify-center"
+            className="flex-1 flex flex-col gap-8 items-center justify-center"
         >
             {isLoading ? (
                 <Loader />
@@ -92,13 +92,13 @@ export default function TwoFa(): JSX.Element {
                     <p className="font-poppins text-gray-400 text-2xl">
                         2FA is Enabled!
                     </p>
-                    <Button theme="default" onClick={disable2FA}>
+                    <Button variant="default" onClick={disable2FA}>
                         Disable
                     </Button>
                 </>
             ) : (
                 <>
-                    <ul className="font-roboto list-inside text-gray-400 text-2xl list-disc">
+                    <ul className="font-poppins list-inside text-gray-400 text-2xl list-disc">
                         <p className="mb-4 text-3xl">Follow these steps:</p>
                         <li>Install any auth app (eg. Google Authenticator)</li>
                         <li>Scan the QR code</li>
@@ -114,7 +114,11 @@ export default function TwoFa(): JSX.Element {
                         containerClassName="flex items-center justify-center gap-4"
                         inputClassName="w-8 h-10 bg-transparent border-2 border-bgLighter rounded-lg text-3xl text-center shadow-darkMain text-gray-400"
                     />
-                    <Button theme="default" onClick={enable2FA}>
+                    <Button
+                        variant="default"
+                        onClick={enable2FA}
+                        className="w-[300px]"
+                    >
                         Enable
                     </Button>
                 </>

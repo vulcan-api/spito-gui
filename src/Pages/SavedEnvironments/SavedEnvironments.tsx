@@ -66,7 +66,7 @@ export default function SavedEnvironments(): JSX.Element {
             {isFetching ? (
                 <Loader />
             ) : environments.length > 0 ? (
-                <div className="flex w-full gap-2 flex-wrap">
+                <div className="flex w-full gap-4 flex-wrap">
                     {environments.map((env, i) => (
                         <Environment
                             key={env.id}

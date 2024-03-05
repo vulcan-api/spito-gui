@@ -46,10 +46,12 @@ export default function Rule({
                 y: 0,
                 transition: { delay: 0.2 + 0.1 * i, duration: 0.2 },
             }}
-            className="text-xl font-poppins shadow-darkMain border-2 border-bgLight rounded-lg p-4 flex flex-col gap-4 text-gray-400"
+            className="text-xl font-poppins p-4 flex flex-col gap-4 rounded-xl border bg-background text-card-foreground shadow"
         >
             <span className="flex items-center justify-between">
-                <span className="text-2xl font-roboto">{rule.name}</span>
+                <span className="text-xl font-rubik text-foreground">
+                    {rule.name}
+                </span>
                 <span className="flex items-center gap-2 cursor-pointer">
                     {likesCount}
                     {isLiked ? (
@@ -68,24 +70,24 @@ export default function Rule({
                     )}
                     {addRuleToEnvironment && (
                         <TbPlus
-                            className="text-gray-400 cursor-pointer hover:text-sky-400 transition-colors"
+                            className="text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
                             onClick={() => addRuleToEnvironment(rule.id)}
                         />
                     )}
                     {deleteRuleFronEnvironment && (
                         <TbTrash
-                            className="text-gray-400 cursor-pointer hover:text-sky-400 transition-colors"
+                            className="text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
                             onClick={() => deleteRuleFronEnvironment(rule.id)}
                         />
                     )}
                 </span>
             </span>
-            <p className="text-sm">
+            <p className="text-sm text-muted-foreground">
                 Created:{" "}
                 {formatDistanceToNow(rule.createdAt, { addSuffix: true })}
             </p>
             {rule.updatedAt !== rule.createdAt && rule.updatedAt && (
-                <p className="text-sm">
+                <p className="text-sm text-muted-foreground">
                     Updated:{" "}
                     {formatDistanceToNow(rule.updatedAt, { addSuffix: true })}
                 </p>

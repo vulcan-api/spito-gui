@@ -38,35 +38,39 @@ export default function Environments(): JSX.Element {
 
     return (
         <>
-            {isUserEditingEnvironment && (
-                <ManageContentModal
-                    isUserEditing={true}
-                    closeModal={closeEditModal}
-                    environmentId={editedEnvironmentId}
-                    isUserEditingEnvironment={true}
-                />
-            )}
+            <ManageContentModal
+                isUserEditing={true}
+                closeModal={closeEditModal}
+                environmentId={editedEnvironmentId}
+                isUserEditingEnvironment={true}
+                open={isUserEditingEnvironment}
+            />
             {isLoading ? (
                 <Loader size="w-16 h-16 mt-8" />
             ) : (
                 <AnimatePresence>
                     {environments.length > 0 ? (
-                        environments.map((environment, i) => (
-                            <Environment
-                                key={environment.id}
-                                environment={environment}
-                                canChangeLogo={
-                                    environment.user.id === loggedUserData.id
-                                }
-                                index={i}
-                                setIsUserEditingEnvironment={
-                                    setIsUserEditingEnvironment
-                                }
-                                setEditedEnvironmentId={setEditedEnvironmentId}
-                            />
-                        ))
+                        <div className="flex flex-col gap-4 mt-4">
+                            {environments.map((environment, i) => (
+                                <Environment
+                                    key={environment.id}
+                                    environment={environment}
+                                    canChangeLogo={
+                                        environment.user.id ===
+                                        loggedUserData.id
+                                    }
+                                    index={i}
+                                    setIsUserEditingEnvironment={
+                                        setIsUserEditingEnvironment
+                                    }
+                                    setEditedEnvironmentId={
+                                        setEditedEnvironmentId
+                                    }
+                                />
+                            ))}
+                        </div>
                     ) : (
-                        <p className="text-center text-gray-500 text-2xl font-poppins mt-10">
+                        <p className="text-center text-muted-foreground text-xl font-poppins mt-10">
                             This user has no environments!
                         </p>
                     )}

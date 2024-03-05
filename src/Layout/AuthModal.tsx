@@ -1,20 +1,26 @@
 import { useRef, useState } from "react";
-import { motion } from "framer-motion";
-import { BsX } from "react-icons/bs";
-import Input from "./Input";
-import Button from "./Button";
+import { Input } from "@/Components/ui/input";
+import { Button } from "@/Components/ui/button";
 import { getUserInfo, login, register, verify2FA } from "../lib/auth";
 import toast from "react-hot-toast";
 import { UserInfo } from "../lib/interfaces";
 import AuthCode from "react-auth-code-input";
-import { twMerge } from "tailwind-merge";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+} from "@/Components/ui/dialog";
 
 export default function AuthModal({
     closeModal,
     updateUser,
+    open,
 }: {
     closeModal: () => void;
     updateUser: (user: UserInfo) => void;
+    open: boolean;
 }): JSX.Element {
     const usernameRef: React.RefObject<HTMLInputElement> =
         useRef<HTMLInputElement>(null);
@@ -113,41 +119,13 @@ export default function AuthModal({
     }
 
     return (
-        <div className="flex items-center justify-center absolute left-0 top-0 w-screen h-screen z-40">
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="absolute w-screen h-screen backdrop-blur-sm supports-backdrop-blur:bg-black/60"
-                onClick={closeModal}
-            />
-            <motion.div
-                initial={{ opacity: 0, y: 100 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 0 }}
-                className={twMerge(
-                    "2xl:w-1/4 xl:w-1/3 md:w-1/2 w-full bg-bgColor md:border-2 md:rounded-xl md:border-bgLight shadow-darkMain text-gray-100 relative md:p-8 md:py-16 md:pb-8 p-24 h-full",
-                    isUserRegistering
-                        ? "md:h-2/3 min-h-[700px]"
-                        : "md:h-1/2 min-h-[500px]"
-                )}
-            >
-                <BsX
-                    className="absolute text-3xl right-4 top-4 cursor-pointer hover:text-sky-500 transition-colors"
-                    onClick={closeModal}
-                />
+        <Dialog open={open} onOpenChange={closeModal}>
+            <DialogContent>
                 {isTwoFAEnabled ? (
-                    <motion.div
-                        key="2FA"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="w-full h-full flex flex-col gap-8 md:justify-between justify-center"
-                    >
-                        <p className="text-center text-2xl font-poppins text-gray-400">
-                            Enter your 2FA token.
-                        </p>
+                    <>
+                        <DialogHeader>
+                            <DialogTitle>Enter your 2FA token.</DialogTitle>
+                        </DialogHeader>
                         <AuthCode
                             onChange={handleAuthCodeState}
                             allowedCharacters="numeric"
@@ -155,25 +133,21 @@ export default function AuthModal({
                             inputClassName="w-8 h-10 bg-transparent border-2 border-bgLighter text-gray-400 rounded-lg text-3xl text-center shadow-darkMain"
                         />
                         <Button
-                            theme="default"
+                            variant="default"
                             className="mx-auto"
                             onClick={submit2FA}
                         >
                             Submit
                         </Button>
-                    </motion.div>
+                    </>
                 ) : isUserRegistering ? (
-                    <motion.div
-                        key="login"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="w-full h-full flex flex-col gap-8 md:justify-between justify-center"
-                    >
-                        <h2 className="text-center text-6xl font-roboto mb-4">
-                            Register
-                        </h2>
+                    <>
+                        <DialogHeader>
+                            <DialogTitle>Register</DialogTitle>
+                        </DialogHeader>
+                        <DialogDescription>
+                            Create an account to start using spito
+                        </DialogDescription>
                         <Input placeholder="Username" ref={usernameRef} />
                         <Input
                             placeholder="Email"
@@ -194,35 +168,26 @@ export default function AuthModal({
                                 e.key === "Enter" && handleLogin()
                             }
                         />
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center justify-between gap-2">
                             <Button
-                                theme="alt"
-                                className="!w-full"
+                                variant="outline"
                                 onClick={changeAuthMethodHandler}
                             >
                                 Back to Login
                             </Button>
-                            <Button
-                                theme="default"
-                                className="!w-full"
-                                onClick={handleRegister}
-                            >
+                            <Button variant="default" onClick={handleRegister}>
                                 Register
                             </Button>
                         </div>
-                    </motion.div>
+                    </>
                 ) : (
-                    <motion.div
-                        key="register"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="w-full h-full flex flex-col gap-4 md:justify-between justify-center"
-                    >
-                        <h2 className="text-center text-6xl font-roboto mb-8">
-                            Login
-                        </h2>
+                    <>
+                        <DialogHeader>
+                            <DialogTitle>Login</DialogTitle>
+                        </DialogHeader>
+                        <DialogDescription>
+                            Create an account to start using spito
+                        </DialogDescription>
                         <Input
                             placeholder="Email"
                             type="email"
@@ -240,25 +205,20 @@ export default function AuthModal({
                         <p className="text-center cursor-pointer">
                             Forgot password?
                         </p>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center justify-between gap-2">
                             <Button
-                                theme="alt"
-                                className="!w-full"
+                                variant="outline"
                                 onClick={changeAuthMethodHandler}
                             >
                                 New? Register
                             </Button>
-                            <Button
-                                theme="default"
-                                className="!w-full"
-                                onClick={handleLogin}
-                            >
+                            <Button variant="default" onClick={handleLogin}>
                                 Login
                             </Button>
                         </div>
-                    </motion.div>
+                    </>
                 )}
-            </motion.div>
-        </div>
+            </DialogContent>
+        </Dialog>
     );
 }

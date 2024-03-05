@@ -1,5 +1,12 @@
 import { FaArrowAltCircleLeft, FaArrowCircleRight } from "react-icons/fa";
 import { twMerge } from "tailwind-merge";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/Components/ui/select";
 
 interface PaginationProps {
     total: number;
@@ -53,15 +60,19 @@ export default function Pagination({
             </div>
             <div className="flex items-center gap-2">
                 <span className="text-gray-400">Show</span>
-                <select
-                    className="text-gray-400 appearance-none bg-bgLight font-roboto px-4 py-2 rounded-lg border-2 border-bgLight focus:border-sky-600 focus:outline-none"
-                    value={perPage}
-                    onChange={(e) => handlePerPageChange(+e.target.value)}
+                <Select
+                    value={perPage.toString()}
+                    onValueChange={(value) => handlePerPageChange(+value)}
                 >
-                    <option value={10}>10</option>
-                    <option value={20}>20</option>
-                    <option value={50}>50</option>
-                </select>
+                    <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Theme" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="10">10</SelectItem>
+                        <SelectItem value="20">20</SelectItem>
+                        <SelectItem value="50">50</SelectItem>
+                    </SelectContent>
+                </Select>
                 <span className="text-gray-400">per page</span>
             </div>
         </div>

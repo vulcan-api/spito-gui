@@ -36,7 +36,7 @@ export default function Rules(): JSX.Element {
                             <Rule rule={rule} i={i} key={rule.id} />
                         ))
                     ) : (
-                        <p className="text-center text-gray-500 text-2xl font-poppins mt-2 col-start-2">
+                        <p className="text-center text-muted-foreground text-xl font-poppins mt-2 col-start-2">
                             This user has no rules!
                         </p>
                     )}

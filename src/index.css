@@ -1,65 +1,75 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-body {
-  font-family:
-    Roboto,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Helvetica Neue",
-    "Segoe UI",
-    "Oxygen",
-    "Ubuntu",
-    "Cantarell",
-    "Open Sans",
-    sans-serif;
-  background-color: #242424;
-  min-height: 100vh;
-}
-
-#root {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-@font-face {
-  font-family: "Roboto Slab";
-  src: url("./fonts/RobotoSlab-Regular.ttf");
-}
+ 
 
 @font-face {
   font-family: "Poppins";
   src: url("./fonts/Poppins-Regular.ttf");
 }
 
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+@font-face {
+  font-family: "Rubik";
+  src: url("./fonts/Rubik-Regular.ttf");
 }
 
-.privacy-screen {
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(45deg, #14a1e7 20%, #242424df 100%);
+@layer base {
+  :root {
+    --background: 20 14.3% 4.1%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 20 14.3% 4.1%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+  }
 }
 
-::-webkit-calendar-picker-indicator {
-  filter: invert(1);
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-
-*::selection {
-  background-color: transparent;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  #root {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
 }

@@ -1,6 +1,5 @@
 import { ProfileInterface } from "../../lib/interfaces";
 import { getUserProfile } from "../../lib/user";
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -19,13 +18,11 @@ import Rulesets from "./Pages/Rulesets";
 import Environments from "./Pages/Environments";
 import ManageContentModal from "./Components/Modals/ManageContentModal";
 import AvatarComponent from "../../Components/AvatarComponent";
-import { twMerge } from "tailwind-merge";
-
-type site = "Main" | "Rules" | "Rulesets" | "Environments";
+import { Separator } from "@/Components/ui/separator";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/Components/ui/tabs";
 
 export default function Profile(): JSX.Element {
     const [userData, setUserData] = useState<ProfileInterface>();
-    const [site, setSite] = useState<site>("Main");
     const [isUserAddingContent, setIsUserAddingContent] =
         useState<boolean>(false);
     const loggedUserData = useAtomValue(userAtom);
@@ -50,111 +47,81 @@ export default function Profile(): JSX.Element {
         setIsUserAddingContent(!isUserAddingContent);
     }
 
-    function tabClasses(tab: site): string {
-        return twMerge(
-            "font-roboto transition-all px-8 py-2 w-full border-b-2 flex items-center gap-2 justify-center",
-            site === tab
-                ? "text-gray-300 border-sky-400"
-                : "text-gray-400 cursor-pointer hover:border-sky-700 border-bgLight hover:bg-bgLight"
-        );
-    }
-
-    function displayCorrectSite(): JSX.Element {
-        switch (site) {
-            case "Main":
-                return <Overview />;
-            case "Rules":
-                return <Rules />;
-            case "Rulesets":
-                return <Rulesets />;
-            case "Environments":
-                return <Environments />;
-        }
-    }
-
     return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            key="profile"
-            transition={{ duration: 0.4 }}
-            className="flex-1 w-4/5 mx-auto flex flex-col px-16 overflow-y-auto my-4"
-        >
-            {isUserAddingContent && (
-                <ManageContentModal closeModal={handleAddingContent} />
-            )}
-            <div className="w-full pb-8 flex gap-8 py-8">
-                <div className="h-fit w-1/4 flex flex-col gap-4 px-8 py-8 duration-300 relative bg-bgColor">
-                    {loggedUserData?.id === +userId && (
-                        <TbSettingsFilled
-                            onClick={() => navigate("/settings")}
-                            className="absolute right-4 top-4 text-2xl text-gray-400 transition-all hover:text-sky-500 hover:rotate-45 cursor-pointer duration-300"
-                        />
-                    )}
-                    <AvatarComponent
-                        className="shadow-darkMain"
-                        username={userData?.username || ""}
-                        size="big"
-                        userId={+userId}
-                    />
-                    <div className="flex flex-col gap-4 w-full">
-                        <h1 className="text-gray-100 text-3xl font-roboto text-center">
-                            {userData?.username}
-                        </h1>
-                        <p className="text-gray-400 text-lg font-poppins w-[260px] line-clamp-4 break-word overflow-hidden text-center">
-                            {userData?.description ||
-                                "This user has no description yet!"}
-                        </p>
-                    </div>
-                </div>
-                <div className="h-full w-[2px] bg-bgLight rounded-full" />
-                <div className="flex-1 gap-8 h-fit duration-300 text-xl text-gray-100 font-roboto bg-bgColor">
-                    <div className="flex items-center justify-between relative">
-                        <p
-                            onClick={() => setSite("Main")}
-                            className={tabClasses("Main") + " rounded-tl-lg"}
-                        >
-                            <TbBook />
-                            OVERVIEW
-                        </p>
-                        <p
-                            onClick={() => setSite("Rules")}
-                            className={tabClasses("Rules")}
-                        >
-                            <TbFile />
-                            RULES
-                        </p>
-                        <p
-                            onClick={() => setSite("Rulesets")}
-                            className={tabClasses("Rulesets")}
-                        >
-                            <TbFolder />
-                            RULESETS
-                        </p>
-                        <p
-                            onClick={() => setSite("Environments")}
-                            className={
-                                tabClasses("Environments") + " rounded-tr-lg"
-                            }
-                        >
-                            <TbBriefcase />
-                            ENVIRONMENTS
-                        </p>
+        <>
+            <div className="flex-1 w-4/5 mx-auto flex flex-col px-16 overflow-y-auto my-4">
+                <div className="w-full pb-8 flex gap-8 py-8">
+                    <div className="h-fit flex flex-col gap-4 px-8 py-8 duration-300 w-[480px]">
                         {loggedUserData?.id === +userId && (
-                            <p
-                                onClick={handleAddingContent}
-                                className="absolute w-8 h-8 transition-colors duration-300 text-white bg-sky-500 hover:bg-sky-700 -right-10 rounded-full flex items-center justify-center cursor-pointer"
-                            >
-                                <TbPlus />
-                            </p>
+                            <TbSettingsFilled
+                                onClick={() => navigate("/settings")}
+                                className="ml-auto text-2xl text-gray-400 transition-all hover:text-sky-500 hover:rotate-45 cursor-pointer duration-300"
+                            />
                         )}
+                        <AvatarComponent
+                            className="shadow-darkMain"
+                            username={userData?.username || ""}
+                            size="big"
+                            userId={+userId}
+                        />
+                        <div className="flex flex-col gap-4 w-full">
+                            <h1 className="text-gray-100 text-3xl font-poppins text-center">
+                                {userData?.username}
+                            </h1>
+                            <p className="text-gray-400 text-lg font-poppins line-clamp-4 break-word overflow-hidden text-center">
+                                {userData?.description ||
+                                    "This user has no description yet!"}
+                            </p>
+                        </div>
                     </div>
-                    <div className="flex flex-col gap-8 p-4 text-gray-400">
-                        {displayCorrectSite()}
-                    </div>
+                    <Separator orientation="vertical" />
+                    <Tabs defaultValue="overview" className="w-full">
+                        <TabsList className="w-full *:w-full bg-accent/40 hover:*:bg-background/40 space-x-2 *:text-base *:flex *:gap-2">
+                            <TabsTrigger value="overview">
+                                <TbBook />
+                                Overview
+                            </TabsTrigger>
+                            <TabsTrigger value="rules">
+                                <TbFile />
+                                Rules
+                            </TabsTrigger>
+                            <TabsTrigger value="rulesets">
+                                <TbFolder />
+                                Rulesets
+                            </TabsTrigger>
+                            <TabsTrigger value="environments">
+                                <TbBriefcase />
+                                Environments
+                            </TabsTrigger>
+                            {loggedUserData?.id === +userId && (
+                                <div
+                                    onClick={handleAddingContent}
+                                    className="cursor-pointer inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow"
+                                >
+                                    <TbPlus />
+                                    Add Content
+                                </div>
+                            )}
+                        </TabsList>
+                        <TabsContent value="overview">
+                            <Overview />
+                        </TabsContent>
+                        <TabsContent value="rules">
+                            <Rules />
+                        </TabsContent>
+                        <TabsContent value="rulesets">
+                            <Rulesets />
+                        </TabsContent>
+                        <TabsContent value="environments">
+                            <Environments />
+                        </TabsContent>
+                    </Tabs>
                 </div>
             </div>
-        </motion.div>
+            <ManageContentModal
+                closeModal={handleAddingContent}
+                open={isUserAddingContent}
+            />
+        </>
     );
 }

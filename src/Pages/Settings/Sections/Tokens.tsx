@@ -6,7 +6,7 @@ import { deleteToken, getUserTokens } from "../../../lib/tokens";
 import toast from "react-hot-toast";
 import CreateToken from "../Components/Modals/CreateToken";
 import DisplayToken from "../Components/Modals/DisplayToken";
-import Button from "../../../Layout/Button";
+import { Button } from "@/Components/ui/button";
 import Loader from "../../../Layout/Loader";
 
 export default function Tokens(): JSX.Element {
@@ -77,14 +77,14 @@ export default function Tokens(): JSX.Element {
             ) : (
                 <>
                     <div className="w-fit flex flex-col gap-4">
-                        <p className="font-roboto text-2xl text-gray-400 text-center">
+                        <p className="font-poppins text-2xl text-gray-400 text-center">
                             Your tokens
                         </p>
-                        <p className="font-roboto text-xl text-gray-400 text-center">
+                        <p className="font-poppins text-xl text-gray-400 text-center">
                             You can use tokens to authenticate yourself in spito
                             CLI.
                         </p>
-                        <p className="font-roboto text-xl text-gray-400 text-center">
+                        <p className="font-poppins text-xl text-gray-400 text-center">
                             <span className="text-red-400">Warning:</span>{" "}
                             Tokens are sensitive data. Do not share them with
                             anyone!
@@ -95,22 +95,22 @@ export default function Tokens(): JSX.Element {
                                 deleteTokenHandler={handleDeleteToken}
                             />
                         ) : (
-                            <p className="text-2xl text-gray-500 text-center font-roboto mt-8">
+                            <p className="text-2xl text-gray-500 text-center font-poppins mt-8">
                                 No tokens!
                             </p>
                         )}
                     </div>
-                    {isCreateTokenModalOpen && (
-                        <CreateToken closeModal={handleCloseCreateModal} />
-                    )}
-                    {isDisplayTokenModalOpen && (
-                        <DisplayToken
-                            closeModal={displayTokenModalCloseHandler}
-                            token={newToken}
-                        />
-                    )}
+                    <CreateToken
+                        closeModal={handleCloseCreateModal}
+                        open={isCreateTokenModalOpen}
+                    />
+                    <DisplayToken
+                        closeModal={displayTokenModalCloseHandler}
+                        token={newToken}
+                        open={isDisplayTokenModalOpen}
+                    />
                     <Button
-                        theme="alt"
+                        variant="default"
                         onClick={() => setIsCreateTokenModalOpen(true)}
                         className="!w-fit mx-auto mt-10"
                     >

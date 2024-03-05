@@ -10,7 +10,7 @@ export default function RulesetResult({
     return (
         <Link
             to={`/ruleset/${ruleset.id}`}
-            className="w-full flex items-center gap-4 text-2xl"
+            className="w-full flex items-center gap-4 text-base text-muted-foreground"
         >
             <TbFolder />
             <p>{ruleset.name}</p>

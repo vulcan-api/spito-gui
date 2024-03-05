@@ -1,6 +1,6 @@
 import AvatarComponent from "../../../Components/AvatarComponent";
-import Button from "../../../Layout/Button";
-import Input from "../../../Layout/Input";
+import { Input } from "@/Components/ui/input";
+import { Button } from "@/Components/ui/button";
 import Loader from "../../../Layout/Loader";
 import AvatarEditModal from "../../../Pages/Profile/Components/Modals/AvatarEditModal";
 import { userAtom } from "../../../lib/atoms";
@@ -16,6 +16,7 @@ import { useState, useRef, useEffect } from "react";
 import toast from "react-hot-toast";
 import { TbEdit } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
+import { Textarea } from "@/Components/ui/textarea";
 
 export default function MainSettings(): JSX.Element {
     const loggedUserData = useAtomValue(userAtom);
@@ -160,14 +161,13 @@ export default function MainSettings(): JSX.Element {
                 <Loader />
             ) : (
                 <>
-                    {isUserChangingAvatar && (
-                        <AvatarEditModal
-                            closeModal={handleUserChaningAvatar}
-                            newAvatarRef={newAvatarRef}
-                            avatarUrl={avatarUrl}
-                            saveAvatarImage={saveAvatarImage}
-                        />
-                    )}
+                    <AvatarEditModal
+                        isOpen={isUserChangingAvatar}
+                        closeModal={handleUserChaningAvatar}
+                        newAvatarRef={newAvatarRef}
+                        avatarUrl={avatarUrl}
+                        saveAvatarImage={saveAvatarImage}
+                    />
                     <div className="w-fit flex flex-col gap-4">
                         <Input
                             placeholder="Username"
@@ -175,20 +175,20 @@ export default function MainSettings(): JSX.Element {
                             onChange={(e) => setUsername(e.currentTarget.value)}
                             max={16}
                         />
-                        <textarea
+                        <Textarea
                             placeholder="Description"
                             defaultValue={userData?.description}
-                            className="font-poppins h-72 block resize-none p-2 w-full text-lg duration-300 text-white bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-gray-500"
+                            className="!h-40"
                             onChange={(e) =>
                                 setDescription(e.currentTarget.value)
                             }
                         />
-                        <p className="text-sm text-center font-roboto text-gray-400">
+                        <p className="text-sm text-center font-poppins text-gray-400">
                             Be causious while editing profile, offensive content
                             will be deleted!
                         </p>
                         <Button
-                            theme="default"
+                            variant="default"
                             className="!w-full"
                             onClick={handleSaveSettings}
                         >
@@ -196,9 +196,6 @@ export default function MainSettings(): JSX.Element {
                         </Button>
                     </div>
                     <div className="h-fit border-1 rounded-xl border-borderGray shadow-darkMain p-16 relative">
-                        <p className="text-2xl text-center absolute -top-12 left-40 font-roboto text-gray-400">
-                            Previev:
-                        </p>
                         <div className="relative shadow-darkMain rounded-full">
                             {avatarBlob ? (
                                 <img
@@ -229,10 +226,10 @@ export default function MainSettings(): JSX.Element {
                                 <TbEdit />
                             </label>
                         </div>
-                        <h1 className="text-gray-100 text-3xl font-roboto mt-8 mb-4 text-center">
+                        <h1 className="text-gray-100 text-3xl font-poppins mt-8 mb-4 text-center">
                             {username}
                         </h1>
-                        <p className="text-gray-400 text-lg font-poppins w-[260px] line-clamp-4 break-word overflow-hidden text-center">
+                        <p className="text-gray-400 text-lg font-poppins line-clamp-4 break-word overflow-hidden text-center">
                             {description || "This user has no description yet!"}
                         </p>
                     </div>

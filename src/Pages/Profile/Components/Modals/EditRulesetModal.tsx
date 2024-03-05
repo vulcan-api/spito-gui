@@ -1,15 +1,17 @@
-import Input from "../../../../Layout/Input";
+import { Input } from "@/Components/ui/input";
 import { tagInterface } from "../../../../lib/interfaces";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import TagInput from "../TagInput";
 import { TbArrowLeft, TbArrowRight, TbDeviceFloppy } from "react-icons/tb";
-import Button from "../../../../Layout/Button";
+import { Button } from "@/Components/ui/button";
 import { getRulesetById, updateRuleset } from "../../../../lib/user";
 import Loader from "../../../../Layout/Loader";
 import toast from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
 import isUrl from "is-url-superb";
+import { Label } from "@/Components/ui/label";
+import { Textarea } from "@/Components/ui/textarea";
 
 export default function EditRulesetModal({
     closeModal,
@@ -74,25 +76,23 @@ export default function EditRulesetModal({
 
     return (
         <>
-            <div className="flex items-center">
+            <div className="flex items-center justify-center my-4">
                 <div
-                    className="w-8 h-8 rounded-full bg-sky-600 flex items-center justify-center font-poppins cursor-pointer"
+                    className="w-8 h-8 rounded-full bg-primary flex items-center justify-center font-poppins cursor-pointer"
                     onClick={() => setStage(1)}
                 >
                     1
                 </div>
                 <div
                     className={twMerge(
-                        "w-16",
-                        stage >= 2 ? "bg-sky-600" : "bg-borderGray",
-                        "transition-colors duration-300 h-1"
+                        "w-16 transition-colors duration-300 h-1",
+                        stage >= 2 ? "bg-primary" : "bg-border"
                     )}
                 />
                 <div
                     className={twMerge(
-                        "w-16",
-                        stage >= 2 ? "bg-sky-600" : "bg-borderGray",
-                        "transition-colors duration-300 h-1"
+                        "w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 font-poppins cursor-pointer",
+                        stage >= 2 ? "bg-primary" : "bg-border"
                     )}
                     onClick={() => setStage(2)}
                 >
@@ -100,15 +100,14 @@ export default function EditRulesetModal({
                 </div>
                 <div
                     className={twMerge(
-                        "w-16",
-                        stage === 3 ? "bg-sky-600" : "bg-borderGray",
-                        "transition-colors duration-300 h-1"
+                        "w-16 transition-colors duration-300 h-1",
+                        stage === 3 ? "bg-primary" : "bg-border"
                     )}
                 />
                 <div
                     className={twMerge(
-                        "w-8 h-8 rounded-full bg-borderGray flex items-center justify-center font-poppins cursor-pointer",
-                        stage === 3 ? "bg-sky-600" : "bg-borderGray"
+                        "w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 font-poppins cursor-pointer",
+                        stage === 3 ? "bg-primary" : "bg-border"
                     )}
                     onClick={() => setStage(3)}
                 >
@@ -118,7 +117,7 @@ export default function EditRulesetModal({
             {isFetching ? (
                 <Loader />
             ) : (
-                <form className="flex flex-col w-full gap-4 relative">
+                <div className="flex flex-col w-full gap-4 relative">
                     <AnimatePresence mode="wait">
                         {stage === 1 && (
                             <motion.div
@@ -126,17 +125,22 @@ export default function EditRulesetModal({
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
-                                className={`w-full h-48 flex flex-col p-4`}
+                                className={`w-full h-48 flex flex-col p-4 justify-center`}
                             >
                                 <Input
                                     placeholder="Ruleset git repository URL address"
                                     name="address"
                                     onChange={(e) => setAddress(e.target.value)}
-                                    value={address}
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                            setStage((prev) => prev + 1);
+                                        }
+                                    }}
+                                    defaultValue={address}
                                 />
-                                <span className="my-4 text-center font-poppins text-borderGray text-base">
+                                <Label className="my-4 text-muted-foreground">
                                     Eg. https://github.com/avorty/spito-ruleset
-                                </span>
+                                </Label>
                             </motion.div>
                         )}
                         {stage === 2 && (
@@ -147,9 +151,9 @@ export default function EditRulesetModal({
                                 key="b"
                                 className="w-full h-48 flex flex-col gap-4 p-4"
                             >
-                                <textarea
+                                <Textarea
                                     placeholder="Description (optional)"
-                                    className={`font-poppins h-44 resize-none block p-2 w-full text-lg text-white bg-transparent rounded-lg border-2 appearance-none focus:outline-none focus:ring-0 peer transition-colors focus:border-sky-500 border-gray-500 placeholder:text-gray-500 duration-300`}
+                                    className="h-44"
                                     name="description"
                                     defaultValue={description}
                                     onChange={(e) =>
@@ -175,11 +179,10 @@ export default function EditRulesetModal({
                             </motion.div>
                         )}
                     </AnimatePresence>
-                    <div className="flex items-center w-full gap-4 px-4">
+                    <div className="flex items-center w-full justify-end gap-4 px-4">
                         {stage !== 1 && (
                             <Button
-                                theme="alt"
-                                className="!w-full text-xl"
+                                variant="outline"
                                 type="button"
                                 onClick={() => setStage((prev) => prev - 1)}
                             >
@@ -189,8 +192,7 @@ export default function EditRulesetModal({
                         )}
                         {stage !== 3 ? (
                             <Button
-                                theme="alt"
-                                className="!w-full text-xl"
+                                variant="default"
                                 type="button"
                                 onClick={() => setStage((prev) => prev + 1)}
                             >
@@ -199,16 +201,16 @@ export default function EditRulesetModal({
                             </Button>
                         ) : (
                             <Button
-                                theme="default"
+                                variant="default"
                                 onClick={formSubmitHandler}
-                                className="!w-full text-xl"
+                                type="submit"
                             >
                                 Save
                                 <TbDeviceFloppy />
                             </Button>
                         )}
                     </div>
-                </form>
+                </div>
             )}
         </>
     );

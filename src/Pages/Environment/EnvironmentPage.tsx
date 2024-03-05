@@ -12,7 +12,7 @@ import Environment from "../Profile/Components/Environment";
 import ManageContentModal from "../Profile/Components/Modals/ManageContentModal";
 import { motion } from "framer-motion";
 import Rule from "../Profile/Components/Rule";
-import Input from "../../Layout/Input";
+import { Input } from "@/Components/ui/input";
 import { searchBackendForRules } from "../../lib/search";
 import { useAtomValue } from "jotai";
 import { userAtom } from "../../lib/atoms";
@@ -128,14 +128,13 @@ export default function EnvironmentPage(): JSX.Element {
             transition={{ duration: 0.4 }}
             className="flex flex-col gap-8 p-8 w-2/3 mx-auto"
         >
-            {isUserEditingEnvironment && (
-                <ManageContentModal
-                    isUserEditing={true}
-                    closeModal={closeEditModal}
-                    environmentId={editedEnvironmentId}
-                    isUserEditingEnvironment={true}
-                />
-            )}
+            <ManageContentModal
+                isUserEditing={true}
+                closeModal={closeEditModal}
+                environmentId={editedEnvironmentId}
+                isUserEditingEnvironment={true}
+                open={isUserEditingEnvironment}
+            />
             {isFetching ? (
                 <Loader />
             ) : (
@@ -157,7 +156,7 @@ export default function EnvironmentPage(): JSX.Element {
             {!isFetching &&
                 (rules && rules.length > 0 ? (
                     <>
-                        <p className="text-xl text-gray-400 font-roboto mx-4">
+                        <p className="text-xl text-gray-400 font-poppins mx-4">
                             Environment rules
                         </p>
                         <div className="grid grid-cols-3 gap-8 mx-4">
@@ -174,20 +173,20 @@ export default function EnvironmentPage(): JSX.Element {
                         </div>
                     </>
                 ) : (
-                    <p className="text-2xl text-borderGray font-roboto mx-auto">
+                    <p className="text-2xl text-borderGray font-poppins mx-auto">
                         This environment has no rules!
                     </p>
                 ))}
             {!isFetching && loggedUserData.id === environment?.user.id && (
                 <div className="flex flex-col gap-4 mx-4">
-                    <p className="text-xl text-gray-400 font-roboto">
+                    <p className="text-xl text-gray-400 font-poppins">
                         Search for rules
                     </p>
                     <Input
                         placeholder="Search for rules..."
-                        className="shadow-darkMain !w-1/2"
                         ref={searchRef}
                         onChange={searchForRules}
+                        className="w-80"
                     />
                     {isUserWaitingForRules ? (
                         <Loader size="w-16 mt-4" />
@@ -206,12 +205,12 @@ export default function EnvironmentPage(): JSX.Element {
                                 ))}
                             </div>
                         ) : (
-                            <p className="text-2xl text-borderGray font-roboto mx-auto mt-10">
+                            <p className="text-xl text-muted-foreground font-poppins mx-auto mt-10">
                                 Start searching for rules!
                             </p>
                         )
                     ) : (
-                        <p className="text-2xl text-borderGray font-roboto mx-auto">
+                        <p className="text-xl text-muted-foreground font-poppins mx-auto">
                             No rules found!
                         </p>
                     )}
