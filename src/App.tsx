@@ -47,7 +47,7 @@ function App(): JSX.Element | null {
             element: (
                 <img
                     className="w-screen h-screen"
-                    src="https://placehold.co/1920x1080"
+                    src="https://i.ytimg.com/vi/Wu7ArqGOYYg/maxresdefault.jpg"
                     alt="jajco"
                 />
             ),

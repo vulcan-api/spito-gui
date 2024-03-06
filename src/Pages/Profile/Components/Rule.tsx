@@ -4,9 +4,12 @@ import { likeOrDislikeRule } from "../../../lib/user";
 import { formatDistanceToNow } from "date-fns";
 import { motion } from "framer-motion";
 import { useAtomValue } from "jotai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { TbPlus, TbStar, TbStarFilled, TbTrash } from "react-icons/tb";
+import { invoke } from "@tauri-apps/api";
+import { listen, Event } from "@tauri-apps/api/event";
+import { Button } from "@/Components/ui/button.tsx";
 
 export default function Rule({
     rule,
@@ -37,6 +40,30 @@ export default function Rule({
             toast.error("Something went wrong!");
         }
     }
+
+    async function applyRule(): Promise<void> {
+        await invoke("start_spito_cli", {
+            ruleset: rule.ruleset.name,
+            rule: rule.name,
+        });
+    }
+
+    useEffect(() => {
+        const unlisten = listen(
+            "CheckFinished",
+            (e: Event<{ doesRulePass: boolean }>) => {
+                if (e.payload.doesRulePass) {
+                    toast.success("Rule passed!");
+                } else {
+                    toast.error("Rule failed!");
+                }
+            }
+        );
+
+        return () => {
+            unlisten.then((f) => f());
+        };
+    }, []);
 
     return (
         <motion.div
@@ -82,6 +109,9 @@ export default function Rule({
                     )}
                 </span>
             </span>
+            <Button variant="default" onClick={applyRule}>
+                Apply rule
+            </Button>
             <p className="text-sm text-muted-foreground">
                 Created:{" "}
                 {formatDistanceToNow(rule.createdAt, { addSuffix: true })}
