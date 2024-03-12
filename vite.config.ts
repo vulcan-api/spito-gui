@@ -7,13 +7,13 @@ import path from "path";
 export default defineConfig({
     plugins: [
         react(),
-        checker({
-            overlay: { initialIsOpen: false },
-            typescript: true,
-            eslint: {
-                lintCommand: "eslint --ext .js,.jsx,.ts,.tsx src",
-            },
-        }),
+//        checker({
+//            overlay: { initialIsOpen: false },
+//            typescript: true,
+//            eslint: {
+//                lintCommand: "eslint --ext .js,.jsx,.ts,.tsx src",
+ //           },
+ //       }),
     ],
     resolve: {
         alias: {
